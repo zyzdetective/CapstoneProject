@@ -1,0 +1,13 @@
+Week 1
+Gathered the team, as scrum master, signed up for Jira and organized a team 
+discussion and decided that we would do the Charity Connect project. 
+Explore the site architecture and explore the front-end and back-end related 
+technologies that might be used in the project.
+
+Week 2
+Set up Github repository, discuss user stories with group members, and have 
+discussions on front-end technology framework selection. Participated in the 
+story and sprint and architecture parts of the project proposal, discussed 
+the basic framework of the database with the team members, and made 
+performance considerations for search and recommendation. Learned front-end 
+and back-end related technologies.
