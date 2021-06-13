@@ -1,0 +1,11 @@
+Week 1
+Meet teammates, participated in the discussion of topics which should be choiced.
+As a team member, enroll in the jira and github teams.
+Explore the background and explore the front-end and back-end related 
+technologies that might be used in the project.
+
+Week 2
+Join Github repository, discuss database tools and programming language with group members,
+and have discussed way of some functions, such as fuzzy search and recommodations. Participated 
+in the background parts of the project proposal, discussed the basic framework of the database 
+with the team members, such as table numbers, and keys.Learned sqllite and back-end related technologies.
