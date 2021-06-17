@@ -1,5 +1,5 @@
 Week1
-We have met the other team members for the first time and formed the group. We have discussed about different project title and decided \'91Charity Connect\'92 as the one we are going to do. We set up the Jira platform and the GitHub to collaborate with each other.
+We have met the other team members for the first time and formed the group. We have discussed about different project title and decided 'Charity Connect' as the one we are going to do. We set up the Jira platform and the GitHub to collaborate with each other.
 
 Week2
 We have a group meeting after tutorial to discuss how to implement our project on which programming tools we are going to use to achieve that. And we discussed about website design, framework and database.
