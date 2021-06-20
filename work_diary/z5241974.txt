@@ -9,3 +9,9 @@ Join Github repository, discuss database tools and programming language with gro
 and have discussed way of some functions, such as fuzzy search and recommodations. Participated 
 in the background parts of the project proposal, discussed the basic framework of the database 
 with the team members, such as table numbers, and keys.Learned sqllite and back-end related technologies.
+
+Week 3
+Writed the background, analysis of current system and novelty parts in the purposal. Participated in the 
+discussion of other parts. Studied djangle, html and ORM knowledges. Participated in the discussion of 
+database and front-end. Co-designed the final database system and sign in system. Discussed the technology 
+details about the use of session and cookies and authentical verified of log in system.
