@@ -36,10 +36,18 @@ def signup(request):
 def login(request):
     if request.method == 'GET':
         login_form = LoginForm
-        return render(request=request,
-                      template_name="cc/login.html",
-                      context={"form": login_form}
-                      )
+
+    else:
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            username = login_form.data.get('username')
+            password = login_form.data.get('password')
+            user_type = login_form.data.get('user_type')
+            print(username, password, user_type)
+    return render(request=request,
+                  template_name="cc/login.html",
+                  context={"form": login_form}
+                  )
 
 
 def home(request):
@@ -72,7 +80,7 @@ def charity_profile(request):
         if charity_profile_form.is_valid():
             charity_name = charity_profile_form.data.get('charity_name')
             charity_description = charity_profile_form.data.get('charity_description')
-            charity_needs = charity_profile_form.data.get('charity_needs')
+            charity_needs = charity_profile_form.data.get('what_we_need')
             other_needs = charity_profile_form.data.get('other_needs')
             website = charity_profile_form.data.get('website')
             print(charity_name, charity_description, charity_needs, other_needs, website)
