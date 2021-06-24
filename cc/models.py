@@ -36,3 +36,4 @@ class UserSponsor(models.Model):
         db_table = 'sponsor'
         verbose_name = 'sponsor'
         verbose_name_plural = verbose_name
+

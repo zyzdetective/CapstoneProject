@@ -23,5 +23,30 @@ class SignupForm(forms.ModelForm):
         }
 
 
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'user_type']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'user_type': forms.Select(attrs={'class': 'form-control'}),
+        }
 
+
+class SponsorProfileForm(forms.Form):
+    sponsor_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    sponsor_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    what_we_have = forms.ChoiceField(required=True, choices=((1, 'Food'), (2, 'Cloth'), (3, 'Accommodation')),
+                                     widget=forms.Select(attrs={'class': 'form-control'}))
+    website = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class CharityProfileForm(forms.Form):
+    charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    charity_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    what_we_need = forms.ChoiceField(required=True, choices=((1, 'Food'), (2, 'Cloth'), (3, 'Accommodation')),
+                                     widget=forms.Select(attrs={'class': 'form-control'}))
+    other_needs = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    website = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 

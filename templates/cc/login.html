@@ -3,13 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>test sign</title>
+    <title>Login</title>
     <link rel="stylesheet" href="{% static 'cc/styles/signup_style.css' %}">
     <link rel="stylesheet" href="{% static 'cc/styles/bootstrap.css' %}">
 </head>
 <center>
 <h1>Welcome!!</h1>
-<h3>Sign up</h3>
+<h3>Login</h3>
 </center>
 <body style="background: url(https://econsultancy.imgix.net/content/uploads/2018/01/05151122/ROW-50-charity.png); background-size: 100%">
     <div class="form-group">
@@ -17,7 +17,7 @@
         {% csrf_token %}
         {{form.as_p}}
         <!--<input type="submit" value="Sign up" class="cancelbtn"> -->
-        <button type="button" class="cancelbtn" >Sign Up</button>
+        <button type="submit" class="cancelbtn" >Login</button>
     </form>
 </div>
 </body>
