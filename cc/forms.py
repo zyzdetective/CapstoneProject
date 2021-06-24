@@ -15,6 +15,13 @@ class SignupForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'password', 'user_type']
 
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'user_type': forms.Select(attrs={'class': 'form-control'}),
+        }
+
 
 
 
