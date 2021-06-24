@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import User, UserCharity, UserSponsor
 
 
 # class SignupForm(UserCreationForm):
@@ -16,5 +16,14 @@ class SignupForm(forms.ModelForm):
         fields = ['username', 'email', 'password', 'user_type']
 
 
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Your username')
+    password = forms.CharField(label='Your password')
+
+
+class EditForm(forms.ModelForm):
+    class Meta:
+        model = UserCharity
+        fields = ['long_name', 'description', 'website']
 
 
