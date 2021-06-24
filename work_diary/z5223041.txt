@@ -8,3 +8,6 @@ Week 1
  We talk about project layout, divide project into front-end and back-end.
  We are working on project proposal and I am working on interface.
  I am learning front-end.
+
+ Week 3
+ Working on front-end.
