@@ -15,3 +15,5 @@ Writed the background, analysis of current system and novelty parts in the purpo
 discussion of other parts. Studied djangle, html and ORM knowledges. Participated in the discussion of 
 database and front-end. Co-designed the final database system and sign in system. Discussed the technology 
 details about the use of session and cookies and authentical verified of log in system.
+
+Week 4
