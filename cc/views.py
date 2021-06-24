@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, HttpResponse
-from cc.forms import SignupForm, LoginForm, EditForm
+from cc.forms import SignupForm, SigninForm, EditForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 
+
 def signup(request):
+    print(f'current user:{request.user}')
     if request.method == 'GET':
 
         signup_form = SignupForm
@@ -33,11 +36,12 @@ def signup(request):
 
 
 def signin(request):
+    print(f'current user:{request.user}')
     if request.method == 'GET':
 
-        signin_form = LoginForm
+        signin_form = SigninForm
     else:
-        signin_form = LoginForm(request.POST)
+        signin_form = SigninForm(request.POST)
         username = signin_form.data.get('username')
         password = signin_form.data.get('password')
         print(username, password)
@@ -60,8 +64,9 @@ def signin(request):
                   context={"form": signin_form})
 
 
-
+@login_required()
 def edit(request):
+    print(f'current user:{request.user}')
     if request.method == 'GET':
 
         edit_form = EditForm
@@ -73,21 +78,17 @@ def edit(request):
         description = edit_form.data.get('description')
         website = edit_form.data.get('website')
         print(long_name, description, website)
-        items=['1','2','3']
+        items = ['1', '2', '3']
         # charity = UserCharity.objects.update(user=user, long_name='frank')
-
-
-
-
 
     return render(request=request,
                   template_name="cc/test_signin.html",
                   context={"form": edit_form})
 
 
-
-def logout(request):
-    ppp = logout(request)
-    print(f'logout {ppp}') # None
+@login_required
+def signout(request):
+    print(f'current user:{request.user}')
+    out = logout(request)
+    print(f'signout {out}')  # None
     return redirect("/signin/")
-

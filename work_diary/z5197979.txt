@@ -11,3 +11,13 @@ story and sprint and architecture parts of the project proposal, discussed
 the basic framework of the database with the team members, and made 
 performance considerations for search and recommendation. Learned front-end 
 and back-end related technologies.
+
+Week 3
+Complete the sprint and architecture sections of the proposal document and 
+integrate the final proposal document. Learn front-end and back-end technologies 
+in Django, start coding the skeleton of the registration interface and related 
+back-end parts, and complete the basic design of the database. Discussed login 
+and session related technology options with Zhenyu Yang.
+
+Week 4
+
