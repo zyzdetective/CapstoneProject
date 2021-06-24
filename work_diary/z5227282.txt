@@ -5,3 +5,7 @@ I met other teammates and we formed a group. We discussed all of the project opt
 Week 2
 
 We had a meeting at this week and we discussed about the project details such as website design, framework and database. Meanwhile, the proposal work is starting, I was responsible to draw the interface and flow diagram.
+
+Week 3
+
+This week we complete the Sign Up page.
