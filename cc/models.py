@@ -22,8 +22,16 @@ class User(AbstractUser):
 
 class UserCharity(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    username = models.CharField(max_length=200)
     long_name = models.CharField(max_length=200)
     description = models.CharField(max_length=2048)
+    email = models.EmailField(
+        blank=True,
+        unique=True,
+        error_messages={
+            'unique': "A user with that email already exists.",
+        }
+    )
     website = models.URLField()
 
     class Meta:
@@ -34,8 +42,16 @@ class UserCharity(models.Model):
 
 class UserSponsor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    username = models.CharField(max_length=200)
     long_name = models.CharField(max_length=200)
     description = models.CharField(max_length=2048)
+    email = models.EmailField(
+        blank=True,
+        unique=True,
+        error_messages={
+            'unique': "A user with that email already exists.",
+        }
+    )
     website = models.URLField()
 
     class Meta:
@@ -45,10 +61,14 @@ class UserSponsor(models.Model):
 
 
 class Need(models.Model):
-    user = models.ForeignKey('UserCharity', to_field='user', on_delete=models.CASCADE)
+    username = models.ForeignKey('User', to_field='username', on_delete=models.CASCADE)
+    # this variety need should not be changed due to \ref { views.py 103 }
     need = models.CharField(max_length=200)
+
 
 
 class Provide(models.Model):
-    user = models.ForeignKey('UserSponsor', to_field='user', on_delete=models.CASCADE)
+    username = models.ForeignKey('User', to_field='username', on_delete=models.CASCADE)
+    # this variety need should not be changed due to \ref { views.py 103 }
     need = models.CharField(max_length=200)
+
