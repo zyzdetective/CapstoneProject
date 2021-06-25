@@ -88,3 +88,4 @@ def charity_profile(request):
                   template_name="cc/C_profile.html",
                   context={"form": charity_profile_form}
                   )
+

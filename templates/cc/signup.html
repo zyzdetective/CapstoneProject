@@ -1,3 +1,7 @@
+{% extends 'base/base.html' %}
+
+
+{% comment %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,13 +16,71 @@
 <h3>Sign up</h3>
 </center>
 <body style="background: url(https://econsultancy.imgix.net/content/uploads/2018/01/05151122/ROW-50-charity.png); background-size: 100%">
-    <div class="form-group">
-    <form method="POST" class="container">
-        {% csrf_token %}
-        {{form.as_p}}
+
+
+<div class="wrapper">
+        <div class="sidebar">
+            <h2>Charity Connect</h2>
+            <ul>
+                <li><a href="#">Top 10 Sponsors</a ></li>
+                <li><a href="#">Sponsor List</a ></li>
+                <li><a href="#">Charity List</a ></li>
+                <li><a href="#">Recommendation</a ></li>
+                <li><a href="#">Search</a ></li>
+            </ul>
+        </div>
+
+        <div class="action">
+            <div class="profile">
+                <img src="">
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="#">Edit Profile</a></li>
+                    <li><a href="#">Login/Signup</a></li>
+                    <li><a href="#">Log out</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main_content">
+             {% block test %}
+            <form method="POST" class="container">
+            {% csrf_token %}
+            {{form.as_p}}
         <!--<input type="submit" value="Sign up" class="cancelbtn"> -->
-        <button type="submit" class="cancelbtn" >Sign Up</button>
-    </form>
-</div>
+            <button type="submit" class="cancelbtn" name="Sign up">Sign Up</button>
+            </form>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            {% endblock %}
+        </div>
+    </div>
+
+
+
 </body>
 </html>
+{% endcomment %}
+
+
+
+
+
+{% block title %}Signup{% endblock %}
+
+
+
+<h3>{% block h3 %}Signup{% endblock %}</h3>
+
+
+
+
+{% block body %}
+    <form method="POST" class="container">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!--<input type="submit" value="Sign up" class="cancelbtn"> -->
+        <button type="submit" class="cancelbtn" name="Sign up">Sign Up</button>
+    </form>
+{% endblock %}

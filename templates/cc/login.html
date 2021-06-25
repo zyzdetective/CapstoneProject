@@ -12,13 +12,16 @@
 <h3>Login</h3>
 </center>
 <body style="background: url(https://econsultancy.imgix.net/content/uploads/2018/01/05151122/ROW-50-charity.png); background-size: 100%">
-    <div class="form-group">
+
+  <div class="form-group">
     <form method="POST" class="container">
         {% csrf_token %}
         {{form.as_p}}
         <!--<input type="submit" value="Sign up" class="cancelbtn"> -->
-        <button type="submit" class="cancelbtn" >Login</button>
+        <button type="submit" class="cancelbtn" name="Login">Login</button>
     </form>
 </div>
+
+
 </body>
 </html>
