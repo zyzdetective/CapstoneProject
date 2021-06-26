@@ -5,6 +5,7 @@
     <title>test sign</title>
 </head>
 <body>
+<h1>{{ type }}</h1>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}

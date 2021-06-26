@@ -82,7 +82,7 @@ def edit(request):
         description = edit_form.data.get('description')
         website = edit_form.data.get('website')
         print(long_name, description, website)
-        items = ['5', '6', '7']
+        items = ['5', '7']
 
         if user_type == 1:  #update table Charity and need
             update_obj = UserCharity.objects.get(username=user)
@@ -115,8 +115,9 @@ def edit(request):
         # finishing update table Need or provide
 
     return render(request=request,
-                  template_name="cc/test_signin.html",
-                  context={"form": edit_form})
+                  template_name="cc/test_add_profile.html",
+                  context={"form": edit_form,
+                           "type": request.user.user_type})
 
 
 @login_required
