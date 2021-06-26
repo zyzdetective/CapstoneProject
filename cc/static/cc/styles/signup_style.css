@@ -72,9 +72,9 @@
 }
 
 .wrapper .main_content{
-    width: 100%;
-    margin-left: 200px;
-    margin-top: 200px;
+    width: 70%;
+    margin-left: 400px;
+    margin-top: 0px;
     margin-right: 200px;
     margin-bottom: 200px;
 
@@ -208,7 +208,6 @@ form {
         left: 333px;
         border-radius: 15px;
         background: rgba(151, 149, 149, 0.5);      /*设置form表单透明度*/
-        text-align: center;
         overflow: hidden;
 }
 
