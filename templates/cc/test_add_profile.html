@@ -5,10 +5,11 @@
     <title>test sign</title>
 </head>
 <body>
+<h1>{{ type }}</h1>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Sign Up</button>
+    <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Save</button>
 </form>
 </body>
 </html>
