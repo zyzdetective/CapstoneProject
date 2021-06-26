@@ -126,3 +126,17 @@ def signout(request):
     out = logout(request)
     print(f'signout {out}')  # None
     return redirect("/signin/")
+
+
+def charity_list(request):
+    pass
+
+
+def sposor_list(request):
+    pass
+
+
+def details(request):
+    pass
+
+
