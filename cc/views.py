@@ -65,7 +65,7 @@ def sponsor_profile(request):
             sponsor_description = sponsor_profile_form.data.get('sponsor_description')
             sponsor_needs = sponsor_profile_form.data.get('what_we_have')
             website = sponsor_profile_form.data.get('website')
-            print(sponsor_name, sponsor_description, sponsor_needs, website)
+            print(sponsor_name, sponsor_description, "Food", website)
     return render(request=request,
                   template_name="cc/S_profile.html",
                   context={"form": sponsor_profile_form}
