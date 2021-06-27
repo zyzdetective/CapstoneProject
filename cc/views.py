@@ -3,7 +3,7 @@ from cc.forms import SignupForm, SigninForm, EditForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-
+import math
 
 # Create your views here.
 
@@ -129,11 +129,55 @@ def signout(request):
 
 
 def charity_list(request):
-    pass
+    page_nums = 4
+
+    if request.method == 'GET':
+
+        user_profile = UserCharity.objects.all()[:10]
+    else:
+        # determine which pages should be displayed
+        if page_nums >  int(math.ceil(UserCharity.objects.count() / 10)):
+            user_profile = UserCharity.objects.all()[:10]
+        else:
+            user_profile = UserCharity.objects.all()[(page_nums-1)*10:page_nums*10]
+
+    user_item = list()
+    for user in user_profile.values('username'):
+        username = user['username']
+        user_item.append(Need.objects.filter(username_id__exact=username).values())
+
+    user_profile = zip(user_profile,user_item)
+    return render(request=request,
+                  template_name="cc/test_list.html",
+                  context={"details_found": True,
+                           "lists": user_profile,
+                           "pages":int(math.ceil(UserCharity.objects.count() / 10))})
 
 
 def sposor_list(request):
-    pass
+    page_nums = 4
+
+    if request.method == 'GET':
+
+        user_profile = UserSponsor.objects.all()[:10]
+    else:
+        # determine which pages should be displayed
+        if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
+            user_profile = UserSponsor.objects.all()[:10]
+        else:
+            user_profile = UserSponsor.objects.all()[(page_nums - 1) * 10:page_nums * 10]
+
+    user_item = list()
+    for user in user_profile.values('username'):
+        username = user['username']
+        user_item.append(Provide.objects.filter(username_id__exact=username).values())
+
+    user_profile = zip(user_profile, user_item)
+    return render(request=request,
+                  template_name="cc/test_list.html",
+                  context={"details_found": True,
+                           "lists": user_profile,
+                           "pages": int(math.ceil(UserCharity.objects.count() / 10))})
 
 
 def details(request, details_slug):
@@ -144,10 +188,10 @@ def details(request, details_slug):
             user_type = user.user_type
             if user_type == 1:  # update table Charity and need
                 user_profile = UserCharity.objects.get(username=username)
-                user_item = list(Need.objects.filter(username=username).values())
+                user_item = list(Need.objects.filter(username_id__exact=username).values())
             else:  # update table Sponsor and provide
                 user_profile = UserSponsor.objects.get(username=username)
-                user_item = list(Provide.objects.filter(username=username).values())
+                user_item = list(Provide.objects.filter(username_id__exact=username).values())
             print(username)
         return render(request=request,
                       template_name="cc/test_details.html",
