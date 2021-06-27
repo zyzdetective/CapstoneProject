@@ -29,9 +29,9 @@ def signup(request):
                 user_type=user_type,
             )
             if int(user_type[0]) == 1:
-                charity = UserCharity.objects.create(user=user,username=username,email=email)
+                charity = UserCharity.objects.create(user=user, username=username, email=email)
             else:
-                sponsor = UserSponsor.objects.create(user=user,username=username,email=email)
+                sponsor = UserSponsor.objects.create(user=user, username=username, email=email)
 
     return render(request=request,
                   template_name="cc/test_sign.html",
@@ -74,7 +74,7 @@ def edit(request):
 
         edit_form = EditForm
     else:
-        user = request.user  #this user -> User.username
+        user = request.user  # this user -> User.username
         user_type = request.user.user_type
         print(f'user:{user}')
         edit_form = EditForm(request.POST)
@@ -84,10 +84,10 @@ def edit(request):
         print(long_name, description, website)
         items = ['5', '7']
 
-        if user_type == 1:  #update table Charity and need
+        if user_type == 1:  # update table Charity and need
             update_obj = UserCharity.objects.get(username=user)
             update_item = Need
-        else:   #update table Sponsor and provide
+        else:  # update table Sponsor and provide
             update_obj = UserSponsor.objects.get(username=user)
             update_item = Provide
 
@@ -136,7 +136,26 @@ def sposor_list(request):
     pass
 
 
-def details(request):
-    pass
+def details(request, details_slug):
+    try:
+        user = User.objects.get(username=details_slug)
+        if request.method == 'GET':
+            username = user.username
+            user_type = user.user_type
+            if user_type == 1:  # update table Charity and need
+                user_profile = UserCharity.objects.get(username=username)
+                user_item = list(Need.objects.filter(username=username).values())
+            else:  # update table Sponsor and provide
+                user_profile = UserSponsor.objects.get(username=username)
+                user_item = list(Provide.objects.filter(username=username).values())
+            print(username)
+        return render(request=request,
+                      template_name="cc/test_details.html",
+                      context={"details_found": True,
+                               "details": user_profile,
+                               "item": user_item})
 
-
+    except Exception as exc:
+        return render(request=request,
+                      template_name="cc/test_details.html",
+                      context={"details_found": False})

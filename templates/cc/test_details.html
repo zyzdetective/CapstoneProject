@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <title>Details</title>
 </head>
-<body>
+{% if details_found %}
+    <body>
     <h1>content</h1>
-</body>
+    <p1>
+        {{ details.long_name }}<br/>
+        {{ details.email }}<br/>
+        {{ details.description }}<br/>
+        {{ details.website }}<br/>
+        {% for ele in item %}
+            {{ ele.need }}<br/>
+        {% endfor %}
+    </p1>
+    </body>
+{% else %}
+    <p>No details found for this user, sorry!</p>
+{% endif %}
 </html>
