@@ -5,6 +5,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 import math
 
+
 # Create your views here.
 
 
@@ -136,25 +137,25 @@ def charity_list(request):
         user_profile = UserCharity.objects.all()[:10]
     else:
         # determine which pages should be displayed
-        if page_nums >  int(math.ceil(UserCharity.objects.count() / 10)):
+        if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
             user_profile = UserCharity.objects.all()[:10]
         else:
-            user_profile = UserCharity.objects.all()[(page_nums-1)*10:page_nums*10]
+            user_profile = UserCharity.objects.all()[(page_nums - 1) * 10:page_nums * 10]
 
     user_item = list()
     for user in user_profile.values('username'):
         username = user['username']
         user_item.append(Need.objects.filter(username_id__exact=username).values())
 
-    user_profile = zip(user_profile,user_item)
+    user_profile = zip(user_profile, user_item)
     return render(request=request,
                   template_name="cc/test_list.html",
                   context={"details_found": True,
                            "lists": user_profile,
-                           "pages":int(math.ceil(UserCharity.objects.count() / 10))})
+                           "pages": int(math.ceil(UserCharity.objects.count() / 10))})
 
 
-def sposor_list(request):
+def sponsor_list(request):
     page_nums = 4
 
     if request.method == 'GET':
@@ -177,7 +178,7 @@ def sposor_list(request):
                   template_name="cc/test_list.html",
                   context={"details_found": True,
                            "lists": user_profile,
-                           "pages": int(math.ceil(UserCharity.objects.count() / 10))})
+                           "pages": int(math.ceil(UserSponsor.objects.count() / 10))})
 
 
 def details(request, details_slug):
@@ -186,10 +187,10 @@ def details(request, details_slug):
         if request.method == 'GET':
             username = user.username
             user_type = user.user_type
-            if user_type == 1:  # update table Charity and need
+            if user_type == 1:  # get table Charity and need
                 user_profile = UserCharity.objects.get(username=username)
                 user_item = list(Need.objects.filter(username_id__exact=username).values())
-            else:  # update table Sponsor and provide
+            else:  # get table Sponsor and provide
                 user_profile = UserSponsor.objects.get(username=username)
                 user_item = list(Provide.objects.filter(username_id__exact=username).values())
             print(username)

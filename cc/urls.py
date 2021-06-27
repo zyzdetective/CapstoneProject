@@ -7,6 +7,6 @@ urlpatterns = [
     path('edit/', views.edit),
     path('signout/', views.signout),
     path('charity_list/', views.charity_list),
-    path('sponsor_list/', views.sposor_list),
-    path('details/<slug:details_slug>', views.details,name='details'),
+    path('sponsor_list/', views.sponsor_list),
+    path('details/<slug:details_slug>', views.details, name='details'),
 ]

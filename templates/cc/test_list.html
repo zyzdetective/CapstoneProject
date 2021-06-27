@@ -5,21 +5,21 @@
     <title>List</title>
 </head>
 <body>
-    <h1>content</h1>
-    <p1>
-        {% for charity,item in lists %}
-            {{ charity.long_name }}<br/>
-            {{ charity.email }}<br/>
-            {{ charity.description }}<br/>
-            {{ charity.website }}<br/>
-            {% for ele in item %}
-                {{ ele.need }}<br/>
-            {% endfor %}
-            <div class="meetup-actions">
-                <a href="{% url 'details' charity.username %}" class="btn">More Details</a>
-            </div>
+<h1>content</h1>
+<p1>
+    {% for profile,item in lists %}
+        {{ profile.long_name }}<br/>
+        {{ profile.email }}<br/>
+        {{ profile.description }}<br/>
+        {{ profile.website }}<br/>
+        {% for ele in item %}
+            {{ ele.need }}<br/>
         {% endfor %}
-    </p1>
+        <div class="meetup-actions">
+            <a href="{% url 'details' profile.username %}" class="btn">More Details</a>
+        </div>
+    {% endfor %}
+</p1>
 
 </body>
 </html>
