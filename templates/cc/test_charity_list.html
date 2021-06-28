@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Charity List{% endblock %}
+{% block h1 %}Charity List{% endblock %}
+
+{% block body %}
+    <center>
+        {% for charity,item in lists %}
+            {{ charity.long_name }}<br/>
+<!--            {{ charity.email }}<br/>-->
+<!--            {{ charity.description }}<br/>-->
+<!--            {{ charity.website }}<br/>-->
+            {% for ele in item %}
+                {{ ele.need }}<br/>
+            {% endfor %}
+            <div class="meetup-actions">
+                <a href="{% url 'details' charity.username %}" class="btn">More Details</a>
+            </div>
+        {% endfor %}
+        {{ form }}
+        {{ pages }}
+        {{ page_nums }}
+    </center>
+{% endblock %}
+
+
+

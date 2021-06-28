@@ -25,3 +25,20 @@ class EditForm(forms.ModelForm):
     class Meta:
         model = UserCharity
         fields = ['long_name', 'description', 'website']
+
+
+class ItemForm(forms.Form):
+    items = forms.MultipleChoiceField(choices=(('Food', 'Food'), ('Cloth', 'Cloth'), ('Accommodation', 'Accommodation')),
+                                     widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}))
+
+    other_items = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+class PageForm(forms.Form):
+    page = forms.CharField()
+# class CharityProfileForm(forms.Form):
+#     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+#     charity_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+#     what_we_need = forms.ChoiceField(required=True, choices=((1, 'Food'), (2, 'Cloth'), (3, 'Accommodation')),
+#                                      widget=forms.Select(attrs={'class': 'form-control'}))
+#     other_needs = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+#     website = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))

@@ -1,15 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>test sign</title>
-</head>
-<body>
-<h1>{{ type }}</h1>
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}My Profile{% endblock %}
+
+{% block css %}<link rel="stylesheet" href="{% static 'cc/styles/profile_style.css' %}">{% endblock %}
+<h3>{% block h3 %}My Profile{% endblock %}</h3>
+
+
+
+
+{% block body %}
+
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ edit_form.as_p }}
+{% if user_type == 1 %}
+<h3>What do you need?</h3>
+{% else %}
+<h3>What do you have?</h3>
+{% endif %}
+    {{ item_form.as_p }}
     <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Save</button>
 </form>
-</body>
-</html>
+{% endblock %}
+
+
+

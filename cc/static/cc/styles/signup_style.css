@@ -1,0 +1,220 @@
+* {box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: "JetBrains Mono";
+}
+
+
+.wrapper{
+    display: flex;
+    position: relative;
+}
+
+.wrapper .sidebar{
+    position: fixed;
+    width: 200px;
+    height: 80%;
+    background: #33416a;
+    padding: 30px 0;
+}
+
+.wrapper .sidebar h2{
+    color: coral;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.wrapper .sidebar ul li{
+    padding: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(225,225,225,0.05);
+}
+
+.wrapper .sidebar ul li a{
+    color: #aaa204;
+    display: block;
+}
+
+
+.wrapper .sidebar ul li:hover{
+    background: #33416a;
+}
+
+.wrapper .sidebar ul li:hover a{
+    color: cadetblue;
+}
+
+.wrapper .action{
+    position: fixed;
+    top: 20px;
+    right: 30px;
+}
+
+.wrapper .action .profile{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.wrapper .action .profile img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wrapper .main_content{
+    width: 100%;
+    margin-left: 200px;
+    margin-top: 200px;
+    margin-right: 200px;
+    margin-bottom: 200px;
+
+}
+
+.wrapper .action .menu{
+    position: absolute;
+    top: 80px;
+    right: -10px;
+    padding: 10px 20px;
+    background: #33416a;
+    width: 200px;
+    box-sizing: content-box;
+    border-radius: 15px;
+}
+
+.wrapper .action .menu ul li{
+    list-style: none;
+    padding: 10px 0;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    direction: initial;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper .action .menu ul li a{
+    display: inline-block;
+    text-decoration: none;
+    color: #aaa204;
+    font-weight: 500;
+    transition: 0.5s;
+}
+
+.wrapper .action .menu ul li a:hover{
+    color: chocolate;
+}
+
+
+/* Full-width input fields */
+  input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #306a2f;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn, .signupbtn {
+  float: initial;
+  width: 10%;
+}
+
+/* Add padding to container elements */
+.container {
+  padding: 16px;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.p1 {
+  font-family: "Times New Roman", Times, serif;
+}
+
+.p2 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.p3 {
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+#sidebar2 {
+  position: fixed;
+  float: right;
+  width: 50px;
+  margin: 5px;
+  padding: 5px;
+  top: 46px;
+  margin-top: 20px;
+}
+
+form {
+         /*width: 500px;*/
+         /*height: 450px;*/
+         /*border: 5px solid cornflowerblue;*/
+         /*font-size: 18px;*/
+         /*text-align: center;*/
+        margin: auto;
+        width:500px;
+        height: 450px;
+        top: 90px;
+        left: 333px;
+        border-radius: 15px;
+        background: rgba(151, 149, 149, 0.5);      /*设置form表单透明度*/
+        text-align: center;
+        overflow: hidden;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+    width: 100%;
+  }
+}

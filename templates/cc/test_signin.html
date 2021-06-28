@@ -1,14 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>test sign</title>
-</head>
-<body>
-    <form method="POST">
+{% extends 'base/base.html' %}
+
+{% block title %}Signin{% endblock %}
+
+<h3>{% block h3 %}Signin{% endblock %}</h3>
+
+
+
+
+{% block body %}
+    <form method="POST" class="container">
         {% csrf_token %}
         {{form.as_p}}
-        <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Sign in</button>
+        <button style="background-color:#F4EB16; color:blue" class="cancelbtn" type="submit">Sign in</button>
+        <h2>{{ error }}</h2>
     </form>
-</body>
-</html>
+    {{ error }}
+{% endblock %}
+
+

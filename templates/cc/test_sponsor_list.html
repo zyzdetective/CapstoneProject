@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Sponsor List{% endblock %}
+{% block h1 %}Sponsor List{% endblock %}
+
+{% block body %}
+    <center>
+        {% for sponsor,item in lists %}
+            {{ sponsor.long_name }}<br/>
+<!--            {{ sponsor.email }}<br/>-->
+<!--            {{ sponsor.description }}<br/>-->
+<!--            {{ sponsor.website }}<br/>-->
+            {% for ele in item %}
+                {{ ele.need }}<br/>
+            {% endfor %}
+            <div class="meetup-actions">
+                <a href="{% url 'details' sponsor.username %}" class="btn">More Details</a>
+            </div>
+        {% endfor %}
+        {{ form }}
+        {{ pages }}
+        {{ page_nums }}
+    </center>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}{{ details.long_name }}{% endblock %}
+{% block h1 %}{{ details.long_name }}{% endblock %}
+{% block body %}
+    <center>
+{% if details_found %}
+    <body>
+    <p1>
+        Name:
+        {{ details.long_name }}<br/>
+        Email:
+        {{ details.email }}<br/>
+        Description:
+        {{ details.description }}<br/>
+        Website:
+        {{ details.website }}<br/>
+        {% if user_type == 1 %}
+            What we need:
+        {% else %}
+            What we have:
+        {% endif %}
+        {% for ele in item %}
+            {{ ele.need }}
+        {% endfor %}
+    </p1>
+    </body>
+{% else %}
+    <p>No details found for this user, sorry!</p>
+{% endif %}
+    </center>
+{% endblock %}
