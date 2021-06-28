@@ -17,3 +17,9 @@ database and front-end. Co-designed the final database system and sign in system
 details about the use of session and cookies and authentical verified of log in system.
 
 Week 4
+Finishing the left work of sign in pages. Finishing the first version of sign up,edit, charity page, sponsor page.
+With these four pages, i have build a complied system and simple front-end display html. The first version
+of these pages include build the user type (sponsor,charity) after sign up, with different type, store the information
+in different tables in databases. The edit page's information could be loaded in db. Charity pages and sponsor pages
+could display user's information with seperated page nums. Furthermore, add the link from these two pages to private
+details page.
