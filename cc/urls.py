@@ -3,6 +3,7 @@ from cc import views
 
 urlpatterns = [
     path('', views.base, name='home'),
+    path('home/', views.base, name='home'),
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name='signin'),
     path('edit/', views.edit, name='edit'),

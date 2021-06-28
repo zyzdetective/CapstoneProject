@@ -17,8 +17,12 @@
                 <a href="{% url 'details' sponsor.username %}" class="btn">More Details</a>
             </div>
         {% endfor %}
-        {{ form }}
-        {{ pages }}
-        {{ page_nums }}
+        <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button style="background-color:#F4EB16; color:blue" class="cancelbtn" type="submit">Go</button>
+        </form>
+        <p>Page {{ page_nums }} of {{ pages }}</p>
+
     </center>
 {% endblock %}

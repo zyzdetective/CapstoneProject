@@ -37,7 +37,7 @@ def signup(request):
                 charity = UserCharity.objects.create(user=user,username=username,email=email)
             else:
                 sponsor = UserSponsor.objects.create(user=user,username=username,email=email)
-
+            return redirect("/home/")
     return render(request=request,
                   template_name="cc/test_sign.html",
                   context={"form": signup_form})
@@ -58,7 +58,7 @@ def signin(request):
             print('successful')
             login(request, user)
             # Redirect to a success page.
-            return redirect("/edit/")
+            return redirect("/home/")
         else:
             # Return an 'invalid login' error message.
             print('unsuccessful')
@@ -166,15 +166,14 @@ def details(request, details_slug):
 
 
 def charity_list(request):
-    page_nums = 4
 
     if request.method == 'GET':
         form = PageForm
         user_profile = UserCharity.objects.all()[:10]
+        page_nums = 1
     else:
         form = PageForm(request.POST)
-
-
+        page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
         if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
@@ -198,13 +197,14 @@ def charity_list(request):
 
 
 def sponsor_list(request):
-    page_nums = 4
+
     if request.method == 'GET':
         form = PageForm
         user_profile = UserSponsor.objects.all()[:10]
+        page_nums = 1
     else:
         form = PageForm(request.POST)
-
+        page_nums = int(form.data.get('page'))
 
 
         # determine which pages should be displayed
