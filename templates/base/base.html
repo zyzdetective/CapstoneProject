@@ -12,7 +12,7 @@
 <center>
 <h1>{% block h1 %}Welcome!!{% endblock %}</h1>
 <h3>{% block h3 %}Home{% endblock %}</h3>
-{{  signin_status }}
+{{ current_user }}
 </center>
 <body style="background: url(https://econsultancy.imgix.net/content/uploads/2018/01/05151122/ROW-50-charity.png); background-size: 100%">
 
@@ -38,10 +38,13 @@
             <div class="menu">
                 <ul>
                     <li><a href="{% url 'home' %}">Home</a ></li>
-                    <li><a href="{% url 'edit' %}">Edit Profile</a></li>
-                    <li><a href="{% url 'signin' %}">Signin</a></li>
-                    <li><a href="{% url 'signup' %}">Signup</a></li>
-                    <li><a href="{% url 'signout' %}">Sign out</a></li>
+                    {% if signin_status %}
+                        <li><a href="{% url 'edit' %}">Edit Profile</a></li>
+                        <li><a href="{% url 'signout' %}">Sign out</a></li>
+                    {% else %}
+                        <li><a href="{% url 'signin' %}">Signin</a></li>
+                        <li><a href="{% url 'signup' %}">Signup</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

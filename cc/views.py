@@ -10,9 +10,14 @@ from django import forms
 # Create your views here.
 
 def base(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
     return render(request=request,
                   template_name="base/base.html",
-                  context={"signin_status": request.user}
+                  context={'signin_status': signin_status,
+                           'current_user': request.user,}
                   )
 
 
@@ -78,6 +83,10 @@ def signin(request):
 @login_required()
 def edit(request):
     print(f'current user:{request.user}')
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
     if request.method == 'GET':
 
         edit_form = EditForm
@@ -132,7 +141,10 @@ def edit(request):
                   template_name="cc/add_profile.html",
                   context={"edit_form": edit_form,
                            "user_type": request.user.user_type,
-                           "item_form": item_form, })
+                           "item_form": item_form,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           })
 
 
 @login_required
