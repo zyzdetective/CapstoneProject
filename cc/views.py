@@ -23,6 +23,10 @@ def base(request):
 
 def signup(request):
     print(f'current user:{request.user}')
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
     if request.method == 'GET':
 
         signup_form = SignupForm
@@ -48,11 +52,18 @@ def signup(request):
             return redirect("/home/")
     return render(request=request,
                   template_name="cc/signup.html",
-                  context={"form": signup_form})
+                  context={"form": signup_form,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           })
 
 
 def signin(request):
     print(f'current user:{request.user}')
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
     if request.method == 'GET':
 
         signin_form = SigninForm
@@ -73,11 +84,17 @@ def signin(request):
             return render(request=request,
                           template_name="cc/signin.html",
                           context={"form": signin_form,
-                                   "error": "invalid username or password"})
+                                   "error": "invalid username or password",
+                                   'signin_status': signin_status,
+                                   'current_user': request.user,
+                                   })
 
     return render(request=request,
                   template_name="cc/signin.html",
-                  context={"form": signin_form})
+                  context={"form": signin_form,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           })
 
 
 @login_required()
@@ -150,12 +167,17 @@ def edit(request):
 @login_required
 def signout(request):
     print(f'current user:{request.user}')
+
     out = logout(request)
     print(f'signout {out}')  # None
     return redirect("/signin/")
 
 
 def details(request, details_slug):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
     try:
         user = User.objects.get(username=details_slug)
         if request.method == 'GET':
@@ -172,15 +194,25 @@ def details(request, details_slug):
                       template_name="cc/details.html",
                       context={"details_found": True,
                                "details": user_profile,
-                               "item": user_item})
+                               "item": user_item,
+                               'signin_status': signin_status,
+                               'current_user': request.user,
+                               })
 
     except Exception as exc:
         return render(request=request,
                       template_name="cc/details.html",
-                      context={"details_found": False})
+                      context={"details_found": False,
+                               'signin_status': signin_status,
+                               'current_user': request.user,
+                               })
 
 
 def charity_list(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
     if request.method == 'GET':
         form = PageForm
         user_profile = UserCharity.objects.all()[:10]
@@ -205,11 +237,18 @@ def charity_list(request):
                   context={"lists": user_profile,
                            "form": form,
                            "pages": int(math.ceil(UserCharity.objects.count() / 10)),
-                           "page_nums": page_nums}
+                           "page_nums": page_nums,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           }
                   )
 
 
 def sponsor_list(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
     if request.method == 'GET':
         form = PageForm
         user_profile = UserSponsor.objects.all()[:10]
@@ -235,30 +274,9 @@ def sponsor_list(request):
                   context={"lists": user_profile,
                            "form": form,
                            "pages": int(math.ceil(UserSponsor.objects.count() / 10)),
-                           "page_nums": page_nums})
+                           "page_nums": page_nums,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           })
 
 
-def details(request, details_slug):
-    try:
-        user = User.objects.get(username=details_slug)
-        if request.method == 'GET':
-            username = user.username
-            user_type = user.user_type
-            if user_type == 1:  # get table Charity and need
-                user_profile = UserCharity.objects.get(username=username)
-                user_item = list(Need.objects.filter(username_id__exact=username).values())
-            else:  # get table Sponsor and provide
-                user_profile = UserSponsor.objects.get(username=username)
-                user_item = list(Provide.objects.filter(username_id__exact=username).values())
-            print(username)
-        return render(request=request,
-                      template_name="cc/details.html",
-                      context={"details_found": True,
-                               "details": user_profile,
-                               "item": user_item,
-                               "user_type": user_type})
-
-    except Exception as exc:
-        return render(request=request,
-                      template_name="cc/details.html",
-                      context={"details_found": False})

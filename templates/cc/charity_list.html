@@ -1,6 +1,5 @@
 {% extends 'base/base.html' %}
 {% load static %}
-{% block css %}<link rel="stylesheet" href="{% static 'cc/style/list.css' %}">{% endblock %}
 {% block title %}Charity List{% endblock %}
 {% block h1 %}Charity List{% endblock %}
 {% block h3 %}{% endblock %}
@@ -39,14 +38,14 @@
     </div>
   </div>
     <center>
-
-    <form method="POST">
+    <form method="POST" style="margin-top: 50px">
         {% csrf_token %}
         {{form.as_p}}
-            <button style="background-color:#F4EB16; color:blue" class="cancelbtn" type="submit">Go</button>
+            <button class="blue" type="submit">Go</button>
         </form>
         <p>Page {{ page_nums }} of {{ pages }}</p>
     </center>
+
 {% endblock %}
 
 

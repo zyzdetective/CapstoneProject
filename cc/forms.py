@@ -36,7 +36,7 @@ class ItemForm(forms.Form):
 
 
 class PageForm(forms.Form):
-    page = forms.IntegerField()
+    page = forms.IntegerField(widget=forms.NumberInput())
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 #     charity_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))

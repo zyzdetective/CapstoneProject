@@ -63,24 +63,6 @@ input[type=password]:focus
 
 
 
-/* Set a style for all buttons */
-button {
-  background-color: #04AA6D;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 15%;
-  opacity: 0.9;
-}
-
-button:hover {
-  opacity:1;
-}
-
-
-
 form {
         position: center;
         border-radius: 15px;

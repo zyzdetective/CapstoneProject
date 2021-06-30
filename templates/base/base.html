@@ -25,8 +25,10 @@
                 <li><a href="#">Top 10 Sponsors</a ></li>
                 <li><a href="{% url 'sponsor_list' %}">Sponsor List</a ></li>
                 <li><a href="{% url 'charity_list' %}">Charity List</a ></li>
-                <li><a href="#">Recommendation</a ></li>
-                <li><a href="#">Search</a ></li>
+                {% if signin_status %}
+                    <li><a href="#">Recommendation</a ></li>
+                    <li><a href="#">Search</a ></li>
+                {% endif %}
 
             </ul>
         </div>
