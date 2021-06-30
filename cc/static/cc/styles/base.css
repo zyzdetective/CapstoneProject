@@ -70,22 +70,22 @@
     object-fit: cover;
 }
 
-.wrapper .main_content{
+.wrapper .brain{
     width: 100%;
-    margin-left: 200px;
-    margin-top: 200px;
-    margin-right: 200px;
+    margin-left: 300px;
+    margin-top: 100px;
+    margin-right: 300px;
     margin-bottom: 200px;
 
 }
 
 .wrapper .action .menu{
     position: absolute;
-    top: 80px;
+    top: 40px;
     right: -10px;
     padding: 10px 20px;
     background: #33416a;
-    width: 200px;
+    width: 170px;
     box-sizing: content-box;
     border-radius: 15px;
 }

@@ -1,28 +1,50 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'cc/style/list.css' %}">{% endblock %}
 {% block title %}Sponsor List{% endblock %}
 {% block h1 %}Sponsor List{% endblock %}
+{% block h3 %}{% endblock %}
 
 {% block body %}
-    <center>
-        {% for sponsor,item in lists %}
-            {{ sponsor.long_name }}<br/>
-<!--            {{ sponsor.email }}<br/>-->
-<!--            {{ sponsor.description }}<br/>-->
-<!--            {{ sponsor.website }}<br/>-->
+
+    <div >
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 g-5">
+           {% for charity,item in lists %}
+        <div class="col" >
+          <div class="card shadow-sm" style="background: burlywood">
+            <div >
+              <p class="card-text">
+               Charity Name:
+                  {{ charity.long_name }}<br/>
+              We have:
             {% for ele in item %}
-                {{ ele.need }}<br/>
-            {% endfor %}
-            <div class="meetup-actions">
-                <a href="{% url 'details' sponsor.username %}" class="btn">More Details</a>
+
+                {{ ele.need }}
+                {% endfor %}
+
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{% url 'details' charity.username %}" class="btn" style="color: #3c763d">More Details</a>
+                </div>
+              </div>
             </div>
-        {% endfor %}
-        <form method="POST">
+          </div>
+        </div>
+          {% endfor %}
+
+      </div>
+    </div>
+  </div>
+    <center>
+
+    <form method="POST">
         {% csrf_token %}
         {{form.as_p}}
-        <button style="background-color:#F4EB16; color:blue" class="cancelbtn" type="submit">Go</button>
+            <button style="background-color:#F4EB16; color:blue" class="cancelbtn" type="submit">Go</button>
         </form>
         <p>Page {{ page_nums }} of {{ pages }}</p>
-
     </center>
 {% endblock %}
