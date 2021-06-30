@@ -121,7 +121,7 @@ def edit(request):
         other_items = item_form.data.get('other_items')
         if other_items:
             for ele in other_items.split(','):
-                items.append(ele)
+                items.append(ele.strip())
         print(long_name, description, website, items, other_items)
 
         if user_type == 1:  # update table Charity and need
@@ -153,6 +153,7 @@ def edit(request):
                 update_item.objects.create(username=user, need=item)
 
         # finishing update table Need or provide
+        return redirect(f'/details/{user}')
 
     return render(request=request,
                   template_name="cc/add_profile.html",
