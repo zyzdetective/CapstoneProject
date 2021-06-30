@@ -10,16 +10,17 @@
 
 {% block body %}
 
-<form method="POST" class="container">
+<form method="POST" class="container" >
     {% csrf_token %}
     {{ edit_form.as_p }}
 {% if user_type == 1 %}
-<h4>What do you need?</h4>
+<h5>What do you need?</h5>
 {% else %}
-<h4>What do you have?</h4>
+<h5>What do you have?</h5>
 {% endif %}
     {{ item_form.as_p }}
-    <button type="submit">Save</button>
+<p>Other items should be separated by commas</p>
+    <button class="blue" type="submit">Save</button>
 </form>
 {% endblock %}
 
