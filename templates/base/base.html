@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'cc/styles/signup_style.css' %}">
-    {% block css %}<link rel="stylesheet" href="{% static 'cc/styles/bootstrap.css' %}">{% endblock %}
-
+    <link rel="stylesheet" href="{% static 'cc/styles/base.css' %}">
+    <link rel="stylesheet" href="{% static 'cc/styles/bootstrap.css' %}">
+    {% block css %}{% endblock %}
 </head>
 <center>
 <h1>{% block h1 %}Welcome!!{% endblock %}</h1>

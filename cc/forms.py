@@ -29,12 +29,12 @@ class EditForm(forms.ModelForm):
 
 class ItemForm(forms.Form):
     items = forms.MultipleChoiceField(choices=(('Food', 'Food'), ('Cloth', 'Cloth'), ('Accommodation', 'Accommodation')),
-                                     widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}))
+                                     widget=forms.CheckboxSelectMultiple(), )
 
-    other_items = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    other_items = forms.CharField(widget=forms.TextInput(), required=False)
 
 class PageForm(forms.Form):
-    page = forms.CharField()
+    page = forms.IntegerField()
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 #     charity_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))

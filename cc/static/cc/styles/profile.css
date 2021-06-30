@@ -1,0 +1,114 @@
+* {box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: "JetBrains Mono";
+}
+
+input[type=text]
+  {
+  width: 100%;
+  height: 8px;
+  padding: 15px;
+  margin: auto;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus
+{
+  background-color: #ddd;
+  outline: none;
+}
+input[type=email]
+  {
+  width: 100%;
+  height: 8px;
+  padding: 15px;
+  margin: auto;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=email]:focus
+{
+  background-color: #ddd;
+  outline: none;
+}
+
+input[type=password]
+  {
+  width: 100%;
+  height: 8px;
+  padding: 15px;
+  margin: auto;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=password]:focus
+{
+  background-color: #ddd;
+  outline: none;
+}
+
+input[type=url]
+  {
+  width: 100%;
+  height: 8px;
+  padding: 15px;
+  margin: auto;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=url]:focus
+{
+  background-color: #ddd;
+  outline: none;
+}
+
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+
+/* Add padding to container elements */
+.container {
+  padding: 20px;
+}
+
+form {
+        /*position: center;*/
+        width: 300px;
+        height: 600px;
+        padding: 30px;
+        background: rgba(151, 149, 149, 0.5);      /*设置form表单透明度*/
+        text-align: center;
+        font-size: 14pt;
+        overflow: hidden;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+    width: 100%;
+  }
+}

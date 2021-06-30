@@ -1,0 +1,11 @@
+.p1 {
+        /*position: center;*/
+        width: 550px;
+        height: 300px;
+        padding: 20px;
+        background: #4d62a0;      /*设置form表单透明度*/
+        text-align: left;
+        font-size: 20pt;
+        overflow: hidden;
+        color: coral;
+}

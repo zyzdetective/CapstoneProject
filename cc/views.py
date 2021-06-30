@@ -185,7 +185,6 @@ def charity_list(request):
     for user in user_profile.values('username'):
         username = user['username']
         user_item.append(Need.objects.filter(username_id__exact=username).values())
-
     user_profile = zip(user_profile, user_item)
     return render(request=request,
                   template_name="cc/test_charity_list.html",
