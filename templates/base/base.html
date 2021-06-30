@@ -10,53 +10,55 @@
     {% block css %}{% endblock %}
 </head>
 <center>
-<h1>{% block h1 %}Welcome!!{% endblock %}</h1>
-<h3>{% block h3 %}Home{% endblock %}</h3>
-{{ current_user }}
+    <h1>{% block h1 %}Welcome!!{% endblock %}</h1>
+    <h3>{% block h3 %}Home{% endblock %}</h3>
+    {{ current_user }}
 </center>
 <body style="background: url(https://econsultancy.imgix.net/content/uploads/2018/01/05151122/ROW-50-charity.png); background-size: 100%">
 
 
 <div class="wrapper">
-        <div class="sidebar">
-            <h2>Charity Connect</h2>
-            <ul>
+    <div class="sidebar">
+        <h2>Charity Connect</h2>
+        <ul>
 
-                <li><a href="#">Top 10 Sponsors</a ></li>
-                <li><a href="{% url 'sponsor_list' %}">Sponsor List</a ></li>
-                <li><a href="{% url 'charity_list' %}">Charity List</a ></li>
-                {% if signin_status %}
-                    <li><a href="#">Recommendation</a ></li>
-                    <li><a href="#">Search</a ></li>
+            <li><a href="#">Top 10 Sponsors</a></li>
+            <li><a href="{% url 'sponsor_list' %}">Sponsor List</a></li>
+            <li><a href="{% url 'charity_list' %}">Charity List</a></li>
+            {% if signin_status %}
+                {% if current_user.user_type == 1 %}
+                    <li><a href="#">Recommendation</a></li>
+                {% else %}
+                    <li><a href="#">Search</a></li>
                 {% endif %}
+            {% endif %}
 
+        </ul>
+    </div>
+
+    <div class="action">
+        <div class="profile">
+            <img src="">
+        </div>
+        <div class="menu">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if signin_status %}
+                    <li><a href="{% url 'edit' %}">Edit Profile</a></li>
+                    <li><a href="{% url 'signout' %}">Sign out</a></li>
+                {% else %}
+                    <li><a href="{% url 'signin' %}">Signin</a></li>
+                    <li><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
             </ul>
-        </div>
-
-        <div class="action">
-            <div class="profile">
-                <img src="">
-            </div>
-            <div class="menu">
-                <ul>
-                    <li><a href="{% url 'home' %}">Home</a ></li>
-                    {% if signin_status %}
-                        <li><a href="{% url 'edit' %}">Edit Profile</a></li>
-                        <li><a href="{% url 'signout' %}">Sign out</a></li>
-                    {% else %}
-                        <li><a href="{% url 'signin' %}">Signin</a></li>
-                        <li><a href="{% url 'signup' %}">Signup</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-
-        <div class="brain">
-             {% block body %}{% endblock %}
-
         </div>
     </div>
 
+    <div class="brain">
+        {% block body %}{% endblock %}
+
+    </div>
+</div>
 
 
 </body>
