@@ -70,4 +70,3 @@ class Provide(models.Model):
     username = models.ForeignKey('User', to_field='username', on_delete=models.CASCADE)
     # this variety need should not be changed due to \ref { views.py 103 }
     need = models.CharField(max_length=200)
-

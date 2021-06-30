@@ -5,6 +5,8 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 import math
 from django import forms
+
+
 # Create your views here.
 
 def base(request):
@@ -12,6 +14,7 @@ def base(request):
                   template_name="base/base.html",
                   context={"signin_status": request.user}
                   )
+
 
 def signup(request):
     print(f'current user:{request.user}')
@@ -34,12 +37,12 @@ def signup(request):
                 user_type=user_type,
             )
             if int(user_type[0]) == 1:
-                charity = UserCharity.objects.create(user=user,username=username,email=email)
+                charity = UserCharity.objects.create(user=user, username=username, email=email)
             else:
-                sponsor = UserSponsor.objects.create(user=user,username=username,email=email)
+                sponsor = UserSponsor.objects.create(user=user, username=username, email=email)
             return redirect("/home/")
     return render(request=request,
-                  template_name="cc/test_sign.html",
+                  template_name="cc/signup.html",
                   context={"form": signup_form})
 
 
@@ -63,12 +66,12 @@ def signin(request):
             # Return an 'invalid login' error message.
             print('unsuccessful')
             return render(request=request,
-                          template_name="cc/test_signin.html",
+                          template_name="cc/signin.html",
                           context={"form": signin_form,
                                    "error": "invalid username or password"})
 
     return render(request=request,
-                  template_name="cc/test_signin.html",
+                  template_name="cc/signin.html",
                   context={"form": signin_form})
 
 
@@ -80,7 +83,7 @@ def edit(request):
         edit_form = EditForm
         item_form = ItemForm
     else:
-        user = request.user  #this user -> User.username
+        user = request.user  # this user -> User.username
         user_type = request.user.user_type
         print(f'user:{user}')
         edit_form = EditForm(request.POST)
@@ -89,15 +92,16 @@ def edit(request):
         description = edit_form.data.get('description')
         website = edit_form.data.get('website')
         items = item_form.data.getlist('items')
-
         other_items = item_form.data.get('other_items')
+        if other_items:
+            for ele in other_items.split(','):
+                items.append(ele)
         print(long_name, description, website, items, other_items)
 
-
-        if user_type == 1:  #update table Charity and need
+        if user_type == 1:  # update table Charity and need
             update_obj = UserCharity.objects.get(username=user)
             update_item = Need
-        else:   #update table Sponsor and provide
+        else:  # update table Sponsor and provide
             update_obj = UserSponsor.objects.get(username=user)
             update_item = Provide
 
@@ -125,10 +129,10 @@ def edit(request):
         # finishing update table Need or provide
 
     return render(request=request,
-                  template_name="cc/test_add_profile.html",
+                  template_name="cc/add_profile.html",
                   context={"edit_form": edit_form,
-                        "user_type": request.user.user_type,
-                           "item_form": item_form,})
+                           "user_type": request.user.user_type,
+                           "item_form": item_form, })
 
 
 @login_required
@@ -137,7 +141,6 @@ def signout(request):
     out = logout(request)
     print(f'signout {out}')  # None
     return redirect("/signin/")
-
 
 
 def details(request, details_slug):
@@ -154,19 +157,18 @@ def details(request, details_slug):
                 user_item = list(Provide.objects.filter(username=username).values())
             print(username)
         return render(request=request,
-                      template_name="cc/test_details.html",
+                      template_name="cc/details.html",
                       context={"details_found": True,
                                "details": user_profile,
                                "item": user_item})
 
     except Exception as exc:
         return render(request=request,
-                      template_name="cc/test_details.html",
+                      template_name="cc/details.html",
                       context={"details_found": False})
 
 
 def charity_list(request):
-
     if request.method == 'GET':
         form = PageForm
         user_profile = UserCharity.objects.all()[:10]
@@ -179,7 +181,7 @@ def charity_list(request):
         if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
             user_profile = UserCharity.objects.all()[:10]
         else:
-            user_profile = UserCharity.objects.all()[(page_nums-1)*10:page_nums*10]
+            user_profile = UserCharity.objects.all()[(page_nums - 1) * 10:page_nums * 10]
 
     user_item = list()
     for user in user_profile.values('username'):
@@ -187,16 +189,15 @@ def charity_list(request):
         user_item.append(Need.objects.filter(username_id__exact=username).values())
     user_profile = zip(user_profile, user_item)
     return render(request=request,
-                  template_name="cc/test_charity_list.html",
+                  template_name="cc/charity_list.html",
                   context={"lists": user_profile,
                            "form": form,
                            "pages": int(math.ceil(UserCharity.objects.count() / 10)),
                            "page_nums": page_nums}
-                            )
+                  )
 
 
 def sponsor_list(request):
-
     if request.method == 'GET':
         form = PageForm
         user_profile = UserSponsor.objects.all()[:10]
@@ -204,7 +205,6 @@ def sponsor_list(request):
     else:
         form = PageForm(request.POST)
         page_nums = int(form.data.get('page'))
-
 
         # determine which pages should be displayed
         if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
@@ -219,7 +219,7 @@ def sponsor_list(request):
 
     user_profile = zip(user_profile, user_item)
     return render(request=request,
-                  template_name="cc/test_sponsor_list.html",
+                  template_name="cc/sponsor_list.html",
                   context={"lists": user_profile,
                            "form": form,
                            "pages": int(math.ceil(UserSponsor.objects.count() / 10)),
@@ -240,13 +240,13 @@ def details(request, details_slug):
                 user_item = list(Provide.objects.filter(username_id__exact=username).values())
             print(username)
         return render(request=request,
-                      template_name="cc/test_details.html",
+                      template_name="cc/details.html",
                       context={"details_found": True,
                                "details": user_profile,
                                "item": user_item,
-                                "user_type" : user_type})
+                               "user_type": user_type})
 
     except Exception as exc:
         return render(request=request,
-                      template_name="cc/test_details.html",
+                      template_name="cc/details.html",
                       context={"details_found": False})

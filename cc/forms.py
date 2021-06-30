@@ -28,10 +28,12 @@ class EditForm(forms.ModelForm):
 
 
 class ItemForm(forms.Form):
-    items = forms.MultipleChoiceField(choices=(('Food', 'Food'), ('Cloth', 'Cloth'), ('Accommodation', 'Accommodation')),
-                                     widget=forms.CheckboxSelectMultiple(), )
+    items = forms.MultipleChoiceField(
+        choices=(('Food', 'Food'), ('Cloth', 'Cloth'), ('Accommodation', 'Accommodation')),
+        widget=forms.CheckboxSelectMultiple(), )
 
     other_items = forms.CharField(widget=forms.TextInput(), required=False)
+
 
 class PageForm(forms.Form):
     page = forms.IntegerField()
