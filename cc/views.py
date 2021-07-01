@@ -194,6 +194,7 @@ def details(request, details_slug):
         return render(request=request,
                       template_name="cc/details.html",
                       context={"details_found": True,
+                               'details_user': user,
                                "details": user_profile,
                                "item": user_item,
                                'signin_status': signin_status,
