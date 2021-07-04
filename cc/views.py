@@ -17,7 +17,7 @@ def base(request):
     return render(request=request,
                   template_name="base/base.html",
                   context={'signin_status': signin_status,
-                           'current_user': request.user,}
+                           'current_user': request.user, }
                   )
 
 
@@ -97,7 +97,7 @@ def signin(request):
                            })
 
 
-@login_required()
+@login_required
 def edit(request):
     print(f'current user:{request.user}')
     if request.user.is_anonymous:
@@ -282,3 +282,14 @@ def sponsor_list(request):
                            })
 
 
+def test_connect(request):
+    connect_slug = 'Frank'
+    pass
+
+
+def test_message(request):
+    pass
+
+
+def test_message_reply(request):
+    pass

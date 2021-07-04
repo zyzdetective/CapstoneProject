@@ -11,4 +11,7 @@ urlpatterns = [
     path('charity_list/', views.charity_list, name='charity_list'),
     path('sponsor_list/', views.sponsor_list, name='sponsor_list'),
     path('details/<slug:details_slug>', views.details, name='details'),
+    path('test_c/', views.test_connect),
+    path('test_m/', views.test_message),
+    path('test_m_r/', views.test_message_reply),
 ]

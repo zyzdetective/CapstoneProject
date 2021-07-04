@@ -70,3 +70,16 @@ class Provide(models.Model):
     username = models.ForeignKey('User', to_field='username', on_delete=models.CASCADE)
     # this variety need should not be changed due to \ref { views.py 103 }
     need = models.CharField(max_length=200)
+
+
+class Message(models.Model):
+    request_user = models.CharField(max_length=200)
+    reply_user = models.CharField(max_length=200)
+    message_request = models.TextField(max_length=2048)
+    message_reply = models.TextField(max_length=2048)
+    message_type = models.BooleanField(default=False)  # False: not read
+
+
+class Connect(models.Model):
+    request_user = models.CharField(max_length=200)
+    reply_user = models.CharField(max_length=200)
