@@ -77,7 +77,13 @@ class Message(models.Model):
     reply_user = models.CharField(max_length=200)
     message_request = models.TextField(max_length=2048)
     message_reply = models.TextField(max_length=2048)
-    message_type = models.BooleanField(default=False)  # False: not read
+
+    MESSAGE_TYPE_CHOICES = (
+        (1, 'unread'),
+        (2, 'agree'),
+        (3, 'disagree'),
+    )
+    message_type = models.PositiveSmallIntegerField(choices=MESSAGE_TYPE_CHOICES, default=1)
 
 
 class Connect(models.Model):

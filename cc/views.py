@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm
-from cc.models import User, UserCharity, UserSponsor, Need, Provide
+from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 import math
@@ -283,9 +283,18 @@ def sponsor_list(request):
 
 
 def test_connect(request):
+    # fake data
     connect_slug = 'Frank'
-    pass
+    message_request = 'hello'
+    # *** fake data ***
 
+    request_user = request.user
+    Message.objects.create(request_user=request_user,
+                           reply_user=connect_slug,
+                           message_request=message_request)
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
 
 def test_message(request):
     pass
