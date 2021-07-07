@@ -20,4 +20,9 @@ back-end parts, and complete the basic design of the database. Discussed login
 and session related technology options with Zhenyu Yang.
 
 Week 4
+I completed the basic skeleton pages for registration, login, edit profile,
+public access list and public access profile, as well as the backend and
+database related code for these pages. I enabled session recognition for
+registered users and public users and fixed the bug of keeping login.
 
+Week 5

@@ -3,6 +3,7 @@ from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 import math
 from django import forms
 
@@ -282,6 +283,7 @@ def sponsor_list(request):
                            })
 
 
+@login_required
 def test_connect(request):
     # fake data
     connect_slug = 'Frank'
@@ -296,9 +298,45 @@ def test_connect(request):
     return render(request=request,
                   template_name="cc/sponsor_list.html")
 
+
+@login_required
 def test_message(request):
-    pass
+    request_user = request.user
+    message_send = Message.objects.filter(request_user=request_user)
+    message_receive_unread = Message.objects.filter(reply_user=request_user, message_type=1)
+    message_receive_read = Message.objects.filter(Q(message_type__gt=1), reply_user=request_user)
+    print(message_send)
+    print(message_receive_unread)
+    print(message_receive_read)
+    for ele in message_receive_unread:
+        type_m = ele.message_type
+        print(type_m)
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
 
 
+@login_required
 def test_message_reply(request):
-    pass
+    # fake data
+    message_slug = '1'
+    message_reply = 'hello too'
+    reply_type = True
+    # *** fake data ***
+
+    message = Message.objects.get(id=message_slug)
+    request_user = message.request_user
+    reply_user = message.reply_user
+    print(request_user, reply_user)
+    if reply_type:
+        message.message_reply = message_reply
+        message.message_type = 2
+        Connect.objects.create(request_user=request_user,
+                               reply_user=reply_user)
+    else:
+        message.message_reply = message_reply
+        message.message_type = 3
+    message.save()
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
