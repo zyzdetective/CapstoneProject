@@ -87,5 +87,5 @@ class Message(models.Model):
 
 
 class Connect(models.Model):
-    request_user = models.CharField(max_length=200)
-    reply_user = models.CharField(max_length=200)
+    charity_user = models.CharField(max_length=200)
+    sponsor_user = models.CharField(max_length=200)

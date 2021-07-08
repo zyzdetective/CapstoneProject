@@ -286,7 +286,7 @@ def sponsor_list(request):
 @login_required
 def test_connect(request):
     # fake data
-    connect_slug = 'Frank'
+    connect_slug = 'Wilder'
     message_request = 'hello'
     # *** fake data ***
 
@@ -319,7 +319,7 @@ def test_message(request):
 @login_required
 def test_message_reply(request):
     # fake data
-    message_slug = '1'
+    message_slug = '3'
     message_reply = 'hello too'
     reply_type = True
     # *** fake data ***
@@ -331,8 +331,14 @@ def test_message_reply(request):
     if reply_type:
         message.message_reply = message_reply
         message.message_type = 2
-        Connect.objects.create(request_user=request_user,
-                               reply_user=reply_user)
+        request_user_type = User.objects.get(username=request_user).user_type
+        print(request_user_type)
+        if request_user_type == 1:
+            Connect.objects.create(charity_user=request_user,
+                                   sponsor_user=reply_user)
+        else:
+            Connect.objects.create(charity_user=reply_user,
+                                   sponsor_user=request_user)
     else:
         message.message_reply = message_reply
         message.message_type = 3
