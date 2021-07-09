@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Home{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'cc/styles/base.css' %}">
     <link rel="stylesheet" href="{% static 'cc/Bootstrap5/bootstrap.min.css' %}">
     {% block css %}{% endblock %}
@@ -44,6 +44,9 @@
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 {% if signin_status %}
+                    <li><a href="{% url 'edit' %}">Edit Profile</a></li>
+                    <li><a href="{% url 'inbox' %}">Inbox</a></li>
+                    <li><a href="{% url 'outbox' %}">Outbox</a></li>
                     <li><a href="{% url 'edit' %}">Edit Profile</a></li>
                     <li><a href="{% url 'signout' %}">Sign out</a></li>
                 {% else %}

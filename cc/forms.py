@@ -37,6 +37,16 @@ class ItemForm(forms.Form):
 
 class PageForm(forms.Form):
     page = forms.IntegerField(widget=forms.NumberInput())
+
+
+class ConnectForm(forms.Form):
+    message = forms.CharField(widget=forms.TextInput(), required=False)
+
+
+class MessageForm(forms.Form):
+    message_reply = forms.CharField(widget=forms.TextInput(), required=True)
+    your_reply = forms.ChoiceField(choices=(('1', 'Agree'), ('2', 'Disagree')), widget=forms.Select())
+
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 #     charity_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))

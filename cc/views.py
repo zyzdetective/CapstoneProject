@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm
+from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -255,6 +255,7 @@ def sponsor_list(request):
     if request.method == 'GET':
         form = PageForm
         user_profile = UserSponsor.objects.all()[:10]
+        print(user_profile)
         page_nums = 1
     else:
         form = PageForm(request.POST)
@@ -270,7 +271,7 @@ def sponsor_list(request):
     for user in user_profile.values('username'):
         username = user['username']
         user_item.append(Provide.objects.filter(username_id__exact=username).values())
-
+    print(user_item)
     user_profile = zip(user_profile, user_item)
     return render(request=request,
                   template_name="cc/sponsor_list.html",
@@ -284,59 +285,147 @@ def sponsor_list(request):
 
 
 @login_required
-def test_connect(request):
-    # fake data
-    connect_slug = 'Frank'
-    message_request = 'hello'
-    # *** fake data ***
-
-    request_user = request.user
-    Message.objects.create(request_user=request_user,
-                           reply_user=connect_slug,
-                           message_request=message_request)
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
-
-
-@login_required
-def test_message(request):
-    request_user = request.user
-    message_send = Message.objects.filter(request_user=request_user)
-    message_receive_unread = Message.objects.filter(reply_user=request_user, message_type=1)
-    message_receive_read = Message.objects.filter(Q(message_type__gt=1), reply_user=request_user)
-    print(message_send)
-    print(message_receive_unread)
-    print(message_receive_read)
-    for ele in message_receive_unread:
-        type_m = ele.message_type
-        print(type_m)
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
-
-
-@login_required
-def test_message_reply(request):
-    # fake data
-    message_slug = '1'
-    message_reply = 'hello too'
-    reply_type = True
-    # *** fake data ***
-
-    message = Message.objects.get(id=message_slug)
-    request_user = message.request_user
-    reply_user = message.reply_user
-    print(request_user, reply_user)
-    if reply_type:
-        message.message_reply = message_reply
-        message.message_type = 2
-        Connect.objects.create(request_user=request_user,
-                               reply_user=reply_user)
+def connect(request, connect_slug):
+    if request.user.is_anonymous:
+        signin_status = False
     else:
-        message.message_reply = message_reply
-        message.message_type = 3
-    message.save()
+        signin_status = True
+    print(connect_slug)
+    if request.method == 'GET':
+        form = ConnectForm
+    else:
+        form = ConnectForm(request.POST)
+        message_request = form.data.get('message')
+        request_user = request.user
+        print(request_user)
+        print(connect_slug)
+        print(message_request)
+    return render(request=request,
+                  template_name="cc/connect.html",
+                  context={'form': form, 'signin_status': signin_status,
+                           'current_user': request.user, })
+
+@login_required
+def inbox(request):
+    message = {}
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        message = [{'id':1, 'state': 0, 'name':'a', 'message':'aaaaa'},
+                   {'id':2, 'state': 1, 'name':'b', 'message':'bbbbb'},
+                   {'id':3, 'state': 2, 'name':'c', 'message':'ccccc'},
+                   ]
 
     return render(request=request,
-                  template_name="cc/sponsor_list.html")
+                  template_name="cc/inbox.html",
+                  context={'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message': message})
+
+
+@login_required
+def outbox(request):
+    message = {}
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        message = [{'id':1, 'state':0, 'name':'a', 'message':'aaaaa'},
+                   {'id':2, 'state':1, 'name':'b', 'message':'bbbbb'},
+                   {'id':3, 'state':2, 'name':'c', 'message':'ccccc'},
+                   ]
+
+    return render(request=request,
+                  template_name="cc/outbox.html",
+                  context={'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message': message})
+
+
+def message(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    message = {}
+    if request.method == 'GET':
+        form = MessageForm
+        message = {'id': 1, 'state': 0, 'name': 'a', 'message': 'aaaaa'}
+    else:
+        form = MessageForm(request.POST)
+        reply_type = form.data.get('your_reply')
+        message_reply = form.data.get('message_reply')
+        print(message_reply)
+        print(reply_type)
+
+    return render(request=request,
+                  template_name="cc/message.html",
+                  context={'form': form,
+                        'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message': message})
+
+# @login_required
+# def message(request, message_slug):
+#     if request.user.is_anonymous:
+#         signin_status = False
+#     else:
+#         signin_status = True
+#     print(message_slug)
+#     if request.method == 'GET':
+#     else:
+#         request_user = request.user
+#         print(request_user)
+#         print(message_slug)
+#         print(message_request)
+#     return render(request=request,
+#                   template_name="cc/connect.html",
+#                   context={
+#                            'signin_status': signin_status,
+#                            'current_user': request.user, })
+
+
+# @login_required
+# def test_message(request):
+#     request_user = request.user
+#     message_send = Message.objects.filter(request_user=request_user)
+#     message_receive_unread = Message.objects.filter(reply_user=request_user, message_type=1)
+#     message_receive_read = Message.objects.filter(Q(message_type__gt=1), reply_user=request_user)
+#     print(message_send)
+#     print(message_receive_unread)
+#     print(message_receive_read)
+#     for ele in message_receive_unread:
+#         type_m = ele.message_type
+#         print(type_m)
+#
+#     return render(request=request,
+#                   template_name="cc/sponsor_list.html")
+#
+#
+# @login_required
+# def test_message_reply(request):
+#     # fake data
+#     message_slug = '1'
+#     message_reply = 'hello too'
+#     reply_type = True
+#     # *** fake data ***
+#
+#     message = Message.objects.get(id=message_slug)
+#     request_user = message.request_user
+#     reply_user = message.reply_user
+#     print(request_user, reply_user)
+#     if reply_type:
+#         message.message_reply = message_reply
+#         message.message_type = 2
+#         Connect.objects.create(request_user=request_user,
+#                                reply_user=reply_user)
+#     else:
+#         message.message_reply = message_reply
+#         message.message_type = 3
+#     message.save()
+#
+#     return render(request=request,
+#                   template_name="cc/sponsor_list.html")

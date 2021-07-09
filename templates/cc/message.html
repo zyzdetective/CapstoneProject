@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'cc/styles/profile.css' %}">{% endblock %}
+{% block title %}Message xxx{% endblock %}
+{% block h1 %}Message xxx{% endblock %}
+{% block h3 %}{% endblock %}
+{% block body %}
+    <center>
+    <form method="POST" class="container">
+            Request User:
+            {{ message.name }}<br/>
+            Message:
+            {{ message.message }}<br/>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="blue" type="submit">Send</button>
+        </form>
+    </center>
+{% endblock %}
