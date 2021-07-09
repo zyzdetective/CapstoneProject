@@ -26,7 +26,9 @@
         {% for ele in item %}
             {{ ele.need }}
         {% endfor %}
+        {% if user_type != details_user.user_type %}
         <a href="{% url 'connect' details_user %}" class="blue" type="submit">Connect</a>
+        {% endif %}
     </p>
 
     </body>

@@ -40,7 +40,7 @@ class PageForm(forms.Form):
 
 
 class ConnectForm(forms.Form):
-    message = forms.CharField(widget=forms.TextInput(), required=False)
+    message = forms.Field(widget=forms.TextInput(), required=False)
 
 
 class MessageForm(forms.Form):

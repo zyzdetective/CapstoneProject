@@ -14,6 +14,7 @@ urlpatterns = [
     path('connect/<slug:connect_slug>', views.connect, name='connect'),
     path('inbox/', views.inbox, name='inbox'),
     path('outbox/', views.outbox, name='outbox'),
-    path('message/', views.message, name='message'),
+    path('inbox_message/', views.inbox_message, name='inbox_message'),
+    path('outbox_message/', views.outbox_message, name='outbox_message'),
     # path('message_details/<slug:message_slug>', views.message_details, name='connect'),
 ]

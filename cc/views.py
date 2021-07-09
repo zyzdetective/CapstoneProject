@@ -200,6 +200,7 @@ def details(request, details_slug):
                                "item": user_item,
                                'signin_status': signin_status,
                                'current_user': request.user,
+                               'user_type': request.user.user_type,
                                })
 
     except Exception as exc:
@@ -208,6 +209,7 @@ def details(request, details_slug):
                       context={"details_found": False,
                                'signin_status': signin_status,
                                'current_user': request.user,
+                               'user_type': request.user.user_type,
                                })
 
 
@@ -271,7 +273,6 @@ def sponsor_list(request):
     for user in user_profile.values('username'):
         username = user['username']
         user_item.append(Provide.objects.filter(username_id__exact=username).values())
-    print(user_item)
     user_profile = zip(user_profile, user_item)
     return render(request=request,
                   template_name="cc/sponsor_list.html",
@@ -344,17 +345,17 @@ def outbox(request):
                            'current_user': request.user,
                            'message': message})
 
-
-def message(request):
+@login_required
+def inbox_message(request):
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
-    message = {}
     if request.method == 'GET':
         form = MessageForm
         message = {'id': 1, 'state': 0, 'name': 'a', 'message': 'aaaaa'}
     else:
+        message = {'id': 1, 'state': 0, 'name': 'a', 'message': 'aaaaa'}
         form = MessageForm(request.POST)
         reply_type = form.data.get('your_reply')
         message_reply = form.data.get('message_reply')
@@ -362,9 +363,26 @@ def message(request):
         print(reply_type)
 
     return render(request=request,
-                  template_name="cc/message.html",
+                  template_name="cc/inbox_message.html",
                   context={'form': form,
                         'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message': message})
+
+
+@login_required
+def outbox_message(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    message = {}
+    if request.method == 'GET':
+        message = {'id': 1, 'state': 0, 'name': 'a', 'message': 'aaaaa'}
+
+    return render(request=request,
+                  template_name="cc/outbox_message.html",
+                  context={'signin_status': signin_status,
                            'current_user': request.user,
                            'message': message})
 

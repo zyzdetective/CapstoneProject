@@ -19,14 +19,14 @@
 
                     {#                    {{ i.id }}<br/>#}
                     {#                    {{ i.state }}<br/>#}
-                    Request User:
+                    Message ID:
+                    {{ i.id }}<br/>
+                    From:
                     {{ i.name }}<br/>
-                    Message:
-                    {{ i.message }}<br/>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{% url 'message'%}" class="btn" style="color: #3c763d">More Details</a>
+                        <a href="{% url 'inbox_message'%}" class="btn" style="color: #3c763d">More Details</a>
                     </div>
                 </div>
             </p>
@@ -52,14 +52,14 @@
 
                     {#                    {{ i.id }}<br/>#}
                     {#                    {{ i.state }}<br/>#}
-                    Request User:
+                    Message ID:
+                    {{ i.id }}<br/>
+                    From:
                     {{ i.name }}<br/>
-                    Message:
-                    {{ i.message }}<br/>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <button class="blue" type="submit">Details</button>
+                        <a href="{% url 'inbox_message'%}" class="btn" style="color: #3c763d">More Details</a>
                     </div>
                 </div>
             </p>
@@ -85,14 +85,14 @@
 
                     {#                    {{ i.id }}<br/>#}
                     {#                    {{ i.state }}<br/>#}
-                    Request User:
+                    Message ID:
+                    {{ i.id }}<br/>
+                    From:
                     {{ i.name }}<br/>
-                    Message:
-                    {{ i.message }}<br/>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <button class="blue" type="submit">Details</button>
+                        <a href="{% url 'inbox_message'%}" class="btn" style="color: #3c763d">More Details</a>
                     </div>
                 </div>
             </p>
