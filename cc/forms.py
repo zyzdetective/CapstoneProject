@@ -41,11 +41,11 @@ class PageForm(forms.Form):
 
 
 class ConnectForm(forms.Form):
-    message = forms.Field(widget=forms.TextInput(), required=False)
+    message = forms.Field(widget=forms.Textarea(), required=False)
 
 
 class MessageForm(forms.Form):
-    message_reply = forms.CharField(widget=forms.Textarea(), required=True)
+    message_reply = forms.Field(widget=forms.Textarea(), required=True)
     your_reply = forms.ChoiceField(choices=(('2', 'Agree'), ('3', 'Disagree')), widget=forms.Select())
 
 # class CharityProfileForm(forms.Form):
