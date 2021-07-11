@@ -24,7 +24,7 @@ class UserCharity(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     username = models.CharField(max_length=200)
     long_name = models.CharField(max_length=200)
-    description = models.CharField(max_length=2048)
+    description = models.TextField(max_length=2048)
     email = models.EmailField(
         blank=True,
         unique=True,
@@ -44,7 +44,7 @@ class UserSponsor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     username = models.CharField(max_length=200)
     long_name = models.CharField(max_length=200)
-    description = models.CharField(max_length=2048)
+    description = models.TextField(max_length=2048)
     email = models.EmailField(
         blank=True,
         unique=True,

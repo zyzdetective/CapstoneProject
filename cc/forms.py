@@ -25,7 +25,8 @@ class EditForm(forms.ModelForm):
     class Meta:
         model = UserCharity
         fields = ['long_name', 'description', 'website']
-
+        widgets = {'description': forms.Textarea(attrs={'class': 'description_css'}),
+                   }
 
 class ItemForm(forms.Form):
     items = forms.MultipleChoiceField(
@@ -37,6 +38,16 @@ class ItemForm(forms.Form):
 
 class PageForm(forms.Form):
     page = forms.IntegerField(widget=forms.NumberInput())
+
+
+class ConnectForm(forms.Form):
+    message = forms.Field(widget=forms.TextInput(), required=False)
+
+
+class MessageForm(forms.Form):
+    message_reply = forms.CharField(widget=forms.Textarea(), required=True)
+    your_reply = forms.ChoiceField(choices=(('1', 'Agree'), ('2', 'Disagree')), widget=forms.Select())
+
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 #     charity_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))

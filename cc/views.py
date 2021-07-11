@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm
+from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -284,34 +284,34 @@ def sponsor_list(request):
                            })
 
 
-@login_required
-def test_connect(request):
-    # fake data
-    connect_slug = 'Wilder'
-    message_request = 'hello'
-    # *** fake data ***
-
-    request_user = request.user
-    Message.objects.create(request_user=request_user,
-                           reply_user=connect_slug,
-                           message_request=message_request)
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
+# @login_required
+# def test_connect(request):
+#     # fake data
+#     connect_slug = 'Wilder'
+#     message_request = 'hello'
+#     # *** fake data ***
+#
+#     request_user = request.user
+#     Message.objects.create(request_user=request_user,
+#                            reply_user=connect_slug,
+#                            message_request=message_request)
+#
+#     return render(request=request,
+#                   template_name="cc/sponsor_list.html")
 
 
 @login_required
 def test_message(request):
     request_user = request.user
-    message_send = Message.objects.filter(request_user=request_user)
-    message_receive_unread = Message.objects.filter(reply_user=request_user, message_type=1)
-    message_receive_read = Message.objects.filter(Q(message_type__gt=1), reply_user=request_user)
+    message_send = list(Message.objects.filter(request_user=request_user).values())
+    message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
+    message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
     print(message_send)
     print(message_receive_unread)
     print(message_receive_read)
-    for ele in message_receive_unread:
-        type_m = ele.message_type
-        print(type_m)
+    # for ele in message_receive_unread:
+    #     type_m = ele.message_type
+    #     print(type_m)
 
     return render(request=request,
                   template_name="cc/sponsor_list.html")
@@ -373,3 +373,194 @@ def test_recommendation(request):
 
     return render(request=request,
                   template_name="cc/sponsor_list.html")
+
+
+@login_required
+def connect(request, connect_slug):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    print(connect_slug)
+    if request.method == 'GET':
+        form = ConnectForm
+    else:
+        form = ConnectForm(request.POST)
+        message_request = form.data.get('message')
+        request_user = request.user
+        Message.objects.create(request_user=request_user,
+                               reply_user=connect_slug,
+                               message_request=message_request)
+        print(request_user)
+        print(connect_slug)
+        print(message_request)
+    return render(request=request,
+                  template_name="cc/connect.html",
+                  context={'form': form,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           }
+                  )
+
+
+# fake data
+# request_user 就是 request.user, 没写进假数据里
+# reply_user 就是name
+# state指当前消息状态，0代表未处理，1代表已同意，2代表已拒绝
+# Message = [{'id': 0, 'state': 0, 'name': 'a', 'message': 'aaaaa', 'slug': 0},
+#            {'id': 1, 'state': 1, 'name': 'b', 'message': 'bbbbb', 'slug': 1},
+#            {'id': 2, 'state': 2, 'name': 'c', 'message': 'ccccc', 'slug': 2},
+#            ]
+
+
+@login_required
+def inbox(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        request_user = request.user
+        message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
+        message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
+        print(message_receive_unread)
+        print(message_receive_read)
+
+    return render(request=request,
+                  template_name="cc/inbox.html",
+                  context={'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message_receive_unread': message_receive_unread,
+                           'message_receive_read': message_receive_read,
+                           }
+                  )
+
+
+@login_required
+def outbox(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        request_user = request.user
+        message_send = list(Message.objects.filter(request_user=request_user).values())
+
+    return render(request=request,
+                  template_name="cc/outbox.html",
+                  context={'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message_send': message_send})
+
+
+@login_required
+def reply_message(request, message_slug):
+    print(f'slug:{message_slug}')
+    # fake data
+    # message_slug = '3'
+    message_reply = 'hello too'
+    reply_type = True
+    # *** fake data ***
+
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        form = MessageForm
+        message = Message[0]
+    else:
+        message = Message[0]
+        form = MessageForm(request.POST)
+        message_reply = form.data.get('message_reply')
+        reply_type = form.data.get('your_reply')
+        message['state'] = int(reply_type)
+        print(message_reply)
+        print(message)
+
+    return render(request=request,
+                  template_name="cc/inbox_message.html",
+                  context={'form': form,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message': message})
+    # message = Message.objects.get(id=message_slug)
+    # request_user = message.request_user
+    # reply_user = message.reply_user
+    # print(request_user, reply_user)
+    # if reply_type:
+    #     message.message_reply = message_reply
+    #     message.message_type = 2
+    #     request_user_type = User.objects.get(username=request_user).user_type
+    #     print(request_user_type)
+    #     if request_user_type == 1:
+    #         Connect.objects.create(charity_user=request_user,
+    #                                sponsor_user=reply_user)
+    #     else:
+    #         Connect.objects.create(charity_user=reply_user,
+    #                                sponsor_user=request_user)
+    # else:
+    #     message.message_reply = message_reply
+    #     message.message_type = 3
+    # message.save()
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
+
+
+@login_required
+def show_message(request, message_slug):
+    print(f'slug:{message_slug}')
+
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    message = {}
+    if request.method == 'GET':
+        message = Message.objects.get(id=message_slug)
+
+    return render(request=request,
+                  template_name="cc/outbox_message.html",
+                  context={'signin_status': signin_status,
+                           'current_user': request.user,
+                           'message': message,
+                           }
+                  )
+
+
+@login_required
+def recommendation(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        form = PageForm
+        user_profile = UserSponsor.objects.all()[:10]
+        print(user_profile)
+        page_nums = 1
+    else:
+        form = PageForm(request.POST)
+        page_nums = int(form.data.get('page'))
+
+        # determine which pages should be displayed
+        if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
+            user_profile = UserSponsor.objects.all()[:10]
+        else:
+            user_profile = UserSponsor.objects.all()[(page_nums - 1) * 10:page_nums * 10]
+
+    user_item = list()
+    for user in user_profile.values('username'):
+        username = user['username']
+        user_item.append(Provide.objects.filter(username_id__exact=username).values())
+    user_profile = zip(user_profile, user_item)
+    return render(request=request,
+                  template_name="cc/recommendation.html",
+                  context={"lists": user_profile,
+                           "form": form,
+                           "pages": int(math.ceil(UserSponsor.objects.count() / 10)),
+                           "page_nums": page_nums,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           })
