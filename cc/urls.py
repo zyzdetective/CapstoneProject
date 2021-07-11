@@ -14,4 +14,5 @@ urlpatterns = [
     path('test_c/', views.test_connect),
     path('test_m/', views.test_message),
     path('test_m_r/', views.test_message_reply),
+    path('test_r', views.test_recommendation),
 ]

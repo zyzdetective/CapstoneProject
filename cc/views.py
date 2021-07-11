@@ -4,6 +4,7 @@ from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Co
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.db.models import Count
 import math
 from django import forms
 
@@ -343,6 +344,32 @@ def test_message_reply(request):
         message.message_reply = message_reply
         message.message_type = 3
     message.save()
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
+
+
+def test_recommendation(request):
+    request_user = request.user
+    user_item = list(Need.objects.filter(username=request_user).values())
+    print(user_item)
+    need_list = []
+    for ele in user_item:
+        need_list.append(ele['need'])
+    print(need_list)
+    if need_list:
+        sponsor_r = list(Provide.objects.values('username').filter(need__in=need_list).annotate(
+            user_count=Count('username')).order_by('-user_count'))
+        print(sponsor_r)
+
+    sponsor_r_list = []
+    for ele in sponsor_r:
+        sponsor_r_list.append(ele['username'])
+    print(sponsor_r_list)
+
+    if sponsor_r_list:
+        sponsor_r_profile = list(UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'website'))
+    print(sponsor_r_profile)
 
     return render(request=request,
                   template_name="cc/sponsor_list.html")
