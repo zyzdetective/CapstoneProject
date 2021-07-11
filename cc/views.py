@@ -186,18 +186,32 @@ def details(request, details_slug):
         if request.method == 'GET':
             username = user.username
             user_type = user.user_type
+            connection_list = []
             if user_type == 1:  # update table Charity and need
                 user_profile = UserCharity.objects.get(username=username)
                 user_item = list(Need.objects.filter(username=username).values())
+                connection_profile = Connect.objects.filter(charity_user=username).values('sponsor_user').annotate(
+            user_count=Count('sponsor_user')).order_by('-user_count')
+                for ele in list(connection_profile):
+                    connection_list.append(ele['sponsor_user'])
+                connection_user = UserSponsor.objects.filter(username__in=connection_list)
             else:  # update table Sponsor and provide
                 user_profile = UserSponsor.objects.get(username=username)
                 user_item = list(Provide.objects.filter(username=username).values())
+                connection_profile = Connect.objects.filter(sponsor_user=username).values('charity_user').annotate(
+            user_count=Count('charity_user')).order_by('-user_count')
+                for ele in list(connection_profile):
+                    connection_list.append(ele['charity_user'])
+                connection_user = UserCharity.objects.filter(username__in=connection_list)
+
+            print(connection_user.values())
             print(username)
         return render(request=request,
                       template_name="cc/details.html",
                       context={"details_found": True,
                                'details_user': user,
                                "details": user_profile,
+                               "connection_user": connection_user, #same as user_profile
                                "item": user_item,
                                'signin_status': signin_status,
                                'current_user': request.user,
@@ -320,7 +334,7 @@ def test_message(request):
 @login_required
 def test_message_reply(request):
     # fake data
-    message_slug = '3'
+    message_slug = '4'
     message_reply = 'hello too'
     reply_type = True
     # *** fake data ***
@@ -333,12 +347,21 @@ def test_message_reply(request):
         message.message_type = 2
         request_user_type = User.objects.get(username=request_user).user_type
         print(request_user_type)
+
         if request_user_type == 1:
             Connect.objects.create(charity_user=request_user,
                                    sponsor_user=reply_user)
+            update_charity = UserCharity.objects.get(username=request_user)
+            update_sponsor = UserSponsor.objects.get(username=reply_user)
         else:
             Connect.objects.create(charity_user=reply_user,
                                    sponsor_user=request_user)
+            update_charity = UserCharity.objects.get(username=reply_user)
+            update_sponsor = UserSponsor.objects.get(username=request_user)
+        update_charity.connection += 1
+        update_sponsor.connection += 1
+        update_charity.save()
+        update_sponsor.save()
     else:
         message.message_reply = message_reply
         message.message_type = 3
