@@ -26,8 +26,10 @@
         {% for ele in item %}
             {{ ele.need }}
         {% endfor %}
-        {% if user_type != details_user.user_type %}
+        {% if signin_status %}
+        {% if current_user.user_type != details_user.user_type %}
         <a href="{% url 'connect' details_user %}" class="blue" type="submit">Connect</a>
+        {% endif %}
         {% endif %}
     </p>
 
@@ -37,3 +39,4 @@
 {% endif %}
     </center>
 {% endblock %}
+

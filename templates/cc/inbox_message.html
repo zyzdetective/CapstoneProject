@@ -8,14 +8,16 @@
 {% block h3 %}{% endblock %}
 {% block body %}
     <center>
-    <form method="POST" class="container">
-            Request User:
-            {{ message.name }}<br/>
-            Message:
-            {{ message.message }}<br/>
+    Request User:
+    {{ message.name }}<br/>
+    Message:
+    {{ message.message }}<br/>
+        {% if message.state == 0 %}
+        <form method="POST" class="container">
             {% csrf_token %}
             {{ form.as_p }}
             <button class="blue" type="submit">Send</button>
         </form>
+    {% endif %}
     </center>
 {% endblock %}

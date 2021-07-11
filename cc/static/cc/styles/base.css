@@ -37,6 +37,11 @@
     display: block;
 }
 
+.wrapper .sidebar ul li user{
+    color: rgba(3, 0, 1, 0.89);
+    display: block;
+}
+
 
 .wrapper .sidebar ul li:hover{
     background: #33416a;

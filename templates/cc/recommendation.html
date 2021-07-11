@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Recommendation{% endblock %}
+{% block h1 %}Recommendation Sponsors{% endblock %}
+{% block h3 %}{% endblock %}
+
+{% block body %}
+    <div >
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 g-5">
+           {% for sponsor,item in lists %}
+        <div class="col" >
+          <div class="card shadow-sm" style="background: burlywood">
+            <div >
+              <p class="card-text">
+               Sponsor Name:
+                  {{ sponsor.long_name }}<br/>
+              We have:
+            {% for ele in item %}
+
+                {{ ele.need }}
+                {% endfor %}
+
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{% url 'details' sponsor.username %}" class="btn" style="color: #3c763d">More Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          {% endfor %}
+
+      </div>
+    </div>
+  </div>
+    <center>
+    <form method="POST" style="margin-top: 50px">
+        {% csrf_token %}
+        {{form.as_p}}
+            <button class="blue" type="submit">Go</button>
+        </form>
+        <p>Page {{ page_nums }} of {{ pages }}</p>
+    </center>
+
+{% endblock %}

@@ -200,7 +200,6 @@ def details(request, details_slug):
                                "item": user_item,
                                'signin_status': signin_status,
                                'current_user': request.user,
-                               'user_type': request.user.user_type,
                                })
 
     except Exception as exc:
@@ -209,7 +208,6 @@ def details(request, details_slug):
                       context={"details_found": False,
                                'signin_status': signin_status,
                                'current_user': request.user,
-                               'user_type': request.user.user_type,
                                })
 
 
@@ -306,18 +304,25 @@ def connect(request, connect_slug):
                   context={'form': form, 'signin_status': signin_status,
                            'current_user': request.user, })
 
+# fake data
+# request_user 就是 request.user, 没写进假数据里
+# reply_user 就是name
+# state指当前消息状态，0代表未处理，1代表已同意，2代表已拒绝
+Message = [{'id':0, 'state': 0, 'name':'a', 'message':'aaaaa', 'slug': 0},
+                   {'id':1, 'state': 1, 'name':'b', 'message':'bbbbb', 'slug': 1},
+                   {'id':2, 'state': 2, 'name':'c', 'message':'ccccc', 'slug': 2},
+                   ]
+
+
 @login_required
 def inbox(request):
-    message = {}
+    message = []
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     if request.method == 'GET':
-        message = [{'id':1, 'state': 0, 'name':'a', 'message':'aaaaa'},
-                   {'id':2, 'state': 1, 'name':'b', 'message':'bbbbb'},
-                   {'id':3, 'state': 2, 'name':'c', 'message':'ccccc'},
-                   ]
+        message = Message
 
     return render(request=request,
                   template_name="cc/inbox.html",
@@ -328,22 +333,21 @@ def inbox(request):
 
 @login_required
 def outbox(request):
-    message = {}
+    message = []
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     if request.method == 'GET':
-        message = [{'id':1, 'state':0, 'name':'a', 'message':'aaaaa'},
-                   {'id':2, 'state':1, 'name':'b', 'message':'bbbbb'},
-                   {'id':3, 'state':2, 'name':'c', 'message':'ccccc'},
-                   ]
+
+            message = Message
 
     return render(request=request,
                   template_name="cc/outbox.html",
                   context={'signin_status': signin_status,
                            'current_user': request.user,
                            'message': message})
+
 
 @login_required
 def inbox_message(request):
@@ -353,14 +357,15 @@ def inbox_message(request):
         signin_status = True
     if request.method == 'GET':
         form = MessageForm
-        message = {'id': 1, 'state': 0, 'name': 'a', 'message': 'aaaaa'}
+        message = Message[0]
     else:
-        message = {'id': 1, 'state': 0, 'name': 'a', 'message': 'aaaaa'}
+        message = Message[0]
         form = MessageForm(request.POST)
-        reply_type = form.data.get('your_reply')
         message_reply = form.data.get('message_reply')
+        reply_type = form.data.get('your_reply')
+        message['state'] = int(reply_type)
         print(message_reply)
-        print(reply_type)
+        print(message)
 
     return render(request=request,
                   template_name="cc/inbox_message.html",
@@ -378,7 +383,7 @@ def outbox_message(request):
         signin_status = True
     message = {}
     if request.method == 'GET':
-        message = {'id': 1, 'state': 0, 'name': 'a', 'message': 'aaaaa'}
+        message = Message[0]
 
     return render(request=request,
                   template_name="cc/outbox_message.html",
@@ -386,24 +391,41 @@ def outbox_message(request):
                            'current_user': request.user,
                            'message': message})
 
-# @login_required
-# def message(request, message_slug):
-#     if request.user.is_anonymous:
-#         signin_status = False
-#     else:
-#         signin_status = True
-#     print(message_slug)
-#     if request.method == 'GET':
-#     else:
-#         request_user = request.user
-#         print(request_user)
-#         print(message_slug)
-#         print(message_request)
-#     return render(request=request,
-#                   template_name="cc/connect.html",
-#                   context={
-#                            'signin_status': signin_status,
-#                            'current_user': request.user, })
+@login_required
+def recommendation(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        form = PageForm
+        user_profile = UserSponsor.objects.all()[:10]
+        print(user_profile)
+        page_nums = 1
+    else:
+        form = PageForm(request.POST)
+        page_nums = int(form.data.get('page'))
+
+        # determine which pages should be displayed
+        if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
+            user_profile = UserSponsor.objects.all()[:10]
+        else:
+            user_profile = UserSponsor.objects.all()[(page_nums - 1) * 10:page_nums * 10]
+
+    user_item = list()
+    for user in user_profile.values('username'):
+        username = user['username']
+        user_item.append(Provide.objects.filter(username_id__exact=username).values())
+    user_profile = zip(user_profile, user_item)
+    return render(request=request,
+                  template_name="cc/recommendation.html",
+                  context={"lists": user_profile,
+                           "form": form,
+                           "pages": int(math.ceil(UserSponsor.objects.count() / 10)),
+                           "page_nums": page_nums,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+                           })
 
 
 # @login_required

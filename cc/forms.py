@@ -25,7 +25,8 @@ class EditForm(forms.ModelForm):
     class Meta:
         model = UserCharity
         fields = ['long_name', 'description', 'website']
-
+        widgets = {'description': forms.Textarea(attrs={'class': 'description_css'}),
+                   }
 
 class ItemForm(forms.Form):
     items = forms.MultipleChoiceField(
@@ -44,7 +45,7 @@ class ConnectForm(forms.Form):
 
 
 class MessageForm(forms.Form):
-    message_reply = forms.CharField(widget=forms.TextInput(), required=True)
+    message_reply = forms.CharField(widget=forms.Textarea(), required=True)
     your_reply = forms.ChoiceField(choices=(('1', 'Agree'), ('2', 'Disagree')), widget=forms.Select())
 
 # class CharityProfileForm(forms.Form):

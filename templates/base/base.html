@@ -12,8 +12,9 @@
 <center>
     <h1>{% block h1 %}Welcome!!{% endblock %}</h1>
     <h3>{% block h3 %}Home{% endblock %}</h3>
-    {{ current_user }}
+
 </center>
+
 <body style="background: url(https://econsultancy.imgix.net/content/uploads/2018/01/05151122/ROW-50-charity.png); background-size: 100%">
 
 
@@ -21,13 +22,13 @@
     <div class="sidebar">
         <h2>Charity Connect</h2>
         <ul>
-
+            <li><user>You are signed as: {{ current_user }}</user></li>
             <li><a href="#">Top 10 Sponsors</a></li>
             <li><a href="{% url 'sponsor_list' %}">Sponsor List</a></li>
             <li><a href="{% url 'charity_list' %}">Charity List</a></li>
             {% if signin_status %}
                 {% if current_user.user_type == 1 %}
-                    <li><a href="#">Recommendation</a></li>
+                    <li><a href="{% url 'recommendation' %}">Recommendation</a></li>
                 {% else %}
                     <li><a href="#">Search</a></li>
                 {% endif %}

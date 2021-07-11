@@ -16,5 +16,6 @@ urlpatterns = [
     path('outbox/', views.outbox, name='outbox'),
     path('inbox_message/', views.inbox_message, name='inbox_message'),
     path('outbox_message/', views.outbox_message, name='outbox_message'),
+    path('recommendation/', views.recommendation, name='recommendation'),
     # path('message_details/<slug:message_slug>', views.message_details, name='connect'),
 ]
