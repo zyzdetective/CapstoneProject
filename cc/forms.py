@@ -46,7 +46,7 @@ class ConnectForm(forms.Form):
 
 class MessageForm(forms.Form):
     message_reply = forms.CharField(widget=forms.Textarea(), required=True)
-    your_reply = forms.ChoiceField(choices=(('1', 'Agree'), ('2', 'Disagree')), widget=forms.Select())
+    your_reply = forms.ChoiceField(choices=(('2', 'Agree'), ('3', 'Disagree')), widget=forms.Select())
 
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))

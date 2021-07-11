@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+
+{% block css %}<link rel="stylesheet" href="{% static 'cc/styles/signin.css' %}">{% endblock %}
+{% block title %}{{ message.id }}{% endblock %}
+{% block h1 %}Details of Message {{message.id}}{% endblock %}
+{% block h3 %}{% endblock %}
+{% block body %}
+    <center>
+    <div class="p1">
+            <form method="post" class="container">
+                {% csrf_token %}
+                Request Message:<br/>
+                {{ message.message_request }}<br/>
+                {{ form.as_p }}
+                <button class="blue" type="submit">Send</button>
+            </form>
+    </div>
+    </center>
+{% endblock %}
