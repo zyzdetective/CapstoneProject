@@ -11,6 +11,7 @@ img{
 .item-card{
   transition:0.5s;
   cursor:pointer;
+  padding-right: -100px;
 }
 .item-card-title{
   font-size:15px;
