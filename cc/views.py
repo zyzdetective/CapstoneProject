@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm
+from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm, RecommendationForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -425,8 +425,8 @@ def test_recommendation(request):
     print(user_item)
 
     return_profile = zip(sponsor_r_profile[:10], user_item)
-    for ele in return_profile:
-        print(ele[0]['long_name'], ele[1][0], ele[1][1])
+    # for ele in return_profile:
+    #     print(ele[0]['long_name'], ele[1][0], ele[1][1])
 
     return render(request=request,
                   template_name="cc/sponsor_list.html")
@@ -581,58 +581,101 @@ def show_message(request, message_slug):
 
 @login_required
 def recommendation(request):
-    request_user = request.user
-    user_item = list(Need.objects.filter(username=request_user).values())
-    print(user_item)
-    need_list = []
-    for ele in user_item:
-        need_list.append(ele['need'])
-    print(need_list)
-    if need_list:
-        sponsor_r = list(Provide.objects.values('username').filter(need__in=need_list).annotate(
-            user_count=Count('username')).order_by('-user_count'))
-        print(sponsor_r)
-
-    sponsor_r_list = []
-    for ele in sponsor_r:
-        sponsor_r_list.append(ele['username'])
-    print(sponsor_r_list)
-
-    if sponsor_r_list:
-        sponsor_r_profile = list(UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'long_name', 'website'))
-    print(sponsor_r_profile)
-    for item in sponsor_r_profile:
-        for i in sponsor_r:
-            if item['username'] == i['username']:
-                item['user_count'] = i['user_count']
-
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user
+    user_item = list(Need.objects.filter(username=request_user).values())
+    need_list = []
+    for ele in user_item:
+        need_list.append(ele['need'])
+    if need_list:
+        sponsor_r = list(Provide.objects.values('username').filter(need__in=need_list).annotate(
+            user_count=Count('username')).order_by('-user_count'))
+    sponsor_r_list = []
+    sponsor_r_dict = {}
+
+    for ele in sponsor_r:
+        sponsor_r_list.append(ele['username'])
+        sponsor_r_dict[ele['username']] = ele['user_count']
+    print(sponsor_r_list)
+    print(sponsor_r_dict)
+    page = 0
     if request.method == 'GET':
-        form = PageForm
-
-        sponsor_r_profile = sponsor_r_profile[:10]
+        # recommendation_level = 0
         page_nums = 1
-    else:
-        form = PageForm(request.POST)
-        page_nums = int(form.data.get('page'))
+        recommendation_form = RecommendationForm
+        page_form = PageForm
 
+        if sponsor_r_list:
+            sponsor_r_profile = list(
+                UserSponsor.objects.filter(Q(connection__gte=0), username__in=sponsor_r_list).values('username',
+                                                                                                        'long_name'))
+        else:
+            sponsor_r_profile = []
+        if len(sponsor_r_profile) / 10 > int(len(sponsor_r_profile) / 10):
+            page = int(len(sponsor_r_profile) / 10) + 1
+        else:
+            page = int(len(sponsor_r_profile) / 10)
+        sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))[:10]
+        print(sponsor_r_profile)
+        user_item = list()
+        for ele in sponsor_r_profile:
+            user_item.append(
+                (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
+
+        return_profile = zip(sponsor_r_profile, user_item)
+    else:
+        recommendation_form = RecommendationForm(request.POST)
+        page_form = PageForm(request.POST)
+        recommendation_level = int(recommendation_form.data.get('recommendation_choice'))
+        page_nums = int(page_form.data.get('page'))
+        print('POST')
+        print(sponsor_r_list)
+        print(sponsor_r_dict)
+        sponsor_r_profile = list()
+        print(sponsor_r_profile)
+        if sponsor_r_list:
+            if recommendation_level == 0:
+                sponsor_r_profile = list(
+                    UserSponsor.objects.filter(Q(connection__gte=0), username__in=sponsor_r_list).values('username',
+                                                                                                         'long_name'))
+            elif recommendation_level == 1:
+                sponsor_r_profile = list(
+                    UserSponsor.objects.filter(Q(connection__gte=1), username__in=sponsor_r_list).values('username',
+                                                                                                         'long_name'))
+            elif recommendation_level == 2:
+                sponsor_r_profile = list(
+                    UserSponsor.objects.filter(Q(connection=0), username__in=sponsor_r_list).values('username',
+                                                                                                    'long_name'))
+        else:
+            sponsor_r_profile = []
+        print(sponsor_r_profile)
+        sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
+        if len(sponsor_r_profile) / 10 > int(len(sponsor_r_profile) / 10):
+            page = int(len(sponsor_r_profile) / 10) + 1
+        else:
+            page = int(len(sponsor_r_profile) / 10)
+        print(len(sponsor_r_profile))
+        user_item = list()
+        for ele in sponsor_r_profile:
+            user_item.append(
+                (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
+        print(len(user_item))
         # determine which pages should be displayed
-        if page_nums > int(math.ceil(len(sponsor_r_profile) / 10)):
+        if page_nums > math.ceil(len(sponsor_r_profile) / 10):
             sponsor_r_profile = sponsor_r_profile[:10]
         else:
             sponsor_r_profile = sponsor_r_profile[(page_nums - 1) * 10:page_nums * 10]
-        for item in sponsor_r_profile:
-            for i in sponsor_r:
-                if item['username'] == i['username']:
-                    item['user_count'] = i['user_count']
+
+    return_profile = zip(sponsor_r_profile, user_item)
     return render(request=request,
                   template_name="cc/recommendation.html",
-                  context={"lists": sponsor_r_profile,
-                           "form": form,
-                           "pages": int(len(sponsor_r_profile) / 10) + 1,
+                  context={"return_profile": return_profile,
+                           "page_form": page_form,
+                           "recommendation_form": recommendation_form,
+                           "pages": page,
                            "page_nums": page_nums,
                            'signin_status': signin_status,
                            'current_user': request.user,

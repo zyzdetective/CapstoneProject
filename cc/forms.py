@@ -37,7 +37,7 @@ class ItemForm(forms.Form):
 
 
 class PageForm(forms.Form):
-    page = forms.IntegerField(widget=forms.NumberInput())
+    page = forms.IntegerField(widget=forms.NumberInput(), initial=1)
 
 
 class ConnectForm(forms.Form):
@@ -47,6 +47,10 @@ class ConnectForm(forms.Form):
 class MessageForm(forms.Form):
     message_reply = forms.Field(widget=forms.Textarea(), required=True)
     your_reply = forms.ChoiceField(choices=(('2', 'Agree'), ('3', 'Disagree')), widget=forms.Select())
+
+
+class RecommendationForm(forms.Form):
+    recommendation_choice = forms.ChoiceField(choices=((0, 'All Sponsors'), (1, 'One connection Sponsors'), (2, 'Zero connection Sponsors')), widget=forms.Select())
 
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
