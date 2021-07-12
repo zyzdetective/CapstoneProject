@@ -191,7 +191,7 @@ def details(request, details_slug):
                 user_profile = UserCharity.objects.get(username=username)
                 user_item = list(Need.objects.filter(username=username).values())
                 connection_profile = Connect.objects.filter(charity_user=username).values('sponsor_user').annotate(
-            user_count=Count('sponsor_user')).order_by('-user_count')
+                    user_count=Count('sponsor_user')).order_by('-user_count')
                 for ele in list(connection_profile):
                     connection_list.append(ele['sponsor_user'])
                 connection_user = UserSponsor.objects.filter(username__in=connection_list)
@@ -199,7 +199,7 @@ def details(request, details_slug):
                 user_profile = UserSponsor.objects.get(username=username)
                 user_item = list(Provide.objects.filter(username=username).values())
                 connection_profile = Connect.objects.filter(sponsor_user=username).values('charity_user').annotate(
-            user_count=Count('charity_user')).order_by('-user_count')
+                    user_count=Count('charity_user')).order_by('-user_count')
                 for ele in list(connection_profile):
                     connection_list.append(ele['charity_user'])
                 connection_user = UserCharity.objects.filter(username__in=connection_list)
@@ -211,7 +211,7 @@ def details(request, details_slug):
                       context={"details_found": True,
                                'details_user': user,
                                "details": user_profile,
-                               "connection_user": connection_user, #same as user_profile
+                               "connection_user": connection_user,  # same as user_profile
                                "item": user_item,
                                'signin_status': signin_status,
                                'current_user': request.user,
@@ -276,7 +276,7 @@ def sponsor_list(request):
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
+        if page_nums > int(math.ceil(UserSponsor.objects.count() / 10)):
             user_profile = UserSponsor.objects.all()[:10]
         else:
             user_profile = UserSponsor.objects.all()[(page_nums - 1) * 10:page_nums * 10]
@@ -298,20 +298,20 @@ def sponsor_list(request):
                            })
 
 
-# @login_required
-# def test_connect(request):
-#     # fake data
-#     connect_slug = 'Wilder'
-#     message_request = 'hello'
-#     # *** fake data ***
-#
-#     request_user = request.user
-#     Message.objects.create(request_user=request_user,
-#                            reply_user=connect_slug,
-#                            message_request=message_request)
-#
-#     return render(request=request,
-#                   template_name="cc/sponsor_list.html")
+@login_required
+def test_connect(request):
+    # fake data
+    connect_slug = 'Wilder'
+    message_request = 'hello'
+    # *** fake data ***
+
+    request_user = request.user
+    Message.objects.create(request_user=request_user,
+                           reply_user=connect_slug,
+                           message_request=message_request)
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
 
 
 @login_required
@@ -406,6 +406,7 @@ def connect(request, connect_slug):
     print(connect_slug)
     if request.method == 'GET':
         form = ConnectForm
+        print('aa')
     else:
         form = ConnectForm(request.POST)
         message_request = form.data.get('message')
@@ -421,6 +422,7 @@ def connect(request, connect_slug):
                   context={'form': form,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'connect_slug': connect_slug,
                            }
                   )
 
@@ -437,7 +439,6 @@ def inbox(request):
         message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
         print(message_receive_unread)
         print(message_receive_read)
-
 
     return render(request=request,
                   template_name="cc/inbox.html",
@@ -464,7 +465,7 @@ def outbox(request):
                   template_name="cc/outbox.html",
                   context={'signin_status': signin_status,
                            'current_user': request.user,
-                            'message_receive_unread': message_receive_unread,
+                           'message_receive_unread': message_receive_unread,
                            'message_receive_read': message_receive_read,
                            }
                   )
@@ -478,7 +479,8 @@ def reply_message(request, message_slug):
     else:
         signin_status = True
     message = Message.objects.get(id=message_slug)
-
+    request_user = message.request_user
+    reply_user = message.reply_user
     if request.method == 'GET':
         form = MessageForm
     else:
@@ -487,9 +489,30 @@ def reply_message(request, message_slug):
         reply_type = form.data.get('your_reply')
         # print(message_reply)
         # print(reply_type)
+        request_user_type = User.objects.get(username=request_user).user_type
+        print(request_user_type)
+        if int(reply_type) == 2:
+            if request_user_type == 1:
+                Connect.objects.create(charity_user=request_user,
+                                       sponsor_user=reply_user)
+                update_charity = UserCharity.objects.get(username=request_user)
+                update_sponsor = UserSponsor.objects.get(username=reply_user)
+            else:
+                Connect.objects.create(charity_user=reply_user,
+                                       sponsor_user=request_user)
+                update_charity = UserCharity.objects.get(username=reply_user)
+                update_sponsor = UserSponsor.objects.get(username=request_user)
+            update_charity.connection += 1
+            update_sponsor.connection += 1
+            update_charity.save()
+            update_sponsor.save()
+        if int(reply_type) == 3:
+            print('failed')
         message.message_reply = message_reply
         message.message_type = int(reply_type)
         message.save()
+
+
     return render(request=request,
                   template_name="cc/reply_message.html",
                   context={'signin_status': signin_status,
@@ -523,35 +546,58 @@ def show_message(request, message_slug):
 
 @login_required
 def recommendation(request):
+    request_user = request.user
+    user_item = list(Need.objects.filter(username=request_user).values())
+    print(user_item)
+    need_list = []
+    for ele in user_item:
+        need_list.append(ele['need'])
+    print(need_list)
+    if need_list:
+        sponsor_r = list(Provide.objects.values('username').filter(need__in=need_list).annotate(
+            user_count=Count('username')).order_by('-user_count'))
+        print(sponsor_r)
+
+    sponsor_r_list = []
+    for ele in sponsor_r:
+        sponsor_r_list.append(ele['username'])
+    print(sponsor_r_list)
+
+    if sponsor_r_list:
+        sponsor_r_profile = list(UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'long_name', 'website'))
+    print(sponsor_r_profile)
+    for item in sponsor_r_profile:
+        for i in sponsor_r:
+            if item['username'] == i['username']:
+                item['user_count'] = i['user_count']
+
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     if request.method == 'GET':
         form = PageForm
-        user_profile = UserSponsor.objects.all()[:10]
-        print(user_profile)
+
+        sponsor_r_profile = sponsor_r_profile[:10]
         page_nums = 1
     else:
         form = PageForm(request.POST)
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
-            user_profile = UserSponsor.objects.all()[:10]
+        if page_nums > int(math.ceil(len(sponsor_r_profile) / 10)):
+            sponsor_r_profile = sponsor_r_profile[:10]
         else:
-            user_profile = UserSponsor.objects.all()[(page_nums - 1) * 10:page_nums * 10]
-
-    user_item = list()
-    for user in user_profile.values('username'):
-        username = user['username']
-        user_item.append(Provide.objects.filter(username_id__exact=username).values())
-    user_profile = zip(user_profile, user_item)
+            sponsor_r_profile = sponsor_r_profile[(page_nums - 1) * 10:page_nums * 10]
+        for item in sponsor_r_profile:
+            for i in sponsor_r:
+                if item['username'] == i['username']:
+                    item['user_count'] = i['user_count']
     return render(request=request,
                   template_name="cc/recommendation.html",
-                  context={"lists": user_profile,
+                  context={"lists": sponsor_r_profile,
                            "form": form,
-                           "pages": int(math.ceil(UserSponsor.objects.count() / 10)),
+                           "pages": int(len(sponsor_r_profile) / 10) + 1,
                            "page_nums": page_nums,
                            'signin_status': signin_status,
                            'current_user': request.user,

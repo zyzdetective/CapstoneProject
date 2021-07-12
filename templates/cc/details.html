@@ -28,11 +28,18 @@
         {% endfor %}
         {% if signin_status %}
         {% if current_user.user_type != details_user.user_type %}
-        <a href="{% url 'connect' details_user %}" class="blue" type="submit">Connect</a>
+        <a href="{% url 'connect' details_user %}" class="blue" type="submit">Connect</a><br/>
         {% endif %}
         {% endif %}
+        </p>
+    <p class="p1">
+        Connected Sponsors:<br/>
+        {% for ele in connection_user %}
+        Sponsor name: {{ ele.long_name }}<br/>
+        Website:{{ ele.website }}<br/>
+          <a href="{% url 'details' ele.long_name %}" class="blu" style="color: #d21254">More Details</a><br/>
+        {% endfor %}
     </p>
-
     </body>
 {% else %}
     <p>No details found for this user, sorry!</p>
