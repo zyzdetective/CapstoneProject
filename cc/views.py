@@ -191,7 +191,7 @@ def details(request, details_slug):
                 user_profile = UserCharity.objects.get(username=username)
                 user_item = list(Need.objects.filter(username=username).values())
                 connection_profile = Connect.objects.filter(charity_user=username).values('sponsor_user').annotate(
-            user_count=Count('sponsor_user')).order_by('-user_count')
+                    user_count=Count('sponsor_user')).order_by('-user_count')
                 for ele in list(connection_profile):
                     connection_list.append(ele['sponsor_user'])
                 connection_user = UserSponsor.objects.filter(username__in=connection_list)
@@ -199,7 +199,7 @@ def details(request, details_slug):
                 user_profile = UserSponsor.objects.get(username=username)
                 user_item = list(Provide.objects.filter(username=username).values())
                 connection_profile = Connect.objects.filter(sponsor_user=username).values('charity_user').annotate(
-            user_count=Count('charity_user')).order_by('-user_count')
+                    user_count=Count('charity_user')).order_by('-user_count')
                 for ele in list(connection_profile):
                     connection_list.append(ele['charity_user'])
                 connection_user = UserCharity.objects.filter(username__in=connection_list)
@@ -211,7 +211,7 @@ def details(request, details_slug):
                       context={"details_found": True,
                                'details_user': user,
                                "details": user_profile,
-                               "connection_user": connection_user, #same as user_profile
+                               "connection_user": connection_user,  # same as user_profile
                                "item": user_item,
                                'signin_status': signin_status,
                                'current_user': request.user,
@@ -371,6 +371,7 @@ def test_message_reply(request):
                   template_name="cc/sponsor_list.html")
 
 
+@login_required
 def test_recommendation(request):
     request_user = request.user
     user_item = list(Need.objects.filter(username=request_user).values())
@@ -390,9 +391,10 @@ def test_recommendation(request):
     print(sponsor_r_list)
 
     if sponsor_r_list:
-        sponsor_r_profile = list(UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'website'))
+        sponsor_r_profile = list(
+            UserSponsor.objects.filter(Q(connection__gte=0), username__in=sponsor_r_list).values('username', 'website'))
 
-    sponsor_r_profile = sorted(sponsor_r_profile,key = lambda x:sponsor_r_list.index(x['username']))
+    sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
     print(sponsor_r_profile)
 
     return render(request=request,
@@ -440,7 +442,6 @@ def inbox(request):
         print(message_receive_unread)
         print(message_receive_read)
 
-
     return render(request=request,
                   template_name="cc/inbox.html",
                   context={'signin_status': signin_status,
@@ -466,7 +467,7 @@ def outbox(request):
                   template_name="cc/outbox.html",
                   context={'signin_status': signin_status,
                            'current_user': request.user,
-                            'message_receive_unread': message_receive_unread,
+                           'message_receive_unread': message_receive_unread,
                            'message_receive_read': message_receive_read,
                            }
                   )
