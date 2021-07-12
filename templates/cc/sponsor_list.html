@@ -3,10 +3,14 @@
 {% block title %}Sponsor List{% endblock %}
 {% block h1 %}Sponsor List{% endblock %}
 {% block h3 %}{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'cc/styles/lists.css' %}">
+{#    <link href="//cdn.shopify.com/s/files/1/0379/2689/5754/t/8/assets/theme.scss.css?enable_css_minification=1&amp;v=15910824069508349433" rel="stylesheet" type="text/css" media="all" />#}
+{% endblock %}
 
 {% block body %}
-    <div >
-    <div class="container">
+    <div>
+    {% comment %}<div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 g-5">
            {% for sponsor,item in lists %}
@@ -34,8 +38,32 @@
           {% endfor %}
 
       </div>
+    </div>{% endcomment %}
+    <div class="container">
+            <!--   <div class="card card-block mb-2">
+                <h4 class="card-title">Card 1</h4>
+                <p class="card-text">Welcom to bootstrap card styles</p>
+                <a href="#" class="btn btn-primary">Submit</a>
+              </div>   -->
+            <div class="row">
+                <div class="row row-cols-1 row-cols-sm-2 g-5 slide-up-animation animated">
+                    {% for sponsor,item in lists %}
+                        <div class="card item-card card-block">
+                            <h4 class="card-title text-right"><i class="material-icons">{{ sponsor.long_name }}</i></h4>
+{% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
+                                 alt="Photo of sunset">{% endcomment %}
+                            Needs:
+                            {% for ele in item %}
+                                <p class="card-text">{{ ele.need }}</p>
+                            {% endfor %}
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
     <center>
     <form method="POST" style="margin-top: 50px">
         {% csrf_token %}

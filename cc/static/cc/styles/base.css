@@ -15,40 +15,55 @@
     position: fixed;
     width: 200px;
     height: 80%;
-    background: #33416a;
+    background: whitesmoke;
     padding: 30px 0;
+    border-radius: 15px;
+    margin-left: 10px;
 }
 
 .wrapper .sidebar h2{
-    color: coral;
+    color: black;
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 30px;
+    font-family: "American Typewriter";
 }
 
 .wrapper .sidebar ul li{
     padding: 15px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    border-top: 1px solid rgba(225,225,225,0.05);
+/*    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(225,225,225,0.05);*/
 }
 
 .wrapper .sidebar ul li a{
-    color: #aaa204;
-    display: block;
+    display: inline-block;
+    text-decoration: black;
+    color: black;
+    font-weight: 500;
+    transition: 0.5s;
+    margin-left: -10px;
+    font-family: "American Typewriter";
 }
 
 .wrapper .sidebar ul li user{
-    color: rgba(3, 0, 1, 0.89);
+    color: #8a6d3b;
     display: block;
+    font-family: "Apple Chancery";
+    margin-left: -10px;
 }
 
 
-.wrapper .sidebar ul li:hover{
+/*.wrapper .sidebar ul li:hover{
     background: #33416a;
-}
+}*/
 
 .wrapper .sidebar ul li:hover a{
-    color: cadetblue;
+    color: #8a6d3b;
+}
+
+.wrapper .sidebar ul li p {
+    color: #993934;
+    font-family: "American Typewriter";
 }
 
 .wrapper .action{
@@ -89,16 +104,18 @@
     top: 40px;
     right: -10px;
     padding: 10px 20px;
-    background: #33416a;
+    background: whitesmoke;
     width: 170px;
     box-sizing: content-box;
     border-radius: 15px;
+    margin-top: 30px;
+    margin-right: -10px;
 }
 
 .wrapper .action .menu ul li{
     list-style: none;
     padding: 10px 0;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    /*border-top: 1px solid rgba(0,0,0,0.05);*/
     direction: initial;
     align-items: center;
     justify-content: center;
@@ -106,14 +123,15 @@
 
 .wrapper .action .menu ul li a{
     display: inline-block;
-    text-decoration: #aaa204;
-    color: #aaa204;
+    text-decoration: black;
+    color: black;
     font-weight: 500;
     transition: 0.5s;
+    font-family: "American Typewriter";
 }
 
 .wrapper .action .menu ul li a:hover{
-    color: chocolate;
+    color: #8a6d3b;
 }
 
 /* Blue button as seen on translate.google.com*/
@@ -132,4 +150,17 @@ button.blue:hover {
 
 button.blue:active {
     box-shadow: inset 0 2px 5px #2370FE;
+}
+
+body {
+    background: url("https://cutewallpaper.org/21/grey-aesthetic-wallpapers/Light-Grey-Background-Wallpaper-63-images-.jpg");
+    background-size: 100%;
+}
+
+h1 {
+    font-family: "Apple Chancery";
+}
+
+h3 {
+    font-family: "American Typewriter";
 }

@@ -15,14 +15,14 @@
 
 </center>
 
-<body style="background: url(https://econsultancy.imgix.net/content/uploads/2018/01/05151122/ROW-50-charity.png); background-size: 100%">
+<body>
 
 
 <div class="wrapper">
     <div class="sidebar">
         <h2>Charity Connect</h2>
         <ul>
-            <li><user>You are signed as: {{ current_user }}</user></li>
+            <li><user>You are signed as: <p>{{ current_user }}</p></user></li>
             <li><a href="#">Top 10 Sponsors</a></li>
             <li><a href="{% url 'sponsor_list' %}">Sponsor List</a></li>
             <li><a href="{% url 'charity_list' %}">Charity List</a></li>
