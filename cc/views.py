@@ -371,7 +371,12 @@ def test_message_reply(request):
                   template_name="cc/sponsor_list.html")
 
 
+@login_required
 def test_recommendation(request):
+    # fake data
+    recommendation_level = 1  # 0:all 1:only 1 or more connect 2:only no connection
+    # *** fake data ***
+
     request_user = request.user
     user_item = list(Need.objects.filter(username=request_user).values())
     print(user_item)
@@ -385,13 +390,43 @@ def test_recommendation(request):
         print(sponsor_r)
 
     sponsor_r_list = []
+    sponsor_r_dict = {}
     for ele in sponsor_r:
         sponsor_r_list.append(ele['username'])
+        sponsor_r_dict[ele['username']] = ele['user_count']
     print(sponsor_r_list)
+    print(sponsor_r_dict)
 
     if sponsor_r_list:
-        sponsor_r_profile = list(UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'website'))
+        if recommendation_level == 0:
+            sponsor_r_profile = list(
+                UserSponsor.objects.filter(Q(connection__gte=0), username__in=sponsor_r_list).values('username',
+                                                                                                     'long_name'))
+        elif recommendation_level == 1:
+            sponsor_r_profile = list(
+                UserSponsor.objects.filter(Q(connection__gte=1), username__in=sponsor_r_list).values('username',
+                                                                                                     'long_name'))
+        elif recommendation_level == 2:
+            sponsor_r_profile = list(
+                UserSponsor.objects.filter(Q(connection=0), username__in=sponsor_r_list).values('username',
+                                                                                                'long_name'))
+    else:
+        sponsor_r_profile = []
+
+
+    sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
     print(sponsor_r_profile)
+
+    user_item = list()
+    for ele in sponsor_r_profile[:10]:
+        user_item.append(
+            (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
+
+    print(user_item)
+
+    return_profile = zip(sponsor_r_profile[:10], user_item)
+    for ele in return_profile:
+        print(ele[0]['long_name'], ele[1][0], ele[1][1])
 
     return render(request=request,
                   template_name="cc/sponsor_list.html")
