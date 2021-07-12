@@ -391,6 +391,8 @@ def test_recommendation(request):
 
     if sponsor_r_list:
         sponsor_r_profile = list(UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'website'))
+
+    sponsor_r_profile = sorted(sponsor_r_profile,key = lambda x:sponsor_r_list.index(x['username']))
     print(sponsor_r_profile)
 
     return render(request=request,
