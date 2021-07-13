@@ -3,11 +3,19 @@
 <title>{% block title %}Inbox{% endblock %}</title>
 <h1>{% block h1 %}Inbox{% endblock %}</h1>
 <h3>{% block h3 %}{% endblock %}</h3>
+{% block css %}
+    <link rel="stylesheet" href="{% static 'cc/Bootstrap5/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'cc/styles/inbox.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+{#    <link href="//cdn.shopify.com/s/files/1/0379/2689/5754/t/8/assets/theme.scss.css?enable_css_minification=1&amp;v=15910824069508349433" rel="stylesheet" type="text/css" media="all" />#}
+{% endblock %}
+
 {% block body %}
+
 <body>
 
-<h2>Unsolved Request</h2>
-<div>
+{% comment %}<h2>Unsolved Request</h2>
+<div>{% endcomment %}
    {% comment %} <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 g-3">
             {% for item in message_receive_unread %}
@@ -34,40 +42,90 @@
             {% endfor %}
         </div>
     </div>{% endcomment %}
+    <!--main-->
+<div class="container bootdey">
+<div class="email-app mb-4">
+    <nav>
+        <a href="page-inbox-compose.html" class="btn btn-danger btn-block">New Email</a>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fa fa-inbox"></i> Unread <span class="badge badge-danger">4</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fa fa-star"></i> Read</a>
+            </li>
+        </ul>
+    </nav>
+    <main class="inbox">
 
-    <div class="container">
-            <!--   <div class="card card-block mb-2">
-                <h4 class="card-title">Card 1</h4>
-                <p class="card-text">Welcom to bootstrap card styles</p>
-                <a href="#" class="btn btn-primary">Submit</a>
-              </div>   -->
-            <div class="row">
-                <div class="row row-cols-1 row-cols-sm-2 g-3 slide-up-animation animated">
-                    {% for item in message_receive_unread %}
-                        <div class="card item-card card-block">
-                            <h4 class="card-title text-right"><i class="material-icons">Message ID: {{ item.id }}</i></h4>
-{% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
-                                 alt="Photo of sunset">{% endcomment %}
-                            <p style="size: A4; font-family: 'American Typewriter'">Message To:</p>
-                            <p style="font-family: 'Apple Chancery'">{{ item.reply_user }}</p>
+        <ul class="messages">
+            {% for item in message_receive_read %}
+            <li class="message unread">
+                <a href="{% url 'reply_message' item.id %}">
+                    <div class="actions">
+                        <span class="action"><i class="fa fa-square-o"></i></span>
+                        <span class="action"><i class="fa fa-star-o"></i></span>
+                    </div>
+                    <div class="header">
+                        <span class="from">Message id:</span>
+                        <span class="fa fa-paper-clip">{{ item.id }}</span>
+                    </div>
+                </a>
+                    <div class="title">
+                        Message to:
+                    </div>
+                    <div class="description">
+                        {{ item.reply_user }}
+                    </div>
+            </li>
+            {% endfor %}
 
+            <li class="message">
+                <a href="#">
+                    <div class="actions">
+                        <span class="action"><i class="fa fa-square-o"></i></span>
+                        <span class="action"><i class="fa fa-star-o"></i></span>
+                    </div>
+                    <div class="header">
+                        <span class="from">Lukasz Holeczek</span>
+                        <span class="date">
+                        <span class="fa fa-paper-clip"></span> Today, 3:47 PM</span>
+                    </div>
+                    <div class="title">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </div>
+                    <div class="description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </div>
+                </a>
+            </li>
+            {% comment %}<li class="message">
+                <a href="#">
+                    <div class="actions">
+                        <span class="action"><i class="fa fa-square-o"></i></span>
+                        <span class="action"><i class="fa fa-star-o"></i></span>
+                    </div>
+                    <div class="header">
+                        <span class="from">Lukasz Holeczek</span>
+                        <span class="date">Today, 3:47 PM</span>
+                    </div>
+                    <div class="title">
+                        Lorem ipsum dolor sit amet.
+                    </div>
+                    <div class="description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </div>
+                </a>
+            </li>
 
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="{% url 'reply_message' item.id %}" class="btn" style="color: blue" >More
-                                        Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    {% endfor %}
-                </div>
-            </div>
-
-        </div>
+        </ul>
+    </main>
+</div>
 </div>
 
+{#</div>#}
+
+{% comment %}
 <h2>Solved Request</h2>
 <div>
     <div class="container">
@@ -104,6 +162,7 @@
         </div>
     </div>
 </div>
+{% endcomment %}
 
 </body>
 {% endblock %}
