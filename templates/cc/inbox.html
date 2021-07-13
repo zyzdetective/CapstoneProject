@@ -8,7 +8,7 @@
 
 <h2>Unsolved Request</h2>
 <div>
-    <div class="container">
+   {% comment %} <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 g-3">
             {% for item in message_receive_unread %}
                 <div class="col">
@@ -33,7 +33,39 @@
             </div>
             {% endfor %}
         </div>
-    </div>
+    </div>{% endcomment %}
+
+    <div class="container" style="margin-top: -150px">
+            <!--   <div class="card card-block mb-2">
+                <h4 class="card-title">Card 1</h4>
+                <p class="card-text">Welcom to bootstrap card styles</p>
+                <a href="#" class="btn btn-primary">Submit</a>
+              </div>   -->
+            <div class="row">
+                <div class="row row-cols-1 row-cols-sm-2 g-3 slide-up-animation animated">
+                    {% for item in message_receive_unread %}
+                        <div class="card item-card card-block">
+                            <h4 class="card-title text-right"><i class="material-icons">Message ID: {{ item.id }}</i></h4>
+{% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
+                                 alt="Photo of sunset">{% endcomment %}
+                            <p style="size: A4; font-family: 'American Typewriter'">Message To:</p>
+                            <p style="font-family: 'Apple Chancery'">{{ item.reply_user }}</p>
+
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{% url 'reply_message' item.id %}" class="btn" style="color: blue" >More
+                                        Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
 </div>
 
 <h2>Solved Request</h2>
