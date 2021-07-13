@@ -233,17 +233,17 @@ def charity_list(request):
         signin_status = True
     if request.method == 'GET':
         form = PageForm
-        user_profile = UserCharity.objects.all()[:10]
+        user_profile = UserCharity.objects.all()[:9]
         page_nums = 1
     else:
         form = PageForm(request.POST)
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if page_nums > int(math.ceil(UserCharity.objects.count() / 10)):
-            user_profile = UserCharity.objects.all()[:10]
+        if page_nums > int(math.ceil(UserCharity.objects.count() / 9)):
+            user_profile = UserCharity.objects.all()[:9]
         else:
-            user_profile = UserCharity.objects.all()[(page_nums - 1) * 10:page_nums * 10]
+            user_profile = UserCharity.objects.all()[(page_nums - 1) * 9:page_nums * 9]
 
     user_item = list()
     for user in user_profile.values('username'):
@@ -254,7 +254,7 @@ def charity_list(request):
                   template_name="cc/charity_list.html",
                   context={"lists": user_profile,
                            "form": form,
-                           "pages": int(math.ceil(UserCharity.objects.count() / 10)),
+                           "pages": int(math.ceil(UserCharity.objects.count() / 9)),
                            "page_nums": page_nums,
                            'signin_status': signin_status,
                            'current_user': request.user,
@@ -269,17 +269,17 @@ def sponsor_list(request):
         signin_status = True
     if request.method == 'GET':
         form = PageForm
-        user_profile = UserSponsor.objects.all()[:10]
+        user_profile = UserSponsor.objects.all()[:9]
         page_nums = 1
     else:
         form = PageForm(request.POST)
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if page_nums > int(math.ceil(UserSponsor.objects.count() / 10)):
-            user_profile = UserSponsor.objects.all()[:10]
+        if page_nums > int(math.ceil(UserSponsor.objects.count() / 9)):
+            user_profile = UserSponsor.objects.all()[:9]
         else:
-            user_profile = UserSponsor.objects.all()[(page_nums - 1) * 10:page_nums * 10]
+            user_profile = UserSponsor.objects.all()[(page_nums - 1) * 9:page_nums * 9]
 
     user_item = list()
     for user in user_profile.values('username'):
@@ -291,7 +291,7 @@ def sponsor_list(request):
                   template_name="cc/sponsor_list.html",
                   context={"lists": user_profile,
                            "form": form,
-                           "pages": int(math.ceil(UserSponsor.objects.count() / 10)),
+                           "pages": int(math.ceil(UserSponsor.objects.count() / 9)),
                            "page_nums": page_nums,
                            'signin_status': signin_status,
                            'current_user': request.user,
@@ -464,6 +464,8 @@ def connect(request, connect_slug):
 
 @login_required
 def inbox(request):
+    message_receive_unread = []
+    message_receive_read = []
     if request.user.is_anonymous:
         signin_status = False
     else:
@@ -487,6 +489,8 @@ def inbox(request):
 
 @login_required
 def outbox(request):
+    message_receive_unread = []
+    message_receive_read = []
     if request.user.is_anonymous:
         signin_status = False
     else:
@@ -614,11 +618,11 @@ def recommendation(request):
                                                                                                         'long_name'))
         else:
             sponsor_r_profile = []
-        if len(sponsor_r_profile) / 10 > int(len(sponsor_r_profile) / 10):
-            page = int(len(sponsor_r_profile) / 10) + 1
+        if len(sponsor_r_profile) / 9 > int(len(sponsor_r_profile) / 9):
+            page = int(len(sponsor_r_profile) / 9) + 1
         else:
-            page = int(len(sponsor_r_profile) / 10)
-        sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))[:10]
+            page = int(len(sponsor_r_profile) / 9)
+        sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))[:9]
         print(sponsor_r_profile)
         user_item = list()
         for ele in sponsor_r_profile:
@@ -653,10 +657,10 @@ def recommendation(request):
             sponsor_r_profile = []
         print(sponsor_r_profile)
         sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
-        if len(sponsor_r_profile) / 10 > int(len(sponsor_r_profile) / 10):
-            page = int(len(sponsor_r_profile) / 10) + 1
+        if len(sponsor_r_profile) / 9 > int(len(sponsor_r_profile) / 9):
+            page = int(len(sponsor_r_profile) / 9) + 1
         else:
-            page = int(len(sponsor_r_profile) / 10)
+            page = int(len(sponsor_r_profile) / 9)
         print(len(sponsor_r_profile))
         user_item = list()
         for ele in sponsor_r_profile:
@@ -664,10 +668,10 @@ def recommendation(request):
                 (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
         print(len(user_item))
         # determine which pages should be displayed
-        if page_nums > math.ceil(len(sponsor_r_profile) / 10):
-            sponsor_r_profile = sponsor_r_profile[:10]
+        if page_nums > math.ceil(len(sponsor_r_profile) / 9):
+            sponsor_r_profile = sponsor_r_profile[:9]
         else:
-            sponsor_r_profile = sponsor_r_profile[(page_nums - 1) * 10:page_nums * 10]
+            sponsor_r_profile = sponsor_r_profile[(page_nums - 1) * 9:page_nums * 9]
 
     return_profile = zip(sponsor_r_profile, user_item)
     return render(request=request,

@@ -19,7 +19,7 @@
             {% elif message.message_type == 3 %}
                 {{ message.message_reply }}<br/>
             {% endif %}
-            <button class="blue" type="submit">OK</button>
+            <input type="button" class="blue" name="OK" onclick="javascript:history.back(-1);" value="OK">
     </div>
     </center>
 {% endblock %}

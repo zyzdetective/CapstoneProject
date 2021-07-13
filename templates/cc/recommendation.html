@@ -9,10 +9,7 @@
     <form method="POST" >
         {% csrf_token %}
         {{recommendation_form.as_p}}
-        {{page_form.as_p}}
-    <p>Page {{ page_nums }} of {{ pages }}</p>
-            <button class="blue" type="submit">Go</button>
-        </form>
+
     </center>
     <div >
     <div class="container">
@@ -45,13 +42,18 @@
       </div>
     </div>
   </div>
-{#    <center>#}
+    <p></p>
+    <center>
 {#    <form method="POST" style="margin-top: 50px">#}
 {#        {% csrf_token %}#}
 {#        {{page_form.as_p}}#}
 {#            <button class="blue" type="submit">Go</button>#}
 {#        </form>#}
 {#        <p>Page {{ page_nums }} of {{ pages }}</p>#}
-{#    </center>#}
 
+{{page_form.as_p}}
+    <p>Page {{ page_nums }} of {{ pages }}</p>
+            <button class="blue" type="submit">Go</button>
+        </form>
+        </center>
 {% endblock %}

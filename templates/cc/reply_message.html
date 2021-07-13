@@ -14,7 +14,9 @@
                 Request Message:<br/>
                 {{ message.message_request }}<br/>
                 {{ form.as_p }}
-                <button class="blue" type="submit">Send</button>
+                <a href="{% url 'inbox' %}">
+                    <button class="blue" type="submit">Send</button>
+                </a>
             </form>
     </div>
     </center>
