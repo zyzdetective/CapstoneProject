@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Top 10 Sponsors{% endblock %}
+{% block h1 %}Top 10 Sponsors{% endblock %}
+{% block h3 %}{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'cc/styles/lists.css' %}" xmlns="http://www.w3.org/1999/html">
+{#    <link href="//cdn.shopify.com/s/files/1/0379/2689/5754/t/8/assets/theme.scss.css?enable_css_minification=1&amp;v=15910824069508349433" rel="stylesheet" type="text/css" media="all" />#}
+{% endblock %}
+
+{% block body %}
+    <div>
+    {% comment %}<div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 g-5">
+           {% for sponsor,item in lists %}
+        <div class="col" >
+          <div class="card shadow-sm" style="background: burlywood">
+            <div >
+              <p class="card-text">
+               Sponsor Name:
+                  {{ sponsor.long_name }}<br/>
+              We have:
+            {% for ele in item %}
+
+                {{ ele.need }}
+                {% endfor %}
+
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{% url 'details' sponsor.username %}" class="btn" style="color: #3c763d">More Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          {% endfor %}
+
+      </div>
+    </div>{% endcomment %}
+    <div class="container" style="margin-top: -150px; margin-right: 150px">
+            <!--   <div class="card card-block mb-2">
+                <h4 class="card-title">Card 1</h4>
+                <p class="card-text">Welcom to bootstrap card styles</p>
+                <a href="#" class="btn btn-primary">Submit</a>
+              </div>   -->
+            <div class="row">
+                <div class="row row-cols-1 row-cols-sm-2 g-5">
+                    {% for sponsor,item in lists %}
+                        <div class="card item-card card-block" style="max-width: 20rem; margin-right: 1.5rem">
+                            <h4 class="card-title text-right"><i class="material-icons">{{ sponsor.long_name }}</i></h4>
+{% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
+                                 alt="Photo of sunset">{% endcomment %}
+                            <p style="size: A4; font-family: 'American Typewriter'">Successful Connection:</p>
+                                <p style="font-family: 'Apple Chancery'">{{ sponsor.connection }} times</p>
+                            <p style="size: A4; font-family: 'American Typewriter'">We have:</p>
+                            {% for ele in item.1 %}
+                                <p style="font-family: 'Apple Chancery'">{{ ele.need }}</p>
+                            {% endfor %}
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{% url 'details' sponsor.username %}" class="blue">More
+                                        Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

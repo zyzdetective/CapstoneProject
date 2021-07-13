@@ -17,6 +17,7 @@ urlpatterns = [
     path('reply/<slug:message_slug>', views.reply_message, name='reply_message'),
     path('message/<slug:message_slug>', views.show_message, name='show_message'),
     path('recommendation/', views.recommendation, name='recommendation'),
+    path('top_sponsors/', views.top, name='top_sponsors'),
     # path('message_details/<slug:message_slug>', views.message_details, name='connect'),
     # path('test_c/', views.test_connect),
     path('test_m/', views.test_message),

@@ -684,3 +684,32 @@ def recommendation(request):
                            'signin_status': signin_status,
                            'current_user': request.user,
                            })
+
+
+
+def top(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    if request.method == 'GET':
+        sponsor_t_profile = list(UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
+                            :10]
+        print(sponsor_t_profile)
+
+        user_item = list()
+        for ele in sponsor_t_profile:
+            user_item.append(
+                (ele['connection'], Provide.objects.filter(username_id__exact=ele['username']).values()))
+
+        print(user_item)
+
+        return_profile = zip(sponsor_t_profile, user_item)
+    return render(request=request,
+                  template_name="cc/top.html",
+                  context={"lists": return_profile,
+                           'signin_status': signin_status,
+                           'current_user': request.user,
+
+                  }
+                  )
