@@ -145,6 +145,7 @@ button.blue {
     box-shadow: inset 0 1px 0 #80B0FB;
 }
 
+
 button.blue:hover {
     border: 1px #2F5BB7 solid;
     box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #5A94F1;

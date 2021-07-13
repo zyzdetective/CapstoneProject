@@ -36,6 +36,7 @@
         {% endif %}
         {% endif %}
         </p>{% endcomment %}
+    <div class="row row-cols-2 row-cols-sm-2 g-2">
     <div>
     <div class="container" style="margin-top: -150px; margin-right: 150px">
             <!--   <div class="card card-block mb-2">
@@ -44,8 +45,8 @@
                 <a href="#" class="btn btn-primary">Submit</a>
               </div>   -->
             <div class="row">
-                <div class="row row-cols-1 row-cols-sm-2 g-5">
-                        <div class="card item-card card-block" style="max-width: 20rem; margin-right: 1.5rem">
+{#                <div class="row row-cols-1 row-cols-sm-2 g-5">#}
+                        <div class="card item-card card-block">
                             <h4 class="card-title text-right"><i class="material-icons">Name: {{ details.long_name }}</i></h4>
 {% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
                                  alt="Photo of sunset">{% endcomment %}
@@ -56,16 +57,17 @@
                             <p style="size: A4; font-family: 'American Typewriter'">Website:</p>
                             <p style="font-family: 'Apple Chancery'">{{ details.website }}</p>
                             {% if details_user.user_type == 1 %}
-                                What we need:</br>
+                                <p style="size: A4; font-family: 'American Typewriter'">What we need:</p>
                             {% else %}
-                                What we have:</br>
+                                <p style="size: A4; font-family: 'American Typewriter'">What we have:</p>
                             {% endif %}
                             {% for ele in item %}
-                                {{ ele.need }}
+                                <p style="font-family: 'Apple Chancery'">{{ ele.need }}</p>
                             {% endfor %}
                             {% if signin_status %}
                                 {% if current_user.user_type != details_user.user_type %}
-                                    <a href="{% url 'connect' details_user %}" class="blue" type="submit">Connect</a>
+{#                                    <a href="{% url 'connect' details_user %}" class="button" type="submit">Connect</a>#}
+                                    <button class="blue" type="submit"><a href="{% url 'connect' details_user %}" style="text-decoration: white; color: white">Connect</a></button>
                                     <br/>
                                 {% endif %}
                             {% endif %}
@@ -75,14 +77,42 @@
 
         </div>
     </div>
-    <p class="p1">
+   {% comment %} <p class="p1">
         Connected Sponsors:<br/>
         {% for ele in connection_user %}
         Sponsor name: {{ ele.long_name }}<br/>
         Website:{{ ele.website }}<br/>
-          <a href="{% url 'details' ele.long_name %}" class="blu" style="color: #d21254">More Details</a><br/>
+          <a href="{% url 'details' ele.long_name %}" class="blue" style="color: #d21254">More Details</a><br/>
         {% endfor %}
-    </p>
+    </p>{% endcomment %}
+    <div>
+        <div class="container" style="margin-top: -150px; margin-right: 150px">
+            <!--   <div class="card card-block mb-2">
+                <h4 class="card-title">Card 1</h4>
+                <p class="card-text">Welcom to bootstrap card styles</p>
+                <a href="#" class="btn btn-primary">Submit</a>
+              </div>   -->
+            <div class="row">
+{#                <div class="row row-cols-1 row-cols-sm-2 g-5">#}
+                    <div class="card item-card card-block">
+                        <h4 class="card-title text-right"><i class="material-icons">Connected Sponsors:</i></h4>
+                        {% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
+                                 alt="Photo of sunset">{% endcomment %}
+                        {% for ele in connection_user %}
+                            <p style="size: A4; font-family: 'American Typewriter'">Sponsor name:</p>
+                            <p style="font-family: 'Apple Chancery'">{{ ele.long_name }}</p>
+                            <p style="size: A4; font-family: 'American Typewriter'">Website:</p>
+                            <p style="font-family: 'Apple Chancery'">{{ ele.website }}</p>
+                            <a href="{% url 'details' ele.long_name %}" class="blue" style="color: #d21254">More
+                                Details</a><br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
     <input type="button" class="blue" name="Back" onclick="javascript:history.back(-1);" value="Back">
     </body>
 {% else %}
