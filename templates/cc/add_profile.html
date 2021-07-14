@@ -9,6 +9,7 @@
 
 
 {% block body %}
+    <center>
 <form method="POST" class="container" style="margin-top: -50px" >
     {% csrf_token %}
     {% for field in edit_form %}
@@ -23,8 +24,9 @@
 {% endif %}
     {{ item_form.as_p }}
 <p>Other items should be separated by commas</p>
-    <input type="button" class="blue" name="OK" onclick="javascript:history.back(-1);" value="OK">
+<button class="blue" type="submit">Save</button>
 </form>
+    </center>
 {% endblock %}
 
 

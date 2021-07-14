@@ -439,6 +439,7 @@ def connect(request, connect_slug):
     else:
         signin_status = True
     print(connect_slug)
+    message_request = ''
     if request.method == 'GET':
         form = ConnectForm
         print('aa')
@@ -449,15 +450,18 @@ def connect(request, connect_slug):
         Message.objects.create(request_user=request_user,
                                reply_user=connect_slug,
                                message_request=message_request)
+
         print(request_user)
         print(connect_slug)
         print(message_request)
+        return redirect(f'/details/{connect_slug}')
     return render(request=request,
                   template_name="cc/connect.html",
                   context={'form': form,
                            'signin_status': signin_status,
                            'current_user': request.user,
                            'connect_slug': connect_slug,
+                           'message_request': message_request,
                            }
                   )
 
@@ -512,6 +516,7 @@ def outbox(request):
 
 @login_required
 def reply_message(request, message_slug):
+    message_reply = ''
     print(f'slug:{message_slug}')
     if request.user.is_anonymous:
         signin_status = False
@@ -550,7 +555,7 @@ def reply_message(request, message_slug):
         message.message_reply = message_reply
         message.message_type = int(reply_type)
         message.save()
-
+        return redirect(f'/inbox')
 
     return render(request=request,
                   template_name="cc/reply_message.html",
@@ -558,6 +563,7 @@ def reply_message(request, message_slug):
                            'current_user': request.user,
                            'form': form,
                            'message': message,
+                           'message_reply': message_reply,
                            }
                   )
 
@@ -698,12 +704,11 @@ def top(request):
         print(sponsor_t_profile)
 
         user_item = list()
+        user_item_1 = list()
         for ele in sponsor_t_profile:
             user_item.append(
                 (ele['connection'], Provide.objects.filter(username_id__exact=ele['username']).values()))
-
         print(user_item)
-
         return_profile = zip(sponsor_t_profile, user_item)
     return render(request=request,
                   template_name="cc/top.html",

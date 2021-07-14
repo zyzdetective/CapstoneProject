@@ -4,14 +4,16 @@
 
 {% block body %}
     <center>
-    <body>
     <form method="POST" class="container" >
         {% csrf_token %}
         {{ form.as_p }}
-        <button href="{% url 'details' connect_slug %}" class="blue" type="submit">Send</button>
-
-
+        <button class="blue" type="submit">Send</button>
     </form>
-    </body>
+{#    {% if message_request %}#}
+{#        <p>Message sent successfully!</p>#}
+{#        <div type="button" class="blue" style="width: 10%">#}
+{#            <a href="{% url 'details' connect_slug %}" class="blue">OK</a>#}
+{#        </div>#}
+{#    {% endif %}#}
     </center>
 {% endblock %}

@@ -8,7 +8,7 @@
 {% block h3 %}{% endblock %}
 {% block body %}
     <center>
-    <div class="p1">
+    <div class="card item-card card-block">
             Request Message:<br/>
             {{ message.message_request }}<br/>
             Reply Message:<br/>
@@ -19,7 +19,7 @@
             {% elif message.message_type == 3 %}
                 {{ message.message_reply }}<br/>
             {% endif %}
-            <input type="button" class="blue" name="OK" onclick="javascript:history.back(-1);" value="OK">
+            <input type="button" class="blue" name="OK" style="width: 10%" onclick="javascript:history.back(-1);" value="OK">
     </div>
     </center>
 {% endblock %}

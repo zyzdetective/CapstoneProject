@@ -8,7 +8,6 @@
 {% block h3 %}{% endblock %}
 {% block body %}
     <center>
-    <div class="p1">
             <form method="post" class="container">
                 {% csrf_token %}
                 Request Message:<br/>
@@ -18,6 +17,11 @@
                     <button class="blue" type="submit">Send</button>
                 </a>
             </form>
-    </div>
+{#        {% if message_reply %}#}
+{#        <p>Message sent successfully!</p>#}
+{#        <div type="button" class="blue" style="width: 10%">#}
+{#            <a href="{% url 'inbox' %}" class="blue">OK</a>#}
+{#        </div>#}
+{#    {% endif %}#}
     </center>
 {% endblock %}
