@@ -50,7 +50,7 @@ class MessageForm(forms.Form):
 
 
 class RecommendationForm(forms.Form):
-    recommendation_choice = forms.ChoiceField(choices=((0, 'All Sponsors'), (1, 'One connection Sponsors'), (2, 'Zero connection Sponsors')), widget=forms.Select())
+    recommendation_choice = forms.ChoiceField(choices=((0, 'All Sponsors'), (1, 'At least one connection Sponsors'), (2, 'Zero connection Sponsors')), widget=forms.Select())
 
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
