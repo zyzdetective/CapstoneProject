@@ -22,7 +22,7 @@ class User(AbstractUser):
 
 class UserCharity(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    username = models.CharField(max_length=200)
+    username = models.CharField(unique=True, max_length=200)
     long_name = models.CharField(max_length=200)
     description = models.TextField(max_length=2048)
     connection = models.IntegerField(default=0)
@@ -43,7 +43,7 @@ class UserCharity(models.Model):
 
 class UserSponsor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    username = models.CharField(max_length=200)
+    username = models.CharField(unique=True, max_length=200)
     long_name = models.CharField(max_length=200)
     description = models.TextField(max_length=2048)
     connection = models.IntegerField(default=0)
@@ -63,13 +63,13 @@ class UserSponsor(models.Model):
 
 
 class Need(models.Model):
-    username = models.ForeignKey('User', to_field='username', on_delete=models.CASCADE)
+    username = models.ForeignKey('UserCharity', to_field='username', on_delete=models.CASCADE)
     # this variety need should not be changed due to \ref { views.py 103 }
     need = models.CharField(max_length=200)
 
 
 class Provide(models.Model):
-    username = models.ForeignKey('User', to_field='username', on_delete=models.CASCADE)
+    username = models.ForeignKey('UserSponsor', to_field='username', on_delete=models.CASCADE)
     # this variety need should not be changed due to \ref { views.py 103 }
     need = models.CharField(max_length=200)
 

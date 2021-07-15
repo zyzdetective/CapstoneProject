@@ -413,7 +413,6 @@ def test_recommendation(request):
     else:
         sponsor_r_profile = []
 
-
     sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
     print(sponsor_r_profile)
 
@@ -425,6 +424,46 @@ def test_recommendation(request):
     print(user_item)
 
     return_profile = zip(sponsor_r_profile[:10], user_item)
+    for ele in return_profile:
+        print(ele[0]['long_name'], ele[1][0], ele[1][1])
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
+
+
+def test_search(request):
+    # fake data
+    search_name = 'r'
+    search_description = 'r'
+    search_need = 'o'
+    # *** fake data ***
+
+    # result = UserCharity.objects.filter(username__icontains='Frank').first()
+    # res = result.need_set.all().values()
+    # result = UserCharity.objects.select_related().filter(long_name__icontains='r', need__need='Food').values('username')
+    result = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
+                                                         description__icontains=search_description,
+                                                         need__need__icontains=search_need).values('username',
+                                                                                                   'need__need')
+    print(result)
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
+
+
+def test_top(request):
+    sponsor_t_profile = list(UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
+                        :10]
+    print(sponsor_t_profile)
+
+    user_item = list()
+    for ele in sponsor_t_profile:
+        user_item.append(
+            (ele['connection'], Provide.objects.filter(username_id__exact=ele['username']).values()))
+
+    print(user_item)
+
+    return_profile = zip(sponsor_t_profile, user_item)
     for ele in return_profile:
         print(ele[0]['long_name'], ele[1][0], ele[1][1])
 
@@ -547,7 +586,6 @@ def reply_message(request, message_slug):
         message.message_type = int(reply_type)
         message.save()
 
-
     return render(request=request,
                   template_name="cc/reply_message.html",
                   context={'signin_status': signin_status,
@@ -599,7 +637,8 @@ def recommendation(request):
     print(sponsor_r_list)
 
     if sponsor_r_list:
-        sponsor_r_profile = list(UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'long_name', 'website'))
+        sponsor_r_profile = list(
+            UserSponsor.objects.filter(username__in=sponsor_r_list).values('username', 'long_name', 'website'))
     print(sponsor_r_profile)
     for item in sponsor_r_profile:
         for i in sponsor_r:
