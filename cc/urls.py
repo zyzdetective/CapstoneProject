@@ -23,4 +23,6 @@ urlpatterns = [
     path('test_m/', views.test_message),
     path('test_m_r/', views.test_message_reply),
     path('test_r', views.test_recommendation),
+    path('test_s', views.test_search),
+    path('test_t', views.test_top),
 ]

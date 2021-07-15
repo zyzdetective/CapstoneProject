@@ -111,7 +111,7 @@ def edit(request):
         edit_form = EditForm
         item_form = ItemForm
     else:
-        user = request.user  # this user -> User.username
+        user = request.user.username  # this user -> User.username
         user_type = request.user.user_type
         print(f'user:{user}')
         edit_form = EditForm(request.POST)
@@ -152,7 +152,7 @@ def edit(request):
         for item in items:
             # create new need ( not in current_need )
             if item not in current_need_list:
-                update_item.objects.create(username=user, need=item)
+                update_item.objects.create(username_id=user, need=item)
 
         # finishing update table Need or provide
         return redirect(f'/details/{user}')
@@ -240,7 +240,8 @@ def charity_list(request):
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if page_nums > int(math.ceil(UserCharity.objects.count() / 9)):
+        if (page_nums <= 0) or (page_nums > int(math.ceil(UserCharity.objects.count() / 10)) ):
+            page_nums = 1
             user_profile = UserCharity.objects.all()[:9]
         else:
             user_profile = UserCharity.objects.all()[(page_nums - 1) * 9:page_nums * 9]
@@ -276,7 +277,8 @@ def sponsor_list(request):
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if page_nums > int(math.ceil(UserSponsor.objects.count() / 9)):
+        if (page_nums <=0) or (page_nums > int(math.ceil(UserSponsor.objects.count() / 10)) ):
+            page_nums = 1
             user_profile = UserSponsor.objects.all()[:9]
         else:
             user_profile = UserSponsor.objects.all()[(page_nums - 1) * 9:page_nums * 9]
@@ -305,7 +307,7 @@ def test_connect(request):
     message_request = 'hello'
     # *** fake data ***
 
-    request_user = request.user
+    request_user = request.user.username
     Message.objects.create(request_user=request_user,
                            reply_user=connect_slug,
                            message_request=message_request)
@@ -316,7 +318,7 @@ def test_connect(request):
 
 @login_required
 def test_message(request):
-    request_user = request.user
+    request_user = request.user.username
     message_send = list(Message.objects.filter(request_user=request_user).values())
     message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
     message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
@@ -377,7 +379,7 @@ def test_recommendation(request):
     recommendation_level = 1  # 0:all 1:only 1 or more connect 2:only no connection
     # *** fake data ***
 
-    request_user = request.user
+    request_user = request.user.username
     user_item = list(Need.objects.filter(username=request_user).values())
     print(user_item)
     need_list = []
@@ -432,6 +434,62 @@ def test_recommendation(request):
                   template_name="cc/sponsor_list.html")
 
 
+def test_search(request):
+    # fake data
+    search_name = 'r'
+    search_description = 'r'
+    search_need = 'o'
+    search_need_list = ['Food', 'Cloth']
+    # *** fake data ***
+
+    # result = UserCharity.objects.filter(username__icontains='Frank').first()
+    # res = result.need_set.all().values()
+    # result = UserCharity.objects.select_related().filter(long_name__icontains='r', need__need='Food').values('username')
+    charity_s_profile = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
+                                                         description__icontains=search_description,
+                                                         need__need__icontains=search_need).values('username',
+                                                                                                   'long_name',
+                                                                                                   'description')
+    print(charity_s_profile)
+    user_item = list()
+    for ele in charity_s_profile:
+        user_item.append(
+            (ele['long_name'], ele['description'][:50]+'...', Need.objects.filter(username_id__exact=ele['username']).values()))
+
+    print(user_item)
+
+    return_profile = zip(charity_s_profile, user_item)
+    for ele in return_profile:
+        print(ele[0]['long_name'], ele[1][0], ele[1][1], ele[1][2])
+    # result = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
+    #                                                      description__icontains=search_description,
+    #                                                      need__need__in=search_need_list).values('username',
+    #                                                                                                'need__need')
+    # print(result)
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
+
+
+def test_top(request):
+    sponsor_t_profile = list(UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
+                        :10]
+    print(sponsor_t_profile)
+
+    user_item = list()
+    for ele in sponsor_t_profile:
+        user_item.append(
+            (ele['connection'], Provide.objects.filter(username_id__exact=ele['username']).values()))
+
+    print(user_item)
+
+    return_profile = zip(sponsor_t_profile, user_item)
+    for ele in return_profile:
+        print(ele[0]['long_name'], ele[1][0], ele[1][1])
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
+
+
 @login_required
 def connect(request, connect_slug):
     if request.user.is_anonymous:
@@ -446,7 +504,7 @@ def connect(request, connect_slug):
     else:
         form = ConnectForm(request.POST)
         message_request = form.data.get('message')
-        request_user = request.user
+        request_user = request.user.username
         Message.objects.create(request_user=request_user,
                                reply_user=connect_slug,
                                message_request=message_request)
@@ -475,7 +533,7 @@ def inbox(request):
     else:
         signin_status = True
     if request.method == 'GET':
-        request_user = request.user
+        request_user = request.user.username
         message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
         message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
         print(message_receive_unread)
@@ -500,7 +558,7 @@ def outbox(request):
     else:
         signin_status = True
     if request.method == 'GET':
-        request_user = request.user
+        request_user = request.user.username
         message_receive_unread = list(Message.objects.filter(request_user=request_user, message_type=1).values())
         message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
         print(message_receive_read)
@@ -595,7 +653,7 @@ def recommendation(request):
         signin_status = False
     else:
         signin_status = True
-    request_user = request.user
+    request_user = request.user.username
     user_item = list(Need.objects.filter(username=request_user).values())
     need_list = []
     for ele in user_item:
@@ -674,7 +732,8 @@ def recommendation(request):
                 (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
         print(len(user_item))
         # determine which pages should be displayed
-        if page_nums > math.ceil(len(sponsor_r_profile) / 9):
+        if (page_nums <= 0) or (page_nums > math.ceil(len(sponsor_r_profile) / 10) ):
+            page_nums = 1
             sponsor_r_profile = sponsor_r_profile[:9]
         else:
             sponsor_r_profile = sponsor_r_profile[(page_nums - 1) * 9:page_nums * 9]
