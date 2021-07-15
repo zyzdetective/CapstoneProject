@@ -26,13 +26,13 @@ details page.
 
 Week5
 
-Discussing with frank about the database functions associate with message and connects. Co-design the database table
+Discussing with Yizhang Zou about the database functions associate with message and connects. Co-design the database table
 messages and connects. Co-design the flows of sending messages,reply and build connects.
 Finishing the function that sending invitiations to others (sponsor want to help charity).
 
 Week6
 
-Updating the database with new features in the table sponsor and chrity. Co-design the recommendations system with frank.
+Updating the database with new features in the table sponsor and chrity. Co-design the recommendations system with Yizhang Zou.
 Discuss the front-end and back-end cooperate details, such as paragrams and slugs. Build a new function that show the 
 connected sponsor or charity in the details page orderde by the connection times.
 Testing the message and connects functions, check the connection features are working.
