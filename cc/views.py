@@ -445,17 +445,27 @@ def test_search(request):
     # result = UserCharity.objects.filter(username__icontains='Frank').first()
     # res = result.need_set.all().values()
     # result = UserCharity.objects.select_related().filter(long_name__icontains='r', need__need='Food').values('username')
-    result = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
+    charity_s_profile = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
                                                          description__icontains=search_description,
                                                          need__need__icontains=search_need).values('username',
-                                                                                                   'need__need')
-    print(result)
+                                                                                                   'long_name',
+                                                                                                   'description')
+    print(charity_s_profile)
+    user_item = list()
+    for ele in charity_s_profile:
+        user_item.append(
+            (ele['long_name'], ele['description'][:50]+'...', Need.objects.filter(username_id__exact=ele['username']).values()))
 
-    result = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
-                                                         description__icontains=search_description,
-                                                         need__need__in=search_need_list).values('username',
-                                                                                                   'need__need')
-    print(result)
+    print(user_item)
+
+    return_profile = zip(charity_s_profile, user_item)
+    for ele in return_profile:
+        print(ele[0]['long_name'], ele[1][0], ele[1][1], ele[1][2])
+    # result = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
+    #                                                      description__icontains=search_description,
+    #                                                      need__need__in=search_need_list).values('username',
+    #                                                                                                'need__need')
+    # print(result)
     return render(request=request,
                   template_name="cc/sponsor_list.html")
 
