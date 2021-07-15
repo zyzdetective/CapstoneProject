@@ -5,19 +5,32 @@
 {% block h3 %}{% endblock %}
 
 {% block body %}
+    <center>
+    <form method="POST" >
+        {% csrf_token %}
+        {{recommendation_form.as_p}}
+        {{page_form.as_p}}
+    <p>Page {{ page_nums }} of {{ pages }}</p>
+            <button class="blue" type="submit">Go</button>
+        </form>
+    </center>
     <div >
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 g-5">
-           {% for sponsor in lists %}
+           {% for sponsor, item in return_profile %}
         <div class="col" >
           <div class="card shadow-sm" style="background: burlywood">
             <div >
               <p class="card-text">
                Sponsor Name:
                   {{ sponsor.long_name }}<br/>
-               Need count:
-                  {{ sponsor.user_count }}<br/>
+               Needs:
+                  {% for ele in item.1 %}
+                      {{ ele.need }}
+                {% endfor %}
+               <br/>Matching needs:
+                  {{ item.0 }} items<br/>
               </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -32,13 +45,13 @@
       </div>
     </div>
   </div>
-    <center>
-    <form method="POST" style="margin-top: 50px">
-        {% csrf_token %}
-        {{form.as_p}}
-            <button class="blue" type="submit">Go</button>
-        </form>
-        <p>Page {{ page_nums }} of {{ pages }}</p>
-    </center>
+{#    <center>#}
+{#    <form method="POST" style="margin-top: 50px">#}
+{#        {% csrf_token %}#}
+{#        {{page_form.as_p}}#}
+{#            <button class="blue" type="submit">Go</button>#}
+{#        </form>#}
+{#        <p>Page {{ page_nums }} of {{ pages }}</p>#}
+{#    </center>#}
 
 {% endblock %}

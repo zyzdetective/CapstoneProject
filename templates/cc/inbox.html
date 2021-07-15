@@ -18,8 +18,8 @@
                     <h5>
                     Message id:
                     {{ item.id }}<br/>
-                    Message to:
-                    {{ item.reply_user }}<br/>
+                    Message from:
+                    {{ item.request_user }}<br/>
                 </h5>
 
                 <div class="d-flex justify-content-between align-items-center">
@@ -48,8 +48,8 @@
                     <h5>
                     Message id:
                     {{ item.id }}<br/>
-                    Message to:
-                    {{ item.reply_user }}<br/>
+                    Message from:
+                    {{ item.request_user }}<br/>
                     Link Status:
                     {% if item.message_type == 2 %}
                     Successful
