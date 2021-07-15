@@ -436,6 +436,7 @@ def test_search(request):
     search_name = 'r'
     search_description = 'r'
     search_need = 'o'
+    search_need_list = ['Food', 'Cloth']
     # *** fake data ***
 
     # result = UserCharity.objects.filter(username__icontains='Frank').first()
@@ -447,6 +448,11 @@ def test_search(request):
                                                                                                    'need__need')
     print(result)
 
+    result = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
+                                                         description__icontains=search_description,
+                                                         need__need__in=search_need_list).values('username',
+                                                                                                   'need__need')
+    print(result)
     return render(request=request,
                   template_name="cc/sponsor_list.html")
 
