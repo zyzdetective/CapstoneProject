@@ -240,7 +240,7 @@ def charity_list(request):
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if (page_nums <= 0) or (page_nums > int(math.ceil(UserCharity.objects.count() / 10)) ):
+        if (page_nums <= 0) or (page_nums > int(math.ceil(UserCharity.objects.count() / 9))):
             page_nums = 1
             user_profile = UserCharity.objects.all()[:9]
         else:
@@ -277,7 +277,7 @@ def sponsor_list(request):
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if (page_nums <=0) or (page_nums > int(math.ceil(UserSponsor.objects.count() / 10)) ):
+        if (page_nums <=0) or (page_nums > int(math.ceil(UserSponsor.objects.count() / 9))):
             page_nums = 1
             user_profile = UserSponsor.objects.all()[:9]
         else:
@@ -732,7 +732,7 @@ def recommendation(request):
                 (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
         print(len(user_item))
         # determine which pages should be displayed
-        if (page_nums <= 0) or (page_nums > math.ceil(len(sponsor_r_profile) / 10) ):
+        if (page_nums <= 0) or (page_nums > math.ceil(len(sponsor_r_profile) / 9)):
             page_nums = 1
             sponsor_r_profile = sponsor_r_profile[:9]
         else:

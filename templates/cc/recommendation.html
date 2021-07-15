@@ -14,7 +14,8 @@
     <form method="POST" >
         {% csrf_token %}
         {{recommendation_form.as_p}}
-    </form>
+        <button class="blue" type="submit" formaction="{% url 'recommendation' %}">Go</button>
+
     </center>
     <div>
     {% comment %}<div class="container">
@@ -90,9 +91,9 @@
 {#        </form>#}
 {#        <p>Page {{ page_nums }} of {{ pages }}</p>#}
 
-{{page_form.as_p}}
+        {{page_form.as_p}}
     <p>Page {{ page_nums }} of {{ pages }}</p>
-            <button class="blue" type="submit">Go</button>
+            <button class="blue" type="submit" formaction="{% url 'recommendation' %}">Go</button>
         </form>
         </center>
 {% endblock %}
