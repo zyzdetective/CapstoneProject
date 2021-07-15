@@ -32,66 +32,37 @@
             <ul class="messages" id="unsolved">
                 {% for item in message_receive_unread %}
                     <li class="message unread">
-                        <a href="{% url 'reply_message' item.id %}" style="text-decoration: black">
+                        <a href="{% url 'reply_message' item.id %}" style="text-decoration: #8a6d3b; color: #8a6d3b">
                             <div class="header">
-                                <span class="from">Message id:</span>
+                                <span class="from">Message id: {{ item.id }}</span>
 {#                                <span>{{ item.id }}</span>#}
                             </div>
                         </a>
-                        <div class="description">
-                            {{ item.id }}
+
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Message From:
                         </div>
-                        <div class="title">
-                            Message to:
-                        </div>
-                        <div class="description">
-                            {{ item.reply_user }}
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_user }}
                         </div>
                     </li>
                 {% endfor %}
-
-                <li class="message">
-
-                        <div class="actions">
-                            <span class="action"><i class="fa fa-square-o"></i></span>
-                            <span class="action"><i class="fa fa-star-o"></i></span>
-                        </div>
-                        <div class="header">
-                            <span class="from">Lukasz Holeczek</span>
-                            <span class="date">
-                        <span class="fa fa-paper-clip"></span> Today, 3:47 PM</span>
-                        </div>
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua.
-                        </div>
-                        <div class="description">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        </div>
-                </li>
             </ul>
 
             <ul class="messages" id="solved">
                 {% for item in message_receive_read %}
                     <li class="message unread">
-                        <a href="{% url 'reply_message' item.id %}" style="text-decoration: #8a6d3b; color: #8a6d3b">
-                            <div class="actions">
-                                <span class="action"><i class="fa fa-square-o"></i></span>
-                                <span class="action"><i class="fa fa-star-o"></i></span>
-                            </div>
+                        <a href="{% url 'show_message' item.id %}" style="text-decoration: #8a6d3b; color: #8a6d3b">
                             <div class="header">
                                 <span class="from">Message id: {{ item.id }}</span>
 {#                                <span class="fa fa-paper-clip">{{ item.id }}</span>#}
                             </div>
                         </a>
-                        <div class="title">
-                            Message to:
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Message From:
                         </div>
-                        <div class="description" style="font-size: larger; font-family: 'Apple Chancery'">
-                            {{ item.reply_user }}
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_user }}
                         </div>
                         </br><div class="title"; style="font-family: 'American Typewriter'">
                         Connection Status:
@@ -107,29 +78,6 @@
                         {% endif %}
                     </li>
                 {% endfor %}
-
-                <li class="message">
-
-                        <div class="actions">
-                            <span class="action"><i class="fa fa-square-o"></i></span>
-                            <span class="action"><i class="fa fa-star-o"></i></span>
-                        </div>
-                        <div class="header">
-                            <span class="from">Lukasz Holeczek</span>
-                            <span class="date">
-                        <span class="fa fa-paper-clip"></span> Today, 3:47 PM</span>
-                        </div>
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua.
-                        </div>
-                        <div class="description">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        </div>
-                </li>
             </ul>
         </main>
     </div>
