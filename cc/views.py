@@ -305,7 +305,7 @@ def test_connect(request):
     message_request = 'hello'
     # *** fake data ***
 
-    request_user = request.user
+    request_user = request.user.username
     Message.objects.create(request_user=request_user,
                            reply_user=connect_slug,
                            message_request=message_request)
@@ -316,7 +316,7 @@ def test_connect(request):
 
 @login_required
 def test_message(request):
-    request_user = request.user
+    request_user = request.user.username
     message_send = list(Message.objects.filter(request_user=request_user).values())
     message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
     message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
@@ -377,7 +377,7 @@ def test_recommendation(request):
     recommendation_level = 1  # 0:all 1:only 1 or more connect 2:only no connection
     # *** fake data ***
 
-    request_user = request.user
+    request_user = request.user.username
     user_item = list(Need.objects.filter(username=request_user).values())
     print(user_item)
     need_list = []
@@ -484,7 +484,7 @@ def connect(request, connect_slug):
     else:
         form = ConnectForm(request.POST)
         message_request = form.data.get('message')
-        request_user = request.user
+        request_user = request.user.username
         Message.objects.create(request_user=request_user,
                                reply_user=connect_slug,
                                message_request=message_request)
@@ -508,7 +508,7 @@ def inbox(request):
     else:
         signin_status = True
     if request.method == 'GET':
-        request_user = request.user
+        request_user = request.user.username
         message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
         message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
         print(message_receive_unread)
@@ -531,7 +531,7 @@ def outbox(request):
     else:
         signin_status = True
     if request.method == 'GET':
-        request_user = request.user
+        request_user = request.user.username
         message_receive_unread = list(Message.objects.filter(request_user=request_user, message_type=1).values())
         message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
         print(message_receive_read)
@@ -623,7 +623,7 @@ def recommendation(request):
         signin_status = False
     else:
         signin_status = True
-    request_user = request.user
+    request_user = request.user.username
     user_item = list(Need.objects.filter(username=request_user).values())
     need_list = []
     for ele in user_item:
