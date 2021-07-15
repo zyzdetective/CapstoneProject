@@ -64,6 +64,11 @@ background:#eee
 .email-app .inbox .messages {
     padding: 0;
     list-style: none;
+    display: none;
+}
+
+.email-app .inbox .messages:target {
+    display: block;
 }
 
 .email-app .inbox .message {
@@ -84,6 +89,11 @@ background:#eee
     flex-direction: column;
 }
 
+.email-app .nav .nav-item .nav-link:hover{
+    color: #8a6d3b;
+    background-color: lightgrey;
+}
+
 .email-app .inbox .message .actions .action {
     width: 2rem;
     margin-bottom: 0.5rem;
@@ -101,7 +111,17 @@ background:#eee
 
 .email-app .inbox .message.unread .header,
 .email-app .inbox .message.unread .title {
-    font-weight: bold;
+    /*font-weight: bold;*/
+    font-family: "American Typewriter";
+}
+
+.email-app .inbox .message.unread .header span{
+    font-family: "American Typewriter";
+
+}
+
+.email-app .inbox .message.unread .header span:hover{
+    background-color: lightgrey;
 }
 
 .email-app .inbox .message .header {
@@ -123,6 +143,7 @@ background:#eee
 
 .email-app .inbox .message .description {
     font-size: 12px;
+
 }
 
 .email-app .message .toolbar {
@@ -153,6 +174,7 @@ background:#eee
     font-size: 12px;
     color: #9faecb;
     align-self: center;
+    font-family: "American Typewriter";
 }
 
 .email-app .message .details .header .from span {

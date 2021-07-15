@@ -38,6 +38,8 @@
     border-top: 1px solid rgba(225,225,225,0.05);*/
 }
 
+
+
 .wrapper .sidebar ul li a{
     display: inline-block;
     text-decoration: black;
@@ -51,7 +53,7 @@
 .wrapper .sidebar ul li user{
     color: #8a6d3b;
     display: block;
-    font-family: "Apple Chancery";
+    font-family: "American Typewriter";
     margin-left: -10px;
 }
 
@@ -62,11 +64,12 @@
 
 .wrapper .sidebar ul li:hover a{
     color: #8a6d3b;
+    background-color: lightgrey;
 }
 
 .wrapper .sidebar ul li p {
     color: #993934;
-    font-family: "American Typewriter";
+    font-family: "Apple Chancery";
 }
 
 .wrapper .action{
@@ -135,6 +138,10 @@
 
 .wrapper .action .menu ul li a:hover{
     color: #8a6d3b;
+}
+
+.wrapper .action .menu ul li:hover{
+    background-color: lightgrey;
 }
 
 /* Blue button as seen on translate.google.com*/

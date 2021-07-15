@@ -1,25 +1,38 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-
 {% block css %}<link rel="stylesheet" href="{% static 'cc/styles/details.css' %}">{% endblock %}
 {% block title %}{{ message.id }}{% endblock %}
 {% block h1 %}Details of Message {{message.id}}{% endblock %}
 {% block h3 %}{% endblock %}
 {% block body %}
     <center>
-    <div class="p1">
-            Request Message:<br/>
-            {{ message.message_request }}<br/>
-            Reply Message:<br/>
+    <div >
+        <div class="row row-cols-1 row-cols-sm-1 g-1" >
+            <div class="container" >
+             <div class="row">
+              <div class="card item-card card-block">
+              <h4 class="card-title text-right">
+                  <i class="material-icons">
+                  Message to:
+                    {{ item.reply_user }}
+                  </i>
+              </h4>
+            <p style="size: A4; font-family: 'American Typewriter'">Request Message:</p>
+            <p style="font-family: 'Apple Chancery'">{{ message.message_request }}</p>
+            <p style="size: A4; font-family: 'American Typewriter'">Reply Message:</p>
             {% if message.message_type == 1 %}
-                Not yet replied.<br/>
+                <p style="size: A4; font-family: 'American Typewriter'">Not yet replied.</p>
             {% elif message.message_type == 2 %}
-                {{ message.message_reply }}<br/>
+                <p style="font-family: 'Apple Chancery'">{{ message.message_reply }}</p>
             {% elif message.message_type == 3 %}
-                {{ message.message_reply }}<br/>
+                <p style="font-family: 'Apple Chancery'">{{ message.message_reply }}</p>
             {% endif %}
             <input type="button" class="blue" name="OK" onclick="javascript:history.back(-1);" value="OK">
+              </div>
+             </div>
+            </div>
+        </div>
     </div>
     </center>
 {% endblock %}
