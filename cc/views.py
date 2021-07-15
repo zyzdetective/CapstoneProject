@@ -111,7 +111,7 @@ def edit(request):
         edit_form = EditForm
         item_form = ItemForm
     else:
-        user = request.user  # this user -> User.username
+        user = request.user.username  # this user -> User.username
         user_type = request.user.user_type
         print(f'user:{user}')
         edit_form = EditForm(request.POST)
@@ -152,7 +152,7 @@ def edit(request):
         for item in items:
             # create new need ( not in current_need )
             if item not in current_need_list:
-                update_item.objects.create(username=user, need=item)
+                update_item.objects.create(username_id=user, need=item)
 
         # finishing update table Need or provide
         return redirect(f'/details/{user}')
