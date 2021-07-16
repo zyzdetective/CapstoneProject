@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm, RecommendationForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
@@ -277,7 +279,7 @@ def sponsor_list(request):
         page_nums = int(form.data.get('page'))
 
         # determine which pages should be displayed
-        if (page_nums <=0) or (page_nums > int(math.ceil(UserSponsor.objects.count() / 9))):
+        if (page_nums <= 0) or (page_nums > int(math.ceil(UserSponsor.objects.count() / 9))):
             page_nums = 1
             user_profile = UserSponsor.objects.all()[:9]
         else:
@@ -415,7 +417,6 @@ def test_recommendation(request):
     else:
         sponsor_r_profile = []
 
-
     sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
     print(sponsor_r_profile)
 
@@ -446,15 +447,17 @@ def test_search(request):
     # res = result.need_set.all().values()
     # result = UserCharity.objects.select_related().filter(long_name__icontains='r', need__need='Food').values('username')
     charity_s_profile = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
-                                                         description__icontains=search_description,
-                                                         need__need__icontains=search_need).values('username',
-                                                                                                   'long_name',
-                                                                                                   'description')
+                                                                    description__icontains=search_description,
+                                                                    need__need__icontains=search_need).values(
+        'username',
+        'long_name',
+        'description')
     print(charity_s_profile)
     user_item = list()
     for ele in charity_s_profile:
         user_item.append(
-            (ele['long_name'], ele['description'][:50]+'...', Need.objects.filter(username_id__exact=ele['username']).values()))
+            (ele['long_name'], ele['description'][:50] + '...',
+             Need.objects.filter(username_id__exact=ele['username']).values()))
 
     print(user_item)
 
@@ -648,6 +651,7 @@ def show_message(request, message_slug):
 
 
 @login_required
+# @csrf_exempt
 def recommendation(request):
     if request.user.is_anonymous:
         signin_status = False
@@ -679,7 +683,7 @@ def recommendation(request):
         if sponsor_r_list:
             sponsor_r_profile = list(
                 UserSponsor.objects.filter(Q(connection__gte=0), username__in=sponsor_r_list).values('username',
-                                                                                                        'long_name'))
+                                                                                                     'long_name'))
         else:
             sponsor_r_profile = []
         if len(sponsor_r_profile) / 9 > int(len(sponsor_r_profile) / 9):
@@ -751,14 +755,14 @@ def recommendation(request):
                            })
 
 
-
 def top(request):
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     if request.method == 'GET':
-        sponsor_t_profile = list(UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
+        sponsor_t_profile = list(
+            UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
                             :10]
         print(sponsor_t_profile)
 
@@ -774,6 +778,5 @@ def top(request):
                   context={"lists": return_profile,
                            'signin_status': signin_status,
                            'current_user': request.user,
-
-                  }
+                           }
                   )
