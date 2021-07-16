@@ -456,7 +456,7 @@ def test_search(request):
     user_item = list()
     for ele in charity_s_profile:
         user_item.append(
-            (ele['long_name'], ele['description'][:50] + '...',
+            (ele['long_name'], ele['description'][:20] + '...',
              Need.objects.filter(username_id__exact=ele['username']).values()))
 
     print(user_item)
