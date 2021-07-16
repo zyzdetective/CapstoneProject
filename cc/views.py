@@ -448,7 +448,7 @@ def test_search(request):
     # result = UserCharity.objects.select_related().filter(long_name__icontains='r', need__need='Food').values('username')
     charity_s_profile = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
                                                                     description__icontains=search_description,
-                                                                    need__need__icontains=search_need).values(
+                                                                    need__need__icontains=search_need).distinct().values(
         'username',
         'long_name',
         'description')
