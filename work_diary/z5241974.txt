@@ -36,3 +36,10 @@ Updating the database with new features in the table sponsor and chrity. Co-desi
 Discuss the front-end and back-end cooperate details, such as paragrams and slugs. Build a new function that show the 
 connected sponsor or charity in the details page orderde by the connection times.
 Testing the message and connects functions, check the connection features are working.
+
+Week 7
+
+Updating a new function that we display message with sydney time. Fixing the bug that recommendation list will not ordered 
+by the mathing needs. Fixing the bug that skip pages will not show the true page numbers.Discussing the next function 
+that we hope message system could use mutiple times, not only using for one request and one reply. 
+This will be our novelty idea. Discussing the database changes for this new function and the changes of front-end. 
