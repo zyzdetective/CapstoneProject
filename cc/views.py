@@ -206,7 +206,9 @@ def details(request, details_slug):
                     connection_list.append(ele['charity_user'])
                 connection_user = UserCharity.objects.filter(username__in=connection_list)
 
-            print(connection_user.values())
+            connection_user = sorted(list(connection_user.values()), key=lambda x: connection_list.index(x['username']))
+
+            print(connection_user)
             print(username)
         return render(request=request,
                       template_name="cc/details.html",
