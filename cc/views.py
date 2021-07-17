@@ -7,7 +7,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models import Count
-import math
+import math,pytz,datetime
 from django import forms
 
 
@@ -508,9 +508,12 @@ def connect(request, connect_slug):
         form = ConnectForm(request.POST)
         message_request = form.data.get('message')
         request_user = request.user.username
+        # request_time = sydney time when request send
+        request_time = datetime.datetime.now(pytz.timezone('Australia/Sydney')).strftime("%Y-%m-%d %H:%M:%S")
         Message.objects.create(request_user=request_user,
                                reply_user=connect_slug,
-                               message_request=message_request)
+                               message_request=message_request,
+                               request_time = request_time)
 
         print(request_user)
         print(connect_slug)
@@ -592,6 +595,8 @@ def reply_message(request, message_slug):
         form = MessageForm(request.POST)
         message_reply = form.data.get('message_reply')
         reply_type = form.data.get('your_reply')
+        reply_time = datetime.datetime.now(pytz.timezone('Australia/Sydney')).strftime("%Y-%m-%d %H:%M:%S")
+
         # print(message_reply)
         # print(reply_type)
         request_user_type = User.objects.get(username=request_user).user_type
@@ -615,6 +620,7 @@ def reply_message(request, message_slug):
             print('failed')
         message.message_reply = message_reply
         message.message_type = int(reply_type)
+        message.reply_time = reply_time
         message.save()
         return redirect(f'/inbox')
 

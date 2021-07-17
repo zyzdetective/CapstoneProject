@@ -79,7 +79,8 @@ class Message(models.Model):
     reply_user = models.CharField(max_length=200)
     message_request = models.TextField(max_length=2048)
     message_reply = models.TextField(max_length=2048)
-
+    request_time = models.TextField(max_length=200)  # sydney time
+    reply_time = models.TextField(max_length=200)
     MESSAGE_TYPE_CHOICES = (
         (1, 'unread'),
         (2, 'agree'),
