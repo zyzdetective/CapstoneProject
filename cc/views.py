@@ -804,6 +804,7 @@ def search(request):
         signin_status = True
     charity_s_profile = []
     user_item = []
+    page = 1
     if request.method == 'GET':
         search_form = SearchForm
         page_form = PageForm
