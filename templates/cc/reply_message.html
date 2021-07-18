@@ -14,8 +14,8 @@
                 Request Message:<br/>
                 {{ message.message_request }}<br/>
                 {{ form.as_p }}
-                <a href="{% url 'inbox' %}">
-                    <button class="blue" type="submit">Send</button>
+                <a href="{% url 'message_box' %}">
+                    <button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button>
                 </a>
             </form>
     </div>

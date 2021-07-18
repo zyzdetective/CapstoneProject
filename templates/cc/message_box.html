@@ -1,0 +1,261 @@
+{% extends 'base/base.html' %}
+{% load static %}
+<title>{% block title %}Message{% endblock %}</title>
+<h1>{% block h1 %}Message{% endblock %}</h1>
+<h3>{% block h3 %}{% endblock %}</h3>
+{% block css %}
+    <link rel="stylesheet" href="{% static 'cc/Bootstrap5/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'cc/styles/inbox.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{#    <link href="//cdn.shopify.com/s/files/1/0379/2689/5754/t/8/assets/theme.scss.css?enable_css_minification=1&amp;v=15910824069508349433" rel="stylesheet" type="text/css" media="all" />#}
+{% endblock %}
+
+{% block body %}
+
+<body>
+<h3>Inbox</h3>
+<div class="container bootdey" style="margin-left: -70px">
+    <div class="email-app mb-4">
+        <nav>
+{#            <a href="page-inbox-compose.html" class="btn btn-danger btn-block">New Email</a>#}
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#unsolved_in" style="font-family: 'American Typewriter'"><i class="fa fa-envelope"></i> Unsolved</br> Message <span
+                            class="badge badge-danger"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#solved_in" style="font-family: 'American Typewriter'"><i class="fa fa-envelope-open"></i> Solved </br> Message</a>
+                </li>
+            </ul>
+        </nav>
+        <main class="inbox">
+            <ul class="messages" id="unsolved_in">
+                {% for item in message_receive_unread_in %}
+                    <li class="message unread">
+                        <a href="{% url 'reply_message' item.id %}" style="text-decoration: #8a6d3b; color: #8a6d3b">
+                            <div class="header">
+                                <span class="from">Message id: {{ item.id }}</span>
+{#                                <span>{{ item.id }}</span>#}
+                            </div>
+                        </a>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Message From:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_user }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Request Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_time }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Reply Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {% if item.reply_time != '' %}
+                            {{ item.reply_time }}
+                            {% else %}
+                            Not yet replied.
+                            {% endif %}
+                        </div>
+
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <ul class="messages" id="solved_in">
+                {% for item in message_receive_read_in %}
+                    <li class="message unread">
+                        <a href="{% url 'show_message' item.id %}" style="text-decoration: #8a6d3b; color: #8a6d3b">
+                            <div class="header">
+                                <span class="from">Message id: {{ item.id }}</span>
+{#                                <span class="fa fa-paper-clip">{{ item.id }}</span>#}
+                            </div>
+                        </a>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Message From:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_user }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Request Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_time }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Reply Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {% if item.reply_time != '' %}
+                            {{ item.reply_time }}
+                            {% else %}
+                            Not yet replied.
+                            {% endif %}
+                        </div>
+                        </br><div class="title"; style="font-family: 'American Typewriter'">
+                        Status:
+                        </div>
+                        {% if item.message_type == 2 %}
+                            <div class="description" style="font-size: larger; font-family: 'Apple Chancery'">
+                            Agreed
+                            </div>
+                        {% elif item.message_type == 3 %}
+                            <div class="description" style="font-size: larger; font-family: 'Apple Chancery'">
+                            Refused
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+</div>
+<h3>Outbox</h3>
+<div class="container bootdey" style="margin-left: -70px">
+    <div class="email-app mb-4">
+        <nav>
+{#            <a href="page-inbox-compose.html" class="btn btn-danger btn-block">New Email</a>#}
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#unsolved_out" style="font-family: 'American Typewriter'"><i class="fa fa-envelope"></i> Unsolved</br> Message <span
+                            class="badge badge-danger"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#solved_out" style="font-family: 'American Typewriter'"><i class="fa fa-envelope-open"></i> Solved </br> Message</a>
+                </li>
+            </ul>
+        </nav>
+        <main class="inbox">
+            <ul class="messages" id="unsolved_out">
+                {% for item in message_receive_unread_out %}
+                    <li class="message unread">
+                        <a href="{% url 'show_message' item.id %}" style="text-decoration: #8a6d3b; color: #8a6d3b">
+                            <div class="header">
+                                <span class="from">Message id: {{ item.id }}</span>
+{#                                <span>{{ item.id }}</span>#}
+                            </div>
+                        </a>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Message To:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.reply_user }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Request Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_time }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Reply Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {% if item.reply_time != '' %}
+                            {{ item.reply_time }}
+                            {% else %}
+                            Not yet replied.
+                            {% endif %}
+                        </div>
+
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <ul class="messages" id="solved_out">
+                {% for item in message_receive_read_out %}
+                    <li class="message unread">
+                        <a href="{% url 'show_message' item.id %}" style="text-decoration: #8a6d3b; color: #8a6d3b">
+                            <div class="header">
+                                <span class="from">Message id: {{ item.id }}</span>
+{#                                <span class="fa fa-paper-clip">{{ item.id }}</span>#}
+                            </div>
+                        </a>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Message To:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.reply_user }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Request Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {{ item.request_time }}
+                        </div>
+                        <div class="title" style="font-family: 'American Typewriter'">
+                            Reply Time:
+                        </div>
+                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">
+                            {% if item.reply_time != '' %}
+                            {{ item.reply_time }}
+                            {% else %}
+                            Not yet replied.
+                            {% endif %}
+                        </div>
+                        </br><div class="title"; style="font-family: 'American Typewriter'">
+                        Status:
+                        </div>
+                        {% if item.message_type == 2 %}
+                            <div class="description" style="font-size: larger; font-family: 'Apple Chancery'">
+                            Agreed
+                            </div>
+                        {% elif item.message_type == 3 %}
+                            <div class="description" style="font-size: larger; font-family: 'Apple Chancery'">
+                            Refused
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+</div>
+{% comment %}
+<h2>Solved Request</h2>
+<div>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 g-3">
+            {% for item in message_receive_read %}
+                <div class="col">
+                <div class="card shadow-sm" style="background: burlywood">
+                <div>
+                <p class="card-text">
+                    <h5>
+                    Message id:
+                    {{ item.id }}<br/>
+                    Message to:
+                    {{ item.reply_user }}<br/>
+                    Connection Status:
+                    {% if item.message_type == 2 %}
+                    Successful
+                    {% elif item.message_type == 3 %}
+                    Failed
+                    {% endif %}
+                </h5>
+
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{% url 'show_message' item.id %}" class="btn" style="color: #3c763d">More Details</a>
+                    </div>
+                </div>
+            </p>
+            </div>
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endcomment %}
+
+
+</body>
+
+{% endblock %}

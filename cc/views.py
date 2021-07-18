@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm, RecommendationForm
+from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm, RecommendationForm, SearchForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -210,6 +210,7 @@ def details(request, details_slug):
 
             print(connection_user)
             print(username)
+            print(user_type)
         return render(request=request,
                       template_name="cc/details.html",
                       context={"details_found": True,
@@ -533,51 +534,57 @@ def connect(request, connect_slug):
 
 
 @login_required
-def inbox(request):
-    message_receive_unread = []
-    message_receive_read = []
+def message_box(request):
+    message_receive_unread_in = []
+    message_receive_read_in = []
+    message_receive_unread_out = []
+    message_receive_read_out = []
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     if request.method == 'GET':
         request_user = request.user.username
-        message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
-        message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
-        print(message_receive_unread)
-        print(message_receive_read)
+        message_receive_unread_in = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
+        message_receive_read_in = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
+        message_receive_unread_out = list(Message.objects.filter(request_user=request_user, message_type=1).values())
+        message_receive_read_out = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
+        print(message_receive_unread_in)
+        print(message_receive_read_in)
 
     return render(request=request,
-                  template_name="cc/inbox.html",
+                  template_name="cc/message_box.html",
                   context={'signin_status': signin_status,
                            'current_user': request.user,
-                           'message_receive_unread': message_receive_unread,
-                           'message_receive_read': message_receive_read,
+                           'message_receive_unread_in': message_receive_unread_in,
+                           'message_receive_read_in': message_receive_read_in,
+                           'message_receive_unread_out': message_receive_unread_out,
+                           'message_receive_read_out': message_receive_read_out,
                            }
                   )
 
 
-@login_required
-def outbox(request):
-    message_receive_unread = []
-    message_receive_read = []
-    if request.user.is_anonymous:
-        signin_status = False
-    else:
-        signin_status = True
-    if request.method == 'GET':
-        request_user = request.user.username
-        message_receive_unread = list(Message.objects.filter(request_user=request_user, message_type=1).values())
-        message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
-        print(message_receive_read)
-    return render(request=request,
-                  template_name="cc/outbox.html",
-                  context={'signin_status': signin_status,
-                           'current_user': request.user,
-                           'message_receive_unread': message_receive_unread,
-                           'message_receive_read': message_receive_read,
-                           }
-                  )
+# @login_required
+# def outbox(request):
+#     message_receive_unread = []
+#     message_receive_read = []
+#     if request.user.is_anonymous:
+#         signin_status = False
+#     else:
+#         signin_status = True
+#     if request.method == 'GET':
+#         request_user = request.user.username
+#         message_receive_unread = list(Message.objects.filter(request_user=request_user, message_type=1).values())
+#         message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
+#         print(message_receive_read)
+#     return render(request=request,
+#                   template_name="cc/outbox.html",
+#                   context={'signin_status': signin_status,
+#                            'current_user': request.user,
+#                            'message_receive_unread': message_receive_unread,
+#                            'message_receive_read': message_receive_read,
+#                            }
+#                   )
 
 
 @login_required
@@ -624,7 +631,7 @@ def reply_message(request, message_slug):
         message.message_type = int(reply_type)
         message.reply_time = reply_time
         message.save()
-        return redirect(f'/inbox')
+        return redirect(f'/message_box')
 
     return render(request=request,
                   template_name="cc/reply_message.html",
@@ -786,5 +793,77 @@ def top(request):
                   context={"lists": return_profile,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           }
+                  )
+
+
+def search(request):
+    if request.user.is_anonymous:
+        signin_status = False
+    else:
+        signin_status = True
+    charity_s_profile = []
+    user_item = []
+    if request.method == 'GET':
+        search_form = SearchForm
+        page_form = PageForm
+        page_nums = 1
+    else:
+        search_form = SearchForm(request.POST)
+        search_name = search_form.data.get('name')
+        search_description = search_form.data.get('description')
+        search_need = search_form.data.get('need')
+        page_form = PageForm(request.POST)
+        page_nums = int(page_form.data.get('page'))
+
+        print(search_name)
+        print(search_description)
+        print(search_need)
+        print(page_nums)
+        charity_s_profile = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
+                                                                        description__icontains=search_description,
+                                                                        need__need__icontains=search_need).distinct().values(
+            'username',
+            'long_name',
+            'description')
+        # print(charity_s_profile)
+        # user_item = list()
+        # for ele in charity_s_profile:
+        #     user_item.append(
+        #         (ele['long_name'], ele['description'][:20] + '...',
+        #          Need.objects.filter(username_id__exact=ele['username']).values()))
+        # print('----')
+        # print(user_item)
+
+
+        if len(charity_s_profile) / 9 > int(len(charity_s_profile) / 9):
+            page = int(len(charity_s_profile) / 9) + 1
+        else:
+            page = int(len(charity_s_profile) / 9)
+        print(len(charity_s_profile))
+        user_item = list()
+        for ele in charity_s_profile:
+            user_item.append(
+                (ele['long_name'], ele['description'][:20] + '...',
+                 Need.objects.filter(username_id__exact=ele['username']).values()))
+        print(len(user_item))
+        # determine which pages should be displayed
+        if (page_nums <= 0) or (page_nums > math.ceil(len(charity_s_profile) / 9)):
+            page_nums = 1
+            charity_s_profile = charity_s_profile[:9]
+        else:
+            charity_s_profile = charity_s_profile[(page_nums - 1) * 9:page_nums * 9]
+
+
+    return_profile = zip(charity_s_profile, user_item)
+    return render(request=request,
+                  template_name="cc/search.html",
+                  context={'signin_status': signin_status,
+                           'current_user': request.user,
+                           'search_form': search_form,
+                           'return_profile': return_profile,
+                           'page_form': page_form,
+                           "pages": page,
+                           "page_nums": page_nums,
                            }
                   )

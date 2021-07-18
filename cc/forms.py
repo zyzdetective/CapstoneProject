@@ -52,6 +52,10 @@ class MessageForm(forms.Form):
 class RecommendationForm(forms.Form):
     recommendation_choice = forms.ChoiceField(choices=((0, 'All Sponsors'), (1, 'One connection Sponsors'), (2, 'Zero connection Sponsors')), widget=forms.Select())
 
+class SearchForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(), required=False, label='Name')
+    description = forms.CharField(widget=forms.TextInput(), required=False, label='description')
+    need = forms.CharField(widget=forms.TextInput(), required=False, label='Need')
 # class CharityProfileForm(forms.Form):
 #     charity_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
 #     charity_description = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -59,3 +63,4 @@ class RecommendationForm(forms.Form):
 #                                      widget=forms.Select(attrs={'class': 'form-control'}))
 #     other_needs = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 #     website = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+

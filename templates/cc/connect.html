@@ -8,7 +8,7 @@
     <form method="POST" class="container" >
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="blue" type="submit">Send</button>
+        <button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button>
 
 
     </form>

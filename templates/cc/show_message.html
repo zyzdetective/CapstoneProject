@@ -13,10 +13,10 @@
              <div class="row">
               <div class="card item-card card-block">
               <h4 class="card-title text-right">
-                  <i class="material-icons">
-                  Message to:
-                    {{ item.reply_user }}
-                  </i>
+{#                  <i class="material-icons">#}
+{#                  Messages with:#}
+{#                    {{ message.reply_user }}#}
+{#                  </i>#}
               </h4>
             <p style="size: A4; font-family: 'American Typewriter'">Request Message:</p>
             <p style="font-family: 'Apple Chancery'">{{ message.message_request }}</p>
@@ -28,7 +28,7 @@
             {% elif message.message_type == 3 %}
                 <p style="font-family: 'Apple Chancery'">{{ message.message_reply }}</p>
             {% endif %}
-            <input type="button" class="blue" name="OK" onclick="javascript:history.back(-1);" value="OK">
+            <input type="button" class="blue" name="OK" style="width: 10%" onclick="javascript:history.back(-1);" value="OK">
               </div>
              </div>
             </div>
