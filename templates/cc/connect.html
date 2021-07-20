@@ -1,17 +1,21 @@
 {% extends 'base/base.html' %}
 {% load static %}
-
+{% block css %}<link rel="stylesheet" href="{% static 'cc/styles/signin.css' %}">{% endblock %}
 
 {% block body %}
     <center>
-    <body>
-    <form method="POST" class="container" >
+
+    <div class="p1">
+
+    <form method="POST" class="container" style="max-width: 40rem">
+        <p></p><h3 style="font-family: 'American Typewriter'">Message:</h3><p></p>
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button>
+        {{ form.message }}<br/>
+        <p></p><button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button><p></p>
 
 
     </form>
-    </body>
+    </div>
+
     </center>
 {% endblock %}

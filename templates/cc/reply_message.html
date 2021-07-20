@@ -9,11 +9,12 @@
 {% block body %}
     <center>
     <div class="p1">
-            <form method="post" class="container">
+            <form method="post" class="container" style="max-width: 40rem">
                 {% csrf_token %}
-                Request Message:<br/>
+                <p style="font-family: 'American Typewriter'">Request Message:</p>
                 {{ message.message_request }}<br/>
-                {{ form.as_p }}
+                <p style="font-family: 'American Typewriter'">Reply Message:</p>
+                {{ form.message_reply }}<br/>
                 <a href="{% url 'message_box' %}">
                     <button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button>
                 </a>

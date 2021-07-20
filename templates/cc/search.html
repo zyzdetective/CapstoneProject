@@ -44,18 +44,18 @@
                 return frmCollector;
             }
         </script>
-        <div class="c">
-        <form method="POST" id="form1">
-            Name:{{ search_form.name }}
+        <div class="row row-cols-1 row-cols-sm-3 g-3" >
+        <form method="POST" id="form1" style="size: A4; font-family: 'American Typewriter'">
+            Name: {{ search_form.name }}
         </form>
-        <form method="POST" id="form2">
-            Description:{{ search_form.description }}
+        <form method="POST" id="form2" style="size: A4; font-family: 'American Typewriter'">
+            Description: {{ search_form.description }}
         </form>
-        <form method="POST" id="form3">
-            Need:{{ search_form.need }}
+        <form method="POST" id="form3" style="size: A4; font-family: 'American Typewriter'">
+            Need: {{ search_form.need }}
         </form>
         </div>
-        <button class="blue" type="submit" onClick="submitAllDocumentForms()">Search</button>
+        <p></p><button class="blue" type="submit" onClick="submitAllDocumentForms()">Search</button><p></p>
     </center>
     <div>
         {% comment %}<div class="container">

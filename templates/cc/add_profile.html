@@ -9,7 +9,7 @@
 
 
 {% block body %}
-<form method="POST" class="container" style="margin-top: -50px" >
+<form method="POST" class="container" style="margin-top: -50px; max-width: 40rem" >
     {% csrf_token %}
     {% for field in edit_form %}
         {{ field.errors }}
