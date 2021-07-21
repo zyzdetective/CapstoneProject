@@ -1,5 +1,8 @@
 {% extends 'base/base.html' %}
 {% load static %}
+<title>{% block title %}Connect{% endblock %}</title>
+<h1>{% block h1 %}Connect{% endblock %}</h1>
+<h3>{% block h3 %}{% endblock %}</h3>
 {% block css %}<link rel="stylesheet" href="{% static 'cc/styles/signin.css' %}">{% endblock %}
 
 {% block body %}

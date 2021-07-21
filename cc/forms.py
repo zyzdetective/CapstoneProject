@@ -46,7 +46,7 @@ class ConnectForm(forms.Form):
 
 class MessageForm(forms.Form):
     message_reply = forms.Field(widget=forms.Textarea(), required=True)
-    your_reply = forms.ChoiceField(choices=(('2', 'Agree'), ('3', 'Disagree')), widget=forms.Select())
+    your_reply = forms.ChoiceField(choices=(('2', 'Accept'), ('3', 'Reject')), widget=forms.Select())
 
 
 class RecommendationForm(forms.Form):

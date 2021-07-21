@@ -70,9 +70,11 @@
                         {% if signin_status %}
                             {% if current_user.user_type != details_user.user_type %}
                                 {#                                    <a href="{% url 'connect' details_user %}" class="button" type="submit">Connect</a>#}
-                                <button class="blue" type="submit" style="width: 8%"><a href="{% url 'connect' details_user %}"
+                                <center>
+                                <button class="blue" type="submit" style="width: 10%"><a href="{% url 'connect' details_user %}"
                                                                       style="text-decoration: white; color: white">Connect</a>
                                 </button>
+                                </center>
                                 <br/>
                             {% endif %}
                         {% endif %}
