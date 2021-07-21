@@ -15,6 +15,9 @@
                 {{ message.message_request }}<br/>
                 <p style="font-family: 'American Typewriter'">Reply Message:</p>
                 {{ form.message_reply }}<br/>
+                <p style="font-family: 'American Typewriter'">Your reply:</p>
+                {{ form.your_reply }}<br/>
+                <p></p>
                 <a href="{% url 'message_box' %}">
                     <button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button>
                 </a>
