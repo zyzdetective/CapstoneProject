@@ -1,11 +1,47 @@
 Week 1
 
-I met other teammates and we formed a group. We discussed all of the project options and made our final decision which is "Charity Connect". And some technologies which gonna be used at front-end and back-end are disscussed. Moreover, I enrolled Jira and Github teams.
+I met other teammates and we formed a group. We discussed all of the project options
+and made our final decision which is "Charity Connect". And some technologies which
+gonna be used at front-end and back-end are disscussed. Moreover, I enrolled Jira and Github teams.
 
 Week 2
 
-We had a meeting at this week and we discussed about the project details such as website design, framework and database. Meanwhile, the proposal work is starting, I was responsible to draw the interface and flow diagram.
+We had a meeting at this week and we discussed about the project details such as
+website design, framework and database. Meanwhile, the proposal work is starting,
+I was responsible to draw the interface and flow diagram.
 
 Week 3
 
-This week we complete the Sign Up page.
+Finish the proposal document with team members this week. Learn about the front
+end of Django, discuss the basics of creating a registration page and a login screen
+with the front end members and get started. And within this week, we have completed
+the code of the registration interface.
+
+Week 4
+
+Continue to develop other features in the front end, including Sign Up, Edit,
+Charity_List Page, Sponsor_List Page. And it can judge the user_type at the beginning of
+the user logging in the website, so as to distinguish the different functions
+that different user types can achieve in the website.
+
+Week 5
+
+The front end continues to develop the HTML code for the page of Message.
+The first version is written on the page of information details, and attempts to judge
+the user's reply type: agree/disagree. And with the information list page and
+the Connection page to try to complete the connection and debug and aesthetic processing.
+
+Week 6
+
+We assigned each person's work in the discussion of the work content for Sprint 2.
+I was duty for styling our website. And went on to develop other features -- other
+features, message boxes, links through sponsors/charities lists, recommendation pages.
+We've implemented a card list style to make the list details page look clear and cleaner.
+
+Week 7
+
+Week7
+Continue to beautify the theme and style of the site. We adjusted the style of the theme of the site,
+as well as the font. Simple animations have been added to some cards and menu bars.
+And as other features continue to be developed, we've split the message box into an Outbox
+and an Inbox, and we allow each box to have two types of messages which are Solved and Unsolved.
