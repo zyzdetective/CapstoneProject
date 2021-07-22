@@ -4,10 +4,33 @@ Week 1
  I join the github group with teammates.
  I have meetings with team and talk about project details.
 
- Week 2
+Week 2
  We talk about project layout, divide project into front-end and back-end.
  We are working on project proposal and I am working on interface.
  I am learning front-end.
 
- Week 3
+Week 3
  Working on front-end.
+
+Week 4
+ I become the leader of front-end and be the member to hand over with Yizhang Zhou.
+ We finish sign in ,sign up and sign out. It can work with real databases.
+ We complete the function that user can edit their profile.
+
+Week 5
+ I finish all my work of stories in sprint 1.
+ It can show sponsor list, charity list and user details.
+ The interface of web page need to be improved.
+
+Week 6
+ Flexibility week
+ We begin to work on sprint 2.
+
+Week 7
+ We finish all stories in sprint 2.
+ It includes message and message reply, message box to show message content and status, recommendation
+ sponsors.
+ The interface of pages have a significant improvement.
+
+
+
