@@ -18,10 +18,14 @@ def base(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     return render(request=request,
                   template_name="base/base.html",
                   context={'signin_status': signin_status,
-                           'current_user': request.user, }
+                           'current_user': request.user,
+                           'message_number': message_number,
+                           }
                   )
 
 
@@ -31,6 +35,8 @@ def signup(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     if request.method == 'GET':
 
         signup_form = SignupForm
@@ -59,6 +65,7 @@ def signup(request):
                   context={"form": signup_form,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'message_number': message_number,
                            })
 
 
@@ -68,6 +75,8 @@ def signin(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     if request.method == 'GET':
 
         signin_form = SigninForm
@@ -91,6 +100,7 @@ def signin(request):
                                    "error": "invalid username or password",
                                    'signin_status': signin_status,
                                    'current_user': request.user,
+                                   'message_number': message_number,
                                    })
 
     return render(request=request,
@@ -98,6 +108,7 @@ def signin(request):
                   context={"form": signin_form,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'message_number': message_number,
                            })
 
 
@@ -108,6 +119,8 @@ def edit(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     if request.method == 'GET':
 
         edit_form = EditForm
@@ -166,6 +179,7 @@ def edit(request):
                            "item_form": item_form,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'message_number': message_number,
                            })
 
 
@@ -183,6 +197,8 @@ def details(request, details_slug):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     try:
         user = User.objects.get(username=details_slug)
         if request.method == 'GET':
@@ -220,6 +236,7 @@ def details(request, details_slug):
                                "item": user_item,
                                'signin_status': signin_status,
                                'current_user': request.user,
+                               'message_number': message_number,
                                })
 
     except Exception as exc:
@@ -228,6 +245,7 @@ def details(request, details_slug):
                       context={"details_found": False,
                                'signin_status': signin_status,
                                'current_user': request.user,
+                               'message_number': message_number,
                                })
 
 
@@ -236,6 +254,8 @@ def charity_list(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     if request.method == 'GET':
         form = PageForm
         user_profile = UserCharity.objects.all()[:9]
@@ -264,6 +284,7 @@ def charity_list(request):
                            "page_nums": page_nums,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'message_number': message_number,
                            }
                   )
 
@@ -273,6 +294,8 @@ def sponsor_list(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     if request.method == 'GET':
         form = PageForm
         user_profile = UserSponsor.objects.all()[:9]
@@ -302,6 +325,7 @@ def sponsor_list(request):
                            "page_nums": page_nums,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'message_number': message_number,
                            })
 
 
@@ -502,6 +526,8 @@ def connect(request, connect_slug):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     print(connect_slug)
     message_request = ''
     if request.method == 'GET':
@@ -516,11 +542,13 @@ def connect(request, connect_slug):
         Message.objects.create(request_user=request_user,
                                reply_user=connect_slug,
                                message_request=message_request,
-                               request_time = request_time)
-
-        print(request_user)
-        print(connect_slug)
-        print(message_request)
+                               request_time=request_time)
+        user_profile_sponsor = UserSponsor.objects.all()
+        user_profile_charity = UserCharity.objects.all()
+        print(user_profile_sponsor)
+        # print(request_user)
+        # print(connect_slug)
+        # print(message_request)
         return redirect(f'/details/{connect_slug}')
     return render(request=request,
                   template_name="cc/connect.html",
@@ -529,6 +557,7 @@ def connect(request, connect_slug):
                            'current_user': request.user,
                            'connect_slug': connect_slug,
                            'message_request': message_request,
+                           'message_number': message_number,
                            }
                   )
 
@@ -543,6 +572,8 @@ def message_box(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     if request.method == 'GET':
         request_user = request.user.username
         message_receive_unread_in = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
@@ -551,7 +582,8 @@ def message_box(request):
         message_receive_read_out = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
         print(message_receive_unread_in)
         print(message_receive_read_in)
-
+        test = list(User.objects.values())
+        print(test)
     return render(request=request,
                   template_name="cc/message_box.html",
                   context={'signin_status': signin_status,
@@ -560,31 +592,11 @@ def message_box(request):
                            'message_receive_read_in': message_receive_read_in,
                            'message_receive_unread_out': message_receive_unread_out,
                            'message_receive_read_out': message_receive_read_out,
+                           'message_number': message_number,
                            }
                   )
 
 
-# @login_required
-# def outbox(request):
-#     message_receive_unread = []
-#     message_receive_read = []
-#     if request.user.is_anonymous:
-#         signin_status = False
-#     else:
-#         signin_status = True
-#     if request.method == 'GET':
-#         request_user = request.user.username
-#         message_receive_unread = list(Message.objects.filter(request_user=request_user, message_type=1).values())
-#         message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
-#         print(message_receive_read)
-#     return render(request=request,
-#                   template_name="cc/outbox.html",
-#                   context={'signin_status': signin_status,
-#                            'current_user': request.user,
-#                            'message_receive_unread': message_receive_unread,
-#                            'message_receive_read': message_receive_read,
-#                            }
-#                   )
 
 
 @login_required
@@ -595,6 +607,8 @@ def reply_message(request, message_slug):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     message = Message.objects.get(id=message_slug)
     request_user = message.request_user
     reply_user = message.reply_user
@@ -640,6 +654,7 @@ def reply_message(request, message_slug):
                            'form': form,
                            'message': message,
                            'message_reply': message_reply,
+                           'message_number': message_number,
                            }
                   )
 
@@ -652,6 +667,8 @@ def show_message(request, message_slug):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     message = {}
     if request.method == 'GET':
         message = Message.objects.get(id=message_slug)
@@ -661,6 +678,7 @@ def show_message(request, message_slug):
                   context={'signin_status': signin_status,
                            'current_user': request.user,
                            'message': message,
+                           'message_number': message_number,
                            }
                   )
 
@@ -672,6 +690,8 @@ def recommendation(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     request_user = request.user.username
     user_item = list(Need.objects.filter(username=request_user).values())
     need_list = []
@@ -767,6 +787,7 @@ def recommendation(request):
                            "page_nums": page_nums,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'message_number': message_number,
                            })
 
 
@@ -775,6 +796,8 @@ def top(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     if request.method == 'GET':
         sponsor_t_profile = list(
             UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
@@ -793,6 +816,7 @@ def top(request):
                   context={"lists": return_profile,
                            'signin_status': signin_status,
                            'current_user': request.user,
+                           'message_number': message_number,
                            }
                   )
 
@@ -802,6 +826,8 @@ def search(request):
         signin_status = False
     else:
         signin_status = True
+    request_user = request.user.username
+    message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     charity_s_profile = []
     user_item = []
     page = 1
@@ -866,5 +892,6 @@ def search(request):
                            'page_form': page_form,
                            "pages": page,
                            "page_nums": page_nums,
+                           'message_number': message_number,
                            }
                   )

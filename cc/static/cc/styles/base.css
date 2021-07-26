@@ -72,6 +72,11 @@
     font-family: "Apple Chancery";
 }
 
+.wrapper .sidebar ul li a p {
+    color: #993934;
+    font-family: "Apple Chancery";
+}
+
 .wrapper .action{
     position: fixed;
     top: 20px;
