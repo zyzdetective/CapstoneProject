@@ -46,3 +46,9 @@ front and back-end views, and fixed the bug that the list page was out of index,
 merged the updated database into the existing branch and fix the bugs caused by the
 database changes. I wrote the database related views for the top sponsor and search
 pages to complete the backend part of sprint 3.
+
+Week 8
+I fix the web page static resource references, rewrite the search and recommendation 
+page form submission method using JavaScript, and implement form aggregation passing.
+Discussed user psychology alerts and user-friendly notification display and parameter 
+passing interface with the front-end lead.
