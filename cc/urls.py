@@ -26,4 +26,5 @@ urlpatterns = [
     path('test_r', views.test_recommendation),
     path('test_s', views.test_search),
     path('test_t', views.test_top),
+    path('test_u', views.test_u),
 ]

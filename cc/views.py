@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm, RecommendationForm, SearchForm
+from cc.forms import SignupForm, SigninForm, EditForm, ItemForm, PageForm, ConnectForm, MessageForm, RecommendationForm, \
+    SearchForm
 from cc.models import User, UserCharity, UserSponsor, Need, Provide, Message, Connect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models import Count
-import math,pytz,datetime
+import math, pytz, datetime
 from django import forms
 
 
@@ -578,8 +579,10 @@ def message_box(request):
         request_user = request.user.username
         message_receive_unread_in = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
         message_receive_read_in = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
+        message_read_in = get_zip(message_receive_read_in)
         message_receive_unread_out = list(Message.objects.filter(request_user=request_user, message_type=1).values())
-        message_receive_read_out = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
+        message_receive_read_out = list(
+            Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
         print(message_receive_unread_in)
         print(message_receive_read_in)
         test = list(User.objects.values())
@@ -589,14 +592,12 @@ def message_box(request):
                   context={'signin_status': signin_status,
                            'current_user': request.user,
                            'message_receive_unread_in': message_receive_unread_in,
-                           'message_receive_read_in': message_receive_read_in,
+                           'message_receive_read_in': message_read_in,
                            'message_receive_unread_out': message_receive_unread_out,
                            'message_receive_read_out': message_receive_read_out,
                            'message_number': message_number,
                            }
                   )
-
-
 
 
 @login_required
@@ -862,7 +863,6 @@ def search(request):
         # print('----')
         # print(user_item)
 
-
         if len(charity_s_profile) / 9 > int(len(charity_s_profile) / 9):
             page = int(len(charity_s_profile) / 9) + 1
         else:
@@ -881,7 +881,6 @@ def search(request):
         else:
             charity_s_profile = charity_s_profile[(page_nums - 1) * 9:page_nums * 9]
 
-
     return_profile = zip(charity_s_profile, user_item)
     return render(request=request,
                   template_name="cc/search.html",
@@ -895,3 +894,42 @@ def search(request):
                            'message_number': message_number,
                            }
                   )
+
+
+def get_obj(username):
+    user = User.objects.get(username=username)
+    user_type = user.user_type
+    if user_type == 1:  # Charity
+        user_obj = UserCharity.objects.get(username=username)
+    else:  # Sponsor
+        user_obj = UserSponsor.objects.get(username=username)
+    return user_obj
+
+
+def get_zip(message_obj):
+    obj_list = []
+    for ele in message_obj:
+        obj_dic = {}
+        request_obj = get_obj(ele['request_user'])
+        reply_obj = get_obj(ele['reply_user'])
+        obj_dic['request_obj'] = request_obj
+        obj_dic['reply_obj'] = reply_obj
+        obj_list.append(obj_dic)
+    return zip(obj_list, message_obj)
+
+
+def test_u(request):
+    request_user = 'Wilder'
+    message_send = list(Message.objects.filter(request_user=request_user).values())
+    zip_send = get_zip(message_send)
+    for ele in zip_send:
+        request_long = ele[0]['request_obj'].long_name
+        reply_long = ele[0]['reply_obj'].long_name
+        print(request_long, reply_long, ele[1])
+
+    t_user = 'Frank'
+    long_n = get_obj(t_user).long_name
+    print(long_n)
+
+    return render(request=request,
+                  template_name="cc/sponsor_list.html")
