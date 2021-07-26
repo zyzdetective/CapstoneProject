@@ -140,6 +140,7 @@ def edit(request):
         if other_items:
             for ele in other_items.split(','):
                 items.append(ele.strip())
+        items = [ele.casefold().capitalize() for ele in items]
         print(long_name, description, website, items, other_items)
 
         if user_type == 1:  # update table Charity and need

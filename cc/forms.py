@@ -18,7 +18,7 @@ class SignupForm(forms.ModelForm):
 
 class SigninForm(forms.Form):
     username = forms.CharField(label='Your username')
-    password = forms.CharField(label='Your password')
+    password = forms.CharField(widget=forms.PasswordInput, label='Your password')
 
 
 class EditForm(forms.ModelForm):
@@ -27,6 +27,7 @@ class EditForm(forms.ModelForm):
         fields = ['long_name', 'description', 'website']
         widgets = {'description': forms.Textarea(attrs={'class': 'description_css'}),
                    }
+
 
 class ItemForm(forms.Form):
     items = forms.MultipleChoiceField(
@@ -50,7 +51,10 @@ class MessageForm(forms.Form):
 
 
 class RecommendationForm(forms.Form):
-    recommendation_choice = forms.ChoiceField(choices=((0, 'All Sponsors'), (1, 'One connection Sponsors'), (2, 'Zero connection Sponsors')), widget=forms.Select())
+    recommendation_choice = forms.ChoiceField(
+        choices=((0, 'All Sponsors'), (1, 'One connection Sponsors'), (2, 'Zero connection Sponsors')),
+        widget=forms.Select())
+
 
 class SearchForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(), required=False, label='Name')
@@ -63,4 +67,3 @@ class SearchForm(forms.Form):
 #                                      widget=forms.Select(attrs={'class': 'form-control'}))
 #     other_needs = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 #     website = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-
