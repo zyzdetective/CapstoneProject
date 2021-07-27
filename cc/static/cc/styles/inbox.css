@@ -112,11 +112,11 @@ background:#eee
 .email-app .inbox .message.unread .header,
 .email-app .inbox .message.unread .title {
     /*font-weight: bold;*/
-    font-family: "American Typewriter";
+    font-family: sans-serif;
 }
 
 .email-app .inbox .message.unread .header span{
-    font-family: "American Typewriter";
+    font-family: sans-serif;
 
 }
 
@@ -174,7 +174,7 @@ background:#eee
     font-size: 12px;
     color: #9faecb;
     align-self: center;
-    font-family: "American Typewriter";
+    font-family: sans-serif;
 }
 
 .email-app .message .details .header .from span {

@@ -20,15 +20,15 @@ Message From {{ request_long }} to {{ reply_long }}
 {#                    {{ message.reply_user }}#}
 {#                  </i>#}
               </h4>
-            <p style="size: A4; font-family: 'American Typewriter'">Request Message:</p>
-            <p style="font-family: 'Apple Chancery'">{{ message.message_request }}</p>
-            <p style="size: A4; font-family: 'American Typewriter'">Reply Message:</p>
+            <p style="size: A4; font-family: sans-serif">Request Message:</p>
+            <p style="font-family: cursive">{{ message.message_request }}</p>
+            <p style="size: A4; font-family: sans-serif">Reply Message:</p>
             {% if message.message_type == 1 %}
-                <p style="size: A4; font-family: 'American Typewriter'">Not yet replied.</p>
+                <p style="size: A4; font-family: sans-serif">Not yet replied.</p>
             {% elif message.message_type == 2 %}
-                <p style="font-family: 'Apple Chancery'">{{ message.message_reply }}</p>
+                <p style="font-family: cursive">{{ message.message_reply }}</p>
             {% elif message.message_type == 3 %}
-                <p style="font-family: 'Apple Chancery'">{{ message.message_reply }}</p>
+                <p style="font-family: cursive">{{ message.message_reply }}</p>
             {% endif %}
             <input type="button" class="blue" name="OK" style="width: 10%" onclick="javascript:history.back(-1);" value="OK">
               </div>

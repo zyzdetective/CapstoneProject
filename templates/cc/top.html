@@ -10,41 +10,7 @@
 
 {% block body %}
     <div>
-    {% comment %}<div class="container">
-
-      <div class="row row-cols-1 row-cols-sm-2 g-5">
-           {% for sponsor,item in lists %}
-        <div class="col" >
-          <div class="card shadow-sm" style="background: burlywood">
-            <div >
-              <p class="card-text">
-               Sponsor Name:
-                  {{ sponsor.long_name }}<br/>
-              We have:
-            {% for ele in item %}
-
-                {{ ele.need }}
-                {% endfor %}
-
-              </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{% url 'details' sponsor.username %}" class="btn" style="color: #3c763d">More Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-          {% endfor %}
-
-      </div>
-    </div>{% endcomment %}
     <div class="container" style="margin-top: -100px; align-items: center">
-            <!--   <div class="card card-block mb-2">
-                <h4 class="card-title">Card 1</h4>
-                <p class="card-text">Welcom to bootstrap card styles</p>
-                <a href="#" class="btn btn-primary">Submit</a>
-              </div>   -->
             <div class="row">
                 <div class="row row-cols-1 row-cols-sm-3 g-3">
                     {% for sponsor,item in lists %}
@@ -52,11 +18,11 @@
                             <h4 class="card-title text-right"><i class="material-icons">{{ sponsor.long_name }}</i></h4>
 {% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
                                  alt="Photo of sunset">{% endcomment %}
-                            <p style="size: A4; font-family: 'American Typewriter'">Successful Connection:</p>
-                                <p style="font-family: 'Apple Chancery'">{{ sponsor.connection }} times</p>
-                            <p style="size: A4; font-family: 'American Typewriter'">We have:</p>
+                            <p style="size: A4; font-family: sans-serif">Successful Connection:</p>
+                                <p style="font-family: cursive">{{ sponsor.connection }} times</p>
+                            <p style="size: A4; font-family: sans-serif">We have:</p>
                             {% for ele in item.1 %}
-                                <p style="font-family: 'Apple Chancery'">{{ ele.need }}</p>
+                                <p style="font-family: cursive">{{ ele.need }}</p>
                             {% endfor %}
 
                             <div class="d-flex justify-content-between align-items-center">

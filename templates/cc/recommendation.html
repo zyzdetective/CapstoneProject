@@ -44,35 +44,7 @@
         <button class="blue" type="submit" onClick="submitAllDocumentForms()">Select</button>
     </center>
     <div>
-        {% comment %}<div class="container">
 
-      <div class="row row-cols-1 row-cols-sm-2 g-5">
-           {% for sponsor, item in return_profile %}
-        <div class="col" >
-          <div class="card shadow-sm" style="background: burlywood">
-            <div >
-              <p class="card-text">
-               Sponsor Name:
-                  {{ sponsor.long_name }}<br/>
-               Needs:
-                  {% for ele in item.1 %}
-                      {{ ele.need }}
-                {% endfor %}
-               <br/>Matching needs:
-                  {{ item.0 }} items<br/>
-              </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{% url 'details' sponsor.username %}" class="btn" style="color: #3c763d">More Details</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-          {% endfor %}
-
-      </div>
-    </div>{% endcomment %}
         <div class="container" style="margin-right: 150px">
             <!--   <div class="card card-block mb-2">
                 <h4 class="card-title">Card 1</h4>
@@ -87,9 +59,9 @@
                                 Name: {{ sponsor.long_name }}</i></h4>
                             {% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
                                  alt="Photo of sunset">{% endcomment %}
-                            <p style="size: A4; font-family: 'American Typewriter'">We Have:</p>
+                            <p style="size: A4; font-family: sans-serif">We Have:</p>
                             {% for ele in item.1 %}
-                                <p style="font-family: 'Apple Chancery'">{{ ele.need }}</p>
+                                <p style="font-family: cursive">{{ ele.need }}</p>
                             {% endfor %}
                             </br>Matching needs:
                             {{ item.0 }} items<br/>
@@ -111,12 +83,6 @@
     </div>
     <p></p>
     <center>
-        {#    <form method="POST" style="margin-top: 50px">#}
-        {#        {% csrf_token %}#}
-        {#        {{page_form.as_p}}#}
-        {#            <button class="blue" type="submit">Go</button>#}
-        {#        </form>#}
-        {#        <p>Page {{ page_nums }} of {{ pages }}</p>#}
         <form method="POST" id="form2">
             {{ page_form.as_p }}
         </form>

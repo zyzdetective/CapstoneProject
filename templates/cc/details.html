@@ -51,21 +51,21 @@
                         </h4>
                         {% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
                                  alt="Photo of sunset">{% endcomment %}
-                        <p style="size: A4; font-family: 'American Typewriter'">Email:</p>
-                        <p style="font-family: 'Apple Chancery'">{{ details.email }}</p>
-                        <p style="size: A4; font-family: 'American Typewriter'">Description:</p>
-                        <p style="font-family: 'Apple Chancery'">{{ details.description | linebreaksbr }}</p>
-                        <p style="size: A4; font-family: 'American Typewriter'">Website:</p>
+                        <p style="size: A4; font-family: sans-serif">Email:</p>
+                        <p style="font-family: sans-serif">{{ details.email }}</p>
+                        <p style="size: A4; font-family: sans-serif">Description:</p>
+                        <p style="font-family: cursive">{{ details.description | linebreaksbr }}</p>
+                        <p style="size: A4; font-family: sans-serif">Website:</p>
                         <a href="{{ details.website }}">
-                        <p style="font-family: 'Apple Chancery'">{{ details.website }}</p>
+                        <p style="font-family: cursive">{{ details.website }}</p>
                         </a>
                         {% if details_user.user_type == 1 %}
-                            <p style="size: A4; font-family: 'American Typewriter'">What we need:</p>
+                            <p style="size: A4; font-family: sans-serif">What we need:</p>
                         {% else %}
-                            <p style="size: A4; font-family: 'American Typewriter'">What we have:</p>
+                            <p style="size: A4; font-family: sans-serif">What we have:</p>
                         {% endif %}
                         {% for ele in item %}
-                            <p style="font-family: 'Apple Chancery'">{{ ele.need }}</p>
+                            <p style="font-family: cursive">{{ ele.need }}</p>
                         {% endfor %}
                         {% if signin_status %}
                             {% if current_user.user_type != details_user.user_type %}
@@ -116,14 +116,9 @@
 
                     <h4 class="card-title text-right"><i class="material-icons">Name: {{ ele.long_name }}</i>
                         </h4>
-                    {% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
-                                 alt="Photo of sunset">{% endcomment %}
-
-{#                                    <p style="size: A4; font-family: 'American Typewriter'">Charity name:</p>#}
-{#                                    <p style="font-family: 'Apple Chancery'">{{ ele.long_name }}</p>#}
-                                    <p style="size: A4; font-family: 'American Typewriter'">Website:</p>
+                                    <p style="size: A4; font-family: sans-serif">Website:</p>
                                     <a href="{{ ele.website }}" >
-                                    <p style="font-family: 'Apple Chancery'">{{ ele.website }}</p></a>
+                                    <p style="font-family: cursive">{{ ele.website }}</p></a>
                                     <a href="{% url 'details' ele.username %}" class="button">More
                                         Details</a><br/>
                 </div>

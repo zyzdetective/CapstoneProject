@@ -11,11 +11,11 @@
     <div class="p1">
             <form method="post" class="container" style="max-width: 40rem">
                 {% csrf_token %}
-                <p style="font-family: 'American Typewriter'">Request Message:</p>
+                <p style="font-family: sans-serif">Request Message:</p>
                 {{ message.message_request }}<br/>
-                <p style="font-family: 'American Typewriter'">Reply Message:</p>
+                <p style="font-family: sans-serif">Reply Message:</p>
                 {{ form.message_reply }}<br/>
-                <p style="font-family: 'American Typewriter'">Your reply:</p>
+                <p style="font-family: sans-serif">Your reply:</p>
                 {{ form.your_reply }}<br/>
                 <p></p>
                 <a href="{% url 'message_box' %}">
