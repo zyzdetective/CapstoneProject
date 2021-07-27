@@ -38,11 +38,11 @@
                     <li class="message unread">
 
                             <div class="header">
-                                <span class="from" style="text-decoration: #8a6d3b;  font-family: 'American Typewriter'">Message From: {{ item.request_user }}</span>
+                                <span class="from" style="text-decoration: #8a6d3b;  font-family: 'American Typewriter'">Message From: {{ item.0.request_obj.long_name }}</span>
                                 <span class="date"><span class="fa fa-paper-clip">
-                                </span>Request Time: {{ item.request_time }}<br/>
-                            {% if item.reply_time != '' %}
-                            Reply Time: {{ item.reply_time }}
+                                </span>Request Time: {{ item.1.request_time }}<br/>
+                            {% if item.1.reply_time != '' %}
+                            Reply Time: {{ item.1.reply_time }}
                             {% else %}
                             Reply Time: Not yet replied.
                             {% endif %}
@@ -54,7 +54,7 @@
                             </div>
 
                         <div class="title" style="font-family: 'American Typewriter'">
-                            <a style="color: #8a6d3b" href="{% url 'reply_message' item.id %}">More Details</a>
+                            <a style="color: #8a6d3b" href="{% url 'reply_message' item.1.id %}">More Details</a>
 
                         </div>
 {#                        <div class="description" style="font-size: x-large; font-family: 'Apple Chancery'">#}
@@ -130,11 +130,11 @@
                 {% for item in message_receive_unread_out %}
                     <li class="message unread">
                        <div class="header">
-                                <span class="from" style="text-decoration: #8a6d3b;  font-family: 'American Typewriter'">Message To: {{ item.reply_user }}</span>
+                                <span class="from" style="text-decoration: #8a6d3b;  font-family: 'American Typewriter'">Message To: {{ item.0.reply_obj.long_name }}</span>
                                 <span class="date"><span class="fa fa-paper-clip">
-                                </span>Request Time: {{ item.request_time }}<br/>
-                            {% if item.reply_time != '' %}
-                            Reply Time: {{ item.reply_time }}
+                                </span>Request Time: {{ item.1.request_time }}<br/>
+                            {% if item.1.reply_time != '' %}
+                            Reply Time: {{ item.1.reply_time }}
                             {% else %}
                             Reply Time: Not yet replied.
                             {% endif %}
@@ -146,7 +146,7 @@
                             </div>
 
                         <div class="title" style="font-family: 'American Typewriter'">
-                            <a style="color: #8a6d3b" href="{% url 'show_message' item.id %}">More Details</a>
+                            <a style="color: #8a6d3b" href="{% url 'show_message' item.1.id %}">More Details</a>
 
                         </div>
 
@@ -159,11 +159,11 @@
                 {% for item in message_receive_read_out %}
                     <li class="message unread">
                         <div class="header">
-                                <span class="from" style="text-decoration: #8a6d3b;  font-family: 'American Typewriter'">Message To: {{ item.reply_user }}</span>
+                                <span class="from" style="text-decoration: #8a6d3b;  font-family: 'American Typewriter'">Message To: {{ item.0.reply_obj.long_name }}</span>
                                 <span class="date"><span class="fa fa-paper-clip">
-                                </span>Request Time: {{ item.request_time }}<br/>
-                            {% if item.reply_time != '' %}
-                            Reply Time: {{ item.reply_time }}
+                                </span>Request Time: {{ item.1.request_time }}<br/>
+                            {% if item.1.reply_time != '' %}
+                            Reply Time: {{ item.1.reply_time }}
                             {% else %}
                             Reply Time: Not yet replied.
                             {% endif %}
@@ -177,18 +177,18 @@
                                                 <div class="title"; style="font-family: 'American Typewriter'">
                         Status:
                         </div>
-                        {% if item.message_type == 2 %}
+                        {% if item.1.message_type == 2 %}
                             <div class="description" style="font-size: larger; font-family: 'Apple Chancery'">
                             Accepted
                             </div>
-                        {% elif item.message_type == 3 %}
+                        {% elif item.1.message_type == 3 %}
                             <div class="description" style="font-size: larger; font-family: 'Apple Chancery'">
                             Rejected
                             </div>
                         {% endif %}
                         <p></p>
                         <div class="title" style="font-family: 'American Typewriter'">
-                            <a style="color: #8a6d3b" href="{% url 'show_message' item.id %}">More Details</a>
+                            <a style="color: #8a6d3b" href="{% url 'show_message' item.1.id %}">More Details</a>
 
                         </div>
                     </li>

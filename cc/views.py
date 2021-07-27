@@ -532,6 +532,8 @@ def connect(request, connect_slug):
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     print(connect_slug)
     message_request = ''
+    reply_long = get_obj(connect_slug).long_name
+    print(reply_long)
     if request.method == 'GET':
         form = ConnectForm
         print('aa')
@@ -560,16 +562,17 @@ def connect(request, connect_slug):
                            'connect_slug': connect_slug,
                            'message_request': message_request,
                            'message_number': message_number,
+                           'reply_long': reply_long,
                            }
                   )
 
 
 @login_required
 def message_box(request):
-    message_receive_unread_in = []
-    message_receive_read_in = []
-    message_receive_unread_out = []
-    message_receive_read_out = []
+    message_unread_in = []
+    message_read_in = []
+    message_unread_out = []
+    message_read_out = []
     if request.user.is_anonymous:
         signin_status = False
     else:
@@ -579,11 +582,13 @@ def message_box(request):
     if request.method == 'GET':
         request_user = request.user.username
         message_receive_unread_in = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
+        message_unread_in = get_zip(message_receive_unread_in)
         message_receive_read_in = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
         message_read_in = get_zip(message_receive_read_in)
         message_receive_unread_out = list(Message.objects.filter(request_user=request_user, message_type=1).values())
-        message_receive_read_out = list(
-            Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
+        message_unread_out = get_zip(message_receive_unread_out)
+        message_receive_read_out = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
+        message_read_out = get_zip(message_receive_read_out)
         print(message_receive_unread_in)
         print(message_receive_read_in)
         test = list(User.objects.values())
@@ -592,10 +597,10 @@ def message_box(request):
                   template_name="cc/message_box.html",
                   context={'signin_status': signin_status,
                            'current_user': request.user,
-                           'message_receive_unread_in': message_receive_unread_in,
+                           'message_receive_unread_in': message_unread_in,
                            'message_receive_read_in': message_read_in,
-                           'message_receive_unread_out': message_receive_unread_out,
-                           'message_receive_read_out': message_receive_read_out,
+                           'message_receive_unread_out': message_unread_out,
+                           'message_receive_read_out': message_read_out,
                            'message_number': message_number,
                            }
                   )
@@ -612,6 +617,9 @@ def reply_message(request, message_slug):
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
     message = Message.objects.get(id=message_slug)
+    request_long = get_obj(message.request_user).long_name
+    reply_long = get_obj(message.reply_user).long_name
+    print(request_long, reply_long)
     request_user = message.request_user
     reply_user = message.reply_user
     if request.method == 'GET':
@@ -655,6 +663,8 @@ def reply_message(request, message_slug):
                            'current_user': request.user,
                            'form': form,
                            'message': message,
+                           'request_long': request_long,
+                           'reply_long': reply_long,
                            'message_reply': message_reply,
                            'message_number': message_number,
                            }
@@ -674,12 +684,16 @@ def show_message(request, message_slug):
     message = {}
     if request.method == 'GET':
         message = Message.objects.get(id=message_slug)
-
+        request_long = get_obj(message.request_user).long_name
+        reply_long = get_obj(message.reply_user).long_name
+        print(request_long, reply_long)
     return render(request=request,
                   template_name="cc/show_message.html",
                   context={'signin_status': signin_status,
                            'current_user': request.user,
                            'message': message,
+                           'request_long': request_long,
+                           'reply_long': reply_long,
                            'message_number': message_number,
                            }
                   )
