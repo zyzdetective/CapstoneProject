@@ -41,6 +41,14 @@ Week 7
 
 Updating a new function that we display message with sydney time. Fixing the bug that recommendation list will not ordered 
 by the mathing needs. Fixing bug that details page will not shown connected user oredered by connection times.
-Fixing the bug that skip pages will not show the true page numbers.Discussing the next function that we hope message 
-system could use mutiple times, not only using for one request and one reply. This will be our novelty idea. 
-Discussing the database changes for this new function and the changes of front-end.Fixing a front-end details/slug bug. 
+Fixing the bug that skip pages will not show the true page numbers. 
+Discussing the database changes for this new function and the changes of front-end.Fixing a front-end details/slug bug.
+
+week 8
+
+participating demo2 display. participating the discussion of final report structure. participating test final version.
+
+week 9
+
+writing the data model part in the final report. This part presents the structure of database, description of tables in database,
+and implementation of database in this project.
