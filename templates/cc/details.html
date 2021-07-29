@@ -54,10 +54,10 @@
                         <p style="size: A4; font-family: sans-serif">Email:</p>
                         <p style="font-family: sans-serif">{{ details.email }}</p>
                         <p style="size: A4; font-family: sans-serif">Description:</p>
-                        <p style="font-family: cursive">{{ details.description | linebreaksbr }}</p>
+                        <p style="font-family: fantasy">{{ details.description | linebreaksbr }}</p>
                         <p style="size: A4; font-family: sans-serif">Website:</p>
                         <a href="{{ details.website }}">
-                        <p style="font-family: cursive">{{ details.website }}</p>
+                        <p style="font-family: fantasy">{{ details.website }}</p>
                         </a>
                         {% if details_user.user_type == 1 %}
                             <p style="size: A4; font-family: sans-serif">What we need:</p>
@@ -65,7 +65,7 @@
                             <p style="size: A4; font-family: sans-serif">What we have:</p>
                         {% endif %}
                         {% for ele in item %}
-                            <p style="font-family: cursive">{{ ele.need }}</p>
+                            <p style="font-family: fantasy">{{ ele.need }}</p>
                         {% endfor %}
                         {% if signin_status %}
                             {% if current_user.user_type != details_user.user_type %}
@@ -118,7 +118,7 @@
                         </h4>
                                     <p style="size: A4; font-family: sans-serif">Website:</p>
                                     <a href="{{ ele.website }}" >
-                                    <p style="font-family: cursive">{{ ele.website }}</p></a>
+                                    <p style="font-family: fantasy">{{ ele.website }}</p></a>
                                     <a href="{% url 'details' ele.username %}" class="button">More
                                         Details</a><br/>
                 </div>
