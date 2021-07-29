@@ -52,3 +52,12 @@ I fix the web page static resource references, rewrite the search and recommenda
 page form submission method using JavaScript, and implement form aggregation passing.
 Discussed user psychology alerts and user-friendly notification display and parameter 
 passing interface with the front-end lead.
+
+Week 9
+I Fix the bug of password hiding on login page, fixed the problem of adding case
+uniformity of needs/provides on profile editing page, added line break function for
+message and description section, solve the problem of inconsistent list display. Fix
+the problem of user name display in the message page with Weiran Li. Add the function
+of jumping to edit page automatically after registration and increase the url matching
+robustness. Write the final report, responsible for the system architecture part and
+back-end challenge part.

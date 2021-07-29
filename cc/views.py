@@ -62,7 +62,15 @@ def signup(request):
                 charity = UserCharity.objects.create(user=user, username=username, email=email)
             else:
                 sponsor = UserSponsor.objects.create(user=user, username=username, email=email)
-            return redirect("/home/")
+
+            # authenticate
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirect to edit page.
+                return redirect("/edit/")
+            else:
+                return redirect("/home/")
 
     return render(request=request,
                   template_name="cc/signup.html",

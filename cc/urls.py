@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from cc import views
 
 urlpatterns = [
@@ -18,4 +18,5 @@ urlpatterns = [
     path('recommendation/', views.recommendation, name='recommendation'),
     path('top_sponsors/', views.top, name='top_sponsors'),
     path('search/', views.search, name='search'),
+    re_path(r'.*', views.base, name='home'),
 ]
