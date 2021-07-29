@@ -12,7 +12,7 @@
             <form method="post" class="container" style="max-width: 40rem">
                 {% csrf_token %}
                 <p style="font-family: sans-serif">Request Message:</p>
-                {{ message.message_request }}<br/>
+                {{ message.message_request | linebreaksbr }}<br/>
                 <p style="font-family: sans-serif">Reply Message:</p>
                 {{ form.message_reply }}<br/>
                 <p style="font-family: sans-serif">Your reply:</p>

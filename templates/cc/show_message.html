@@ -21,20 +21,23 @@ Message From {{ request_long }} to {{ reply_long }}
 {#                  </i>#}
               </h4>
             <p style="size: A4; font-family: sans-serif">Request Message:</p>
-            <p style="font-family: fantasy">{{ message.message_request }}</p>
+            <p style="font-family: fantasy">{{ message.message_request | linebreaksbr }}</p>
             <p style="size: A4; font-family: sans-serif">Reply Message:</p>
             {% if message.message_type == 1 %}
                 <p style="size: A4; font-family: sans-serif">Not yet replied.</p>
             {% elif message.message_type == 2 %}
-                <p style="font-family: fantasy">{{ message.message_reply }}</p>
+                <p style="font-family: fantasy">{{ message.message_reply | linebreaksbr }}</p>
             {% elif message.message_type == 3 %}
-                <p style="font-family: fantasy">{{ message.message_reply }}</p>
+                <p style="font-family: fantasy">{{ message.message_reply | linebreaksbr }}</p>
             {% endif %}
-            <input type="button" class="blue" name="OK" style="width: 10%" onclick="javascript:history.back(-1);" value="OK">
               </div>
              </div>
             </div>
         </div>
     </div>
+    </center>
+    <center>
+    <p></p>
+    <input type="button" class="blue" name="OK" style="width: 10%" onclick="javascript:history.back(-1);" value="OK">
     </center>
 {% endblock %}
