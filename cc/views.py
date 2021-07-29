@@ -15,12 +15,14 @@ from django import forms
 # Create your views here.
 
 def base(request):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
     return render(request=request,
                   template_name="base/base.html",
                   context={'signin_status': signin_status,
@@ -31,15 +33,16 @@ def base(request):
 
 
 def signup(request):
-    print(f'current user:{request.user}')
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
-    if request.method == 'GET':
 
+    # signup
+    if request.method == 'GET':
         signup_form = SignupForm
     else:
         signup_form = SignupForm(request.POST)
@@ -48,36 +51,39 @@ def signup(request):
             email = signup_form.data.get('email')
             password = signup_form.data.get('password')
             user_type = signup_form.data.get('user_type')
-            print(username, email, password, user_type)
-
             user = User.objects.create_user(
                 username=username,
                 password=password,
                 email=email,
                 user_type=user_type,
             )
+            # add user
             if int(user_type[0]) == 1:
                 charity = UserCharity.objects.create(user=user, username=username, email=email)
             else:
                 sponsor = UserSponsor.objects.create(user=user, username=username, email=email)
             return redirect("/home/")
+
     return render(request=request,
                   template_name="cc/signup.html",
                   context={"form": signup_form,
                            'signin_status': signin_status,
                            'current_user': request.user,
                            'message_number': message_number,
-                           })
+                           }
+                  )
 
 
 def signin(request):
-    print(f'current user:{request.user}')
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # signin
     if request.method == 'GET':
 
         signin_form = SigninForm
@@ -85,16 +91,15 @@ def signin(request):
         signin_form = SigninForm(request.POST)
         username = signin_form.data.get('username')
         password = signin_form.data.get('password')
-        print(username, password)
+
+        # authenticate
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            print('successful')
             login(request, user)
             # Redirect to a success page.
             return redirect("/home/")
         else:
             # Return an 'invalid login' error message.
-            print('unsuccessful')
             return render(request=request,
                           template_name="cc/signin.html",
                           context={"form": signin_form,
@@ -102,7 +107,8 @@ def signin(request):
                                    'signin_status': signin_status,
                                    'current_user': request.user,
                                    'message_number': message_number,
-                                   })
+                                   }
+                          )
 
     return render(request=request,
                   template_name="cc/signin.html",
@@ -110,26 +116,27 @@ def signin(request):
                            'signin_status': signin_status,
                            'current_user': request.user,
                            'message_number': message_number,
-                           })
+                           }
+                  )
 
 
 @login_required
 def edit(request):
-    print(f'current user:{request.user}')
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
-    if request.method == 'GET':
 
+    # edit
+    if request.method == 'GET':
         edit_form = EditForm
         item_form = ItemForm
     else:
         user = request.user.username  # this user -> User.username
         user_type = request.user.user_type
-        print(f'user:{user}')
         edit_form = EditForm(request.POST)
         item_form = ItemForm(request.POST)
         long_name = edit_form.data.get('long_name')
@@ -141,8 +148,8 @@ def edit(request):
             for ele in other_items.split(','):
                 items.append(ele.strip())
         items = [ele.casefold().capitalize() for ele in items]
-        print(long_name, description, website, items, other_items)
 
+        # set update obj
         if user_type == 1:  # update table Charity and need
             update_obj = UserCharity.objects.get(username=user)
             update_item = Need
@@ -182,32 +189,33 @@ def edit(request):
                            'signin_status': signin_status,
                            'current_user': request.user,
                            'message_number': message_number,
-                           })
+                           }
+                  )
 
 
 @login_required
 def signout(request):
-    print(f'current user:{request.user}')
-
     out = logout(request)
-    print(f'signout {out}')  # None
     return redirect("/signin/")
 
 
 def details(request, details_slug):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # details
     try:
         user = User.objects.get(username=details_slug)
         if request.method == 'GET':
             username = user.username
             user_type = user.user_type
             connection_list = []
-            if user_type == 1:  # update table Charity and need
+            if user_type == 1:  # Charity and need
                 user_profile = UserCharity.objects.get(username=username)
                 user_item = list(Need.objects.filter(username=username).values())
                 connection_profile = Connect.objects.filter(charity_user=username).values('sponsor_user').annotate(
@@ -215,7 +223,7 @@ def details(request, details_slug):
                 for ele in list(connection_profile):
                     connection_list.append(ele['sponsor_user'])
                 connection_user = UserSponsor.objects.filter(username__in=connection_list)
-            else:  # update table Sponsor and provide
+            else:  # Sponsor and provide
                 user_profile = UserSponsor.objects.get(username=username)
                 user_item = list(Provide.objects.filter(username=username).values())
                 connection_profile = Connect.objects.filter(sponsor_user=username).values('charity_user').annotate(
@@ -224,11 +232,9 @@ def details(request, details_slug):
                     connection_list.append(ele['charity_user'])
                 connection_user = UserCharity.objects.filter(username__in=connection_list)
 
+            # return connection user with connection time sort
             connection_user = sorted(list(connection_user.values()), key=lambda x: connection_list.index(x['username']))
 
-            print(connection_user)
-            print(username)
-            print(user_type)
         return render(request=request,
                       template_name="cc/details.html",
                       context={"details_found": True,
@@ -239,8 +245,10 @@ def details(request, details_slug):
                                'signin_status': signin_status,
                                'current_user': request.user,
                                'message_number': message_number,
-                               })
+                               }
+                      )
 
+    # no user slug
     except Exception as exc:
         return render(request=request,
                       template_name="cc/details.html",
@@ -248,16 +256,20 @@ def details(request, details_slug):
                                'signin_status': signin_status,
                                'current_user': request.user,
                                'message_number': message_number,
-                               })
+                               }
+                      )
 
 
 def charity_list(request):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # charity list
     if request.method == 'GET':
         form = PageForm
         user_profile = UserCharity.objects.all()[:9]
@@ -273,11 +285,15 @@ def charity_list(request):
         else:
             user_profile = UserCharity.objects.all()[(page_nums - 1) * 9:page_nums * 9]
 
+    # get charity need
     user_item = list()
     for user in user_profile.values('username'):
         username = user['username']
         user_item.append(Need.objects.filter(username_id__exact=username).values())
+
+    # return user info
     user_profile = zip(user_profile, user_item)
+
     return render(request=request,
                   template_name="cc/charity_list.html",
                   context={"lists": user_profile,
@@ -292,12 +308,15 @@ def charity_list(request):
 
 
 def sponsor_list(request):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # sponsor list
     if request.method == 'GET':
         form = PageForm
         user_profile = UserSponsor.objects.all()[:9]
@@ -313,12 +332,15 @@ def sponsor_list(request):
         else:
             user_profile = UserSponsor.objects.all()[(page_nums - 1) * 9:page_nums * 9]
 
+    # get sponsor provide
     user_item = list()
     for user in user_profile.values('username'):
         username = user['username']
         user_item.append(Provide.objects.filter(username_id__exact=username).values())
 
+    # return user info
     user_profile = zip(user_profile, user_item)
+
     return render(request=request,
                   template_name="cc/sponsor_list.html",
                   context={"lists": user_profile,
@@ -328,215 +350,28 @@ def sponsor_list(request):
                            'signin_status': signin_status,
                            'current_user': request.user,
                            'message_number': message_number,
-                           })
-
-
-@login_required
-def test_connect(request):
-    # fake data
-    connect_slug = 'Wilder'
-    message_request = 'hello'
-    # *** fake data ***
-
-    request_user = request.user.username
-    Message.objects.create(request_user=request_user,
-                           reply_user=connect_slug,
-                           message_request=message_request)
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
-
-
-@login_required
-def test_message(request):
-    request_user = request.user.username
-    message_send = list(Message.objects.filter(request_user=request_user).values())
-    message_receive_unread = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
-    message_receive_read = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
-    print(message_send)
-    print(message_receive_unread)
-    print(message_receive_read)
-    # for ele in message_receive_unread:
-    #     type_m = ele.message_type
-    #     print(type_m)
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
-
-
-@login_required
-def test_message_reply(request):
-    # fake data
-    message_slug = '4'
-    message_reply = 'hello too'
-    reply_type = True
-    # *** fake data ***
-    message = Message.objects.get(id=message_slug)
-    request_user = message.request_user
-    reply_user = message.reply_user
-    print(request_user, reply_user)
-    if reply_type:
-        message.message_reply = message_reply
-        message.message_type = 2
-        request_user_type = User.objects.get(username=request_user).user_type
-        print(request_user_type)
-
-        if request_user_type == 1:
-            Connect.objects.create(charity_user=request_user,
-                                   sponsor_user=reply_user)
-            update_charity = UserCharity.objects.get(username=request_user)
-            update_sponsor = UserSponsor.objects.get(username=reply_user)
-        else:
-            Connect.objects.create(charity_user=reply_user,
-                                   sponsor_user=request_user)
-            update_charity = UserCharity.objects.get(username=reply_user)
-            update_sponsor = UserSponsor.objects.get(username=request_user)
-        update_charity.connection += 1
-        update_sponsor.connection += 1
-        update_charity.save()
-        update_sponsor.save()
-    else:
-        message.message_reply = message_reply
-        message.message_type = 3
-    message.save()
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
-
-
-@login_required
-def test_recommendation(request):
-    # fake data
-    recommendation_level = 1  # 0:all 1:only 1 or more connect 2:only no connection
-    # *** fake data ***
-
-    request_user = request.user.username
-    user_item = list(Need.objects.filter(username=request_user).values())
-    print(user_item)
-    need_list = []
-    for ele in user_item:
-        need_list.append(ele['need'])
-    print(need_list)
-    if need_list:
-        sponsor_r = list(Provide.objects.values('username').filter(need__in=need_list).annotate(
-            user_count=Count('username')).order_by('-user_count'))
-        print(sponsor_r)
-
-    sponsor_r_list = []
-    sponsor_r_dict = {}
-    for ele in sponsor_r:
-        sponsor_r_list.append(ele['username'])
-        sponsor_r_dict[ele['username']] = ele['user_count']
-    print(sponsor_r_list)
-    print(sponsor_r_dict)
-
-    if sponsor_r_list:
-        if recommendation_level == 0:
-            sponsor_r_profile = list(
-                UserSponsor.objects.filter(Q(connection__gte=0), username__in=sponsor_r_list).values('username',
-                                                                                                     'long_name'))
-        elif recommendation_level == 1:
-            sponsor_r_profile = list(
-                UserSponsor.objects.filter(Q(connection__gte=1), username__in=sponsor_r_list).values('username',
-                                                                                                     'long_name'))
-        elif recommendation_level == 2:
-            sponsor_r_profile = list(
-                UserSponsor.objects.filter(Q(connection=0), username__in=sponsor_r_list).values('username',
-                                                                                                'long_name'))
-    else:
-        sponsor_r_profile = []
-
-    sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
-    print(sponsor_r_profile)
-
-    user_item = list()
-    for ele in sponsor_r_profile[:10]:
-        user_item.append(
-            (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
-
-    print(user_item)
-
-    return_profile = zip(sponsor_r_profile[:10], user_item)
-    # for ele in return_profile:
-    #     print(ele[0]['long_name'], ele[1][0], ele[1][1])
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
-
-
-def test_search(request):
-    # fake data
-    search_name = 'r'
-    search_description = 'r'
-    search_need = 'o'
-    search_need_list = ['Food', 'Cloth']
-    # *** fake data ***
-
-    # result = UserCharity.objects.filter(username__icontains='Frank').first()
-    # res = result.need_set.all().values()
-    # result = UserCharity.objects.select_related().filter(long_name__icontains='r', need__need='Food').values('username')
-    charity_s_profile = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
-                                                                    description__icontains=search_description,
-                                                                    need__need__icontains=search_need).distinct().values(
-        'username',
-        'long_name',
-        'description')
-    print(charity_s_profile)
-    user_item = list()
-    for ele in charity_s_profile:
-        user_item.append(
-            (ele['long_name'], ele['description'][:20] + '...',
-             Need.objects.filter(username_id__exact=ele['username']).values()))
-
-    print(user_item)
-
-    return_profile = zip(charity_s_profile, user_item)
-    for ele in return_profile:
-        print(ele[0]['long_name'], ele[1][0], ele[1][1], ele[1][2])
-    # result = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
-    #                                                      description__icontains=search_description,
-    #                                                      need__need__in=search_need_list).values('username',
-    #                                                                                                'need__need')
-    # print(result)
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
-
-
-def test_top(request):
-    sponsor_t_profile = list(UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
-                        :10]
-    print(sponsor_t_profile)
-
-    user_item = list()
-    for ele in sponsor_t_profile:
-        user_item.append(
-            (ele['connection'], Provide.objects.filter(username_id__exact=ele['username']).values()))
-
-    print(user_item)
-
-    return_profile = zip(sponsor_t_profile, user_item)
-    for ele in return_profile:
-        print(ele[0]['long_name'], ele[1][0], ele[1][1])
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
+                           }
+                  )
 
 
 @login_required
 def connect(request, connect_slug):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
-    print(connect_slug)
+
+    # default request
     message_request = ''
+    # reply user long name
     reply_long = get_obj(connect_slug).long_name
-    print(reply_long)
+
+    # request connect
     if request.method == 'GET':
         form = ConnectForm
-        print('aa')
     else:
         form = ConnectForm(request.POST)
         message_request = form.data.get('message')
@@ -547,13 +382,8 @@ def connect(request, connect_slug):
                                reply_user=connect_slug,
                                message_request=message_request,
                                request_time=request_time)
-        user_profile_sponsor = UserSponsor.objects.all()
-        user_profile_charity = UserCharity.objects.all()
-        print(user_profile_sponsor)
-        # print(request_user)
-        # print(connect_slug)
-        # print(message_request)
         return redirect(f'/details/{connect_slug}')
+
     return render(request=request,
                   template_name="cc/connect.html",
                   context={'form': form,
@@ -567,32 +397,67 @@ def connect(request, connect_slug):
                   )
 
 
+# get charity obj or sponsor obj with username
+def get_obj(username):
+    user = User.objects.get(username=username)
+    user_type = user.user_type
+    if user_type == 1:  # Charity
+        user_obj = UserCharity.objects.get(username=username)
+    else:  # Sponsor
+        user_obj = UserSponsor.objects.get(username=username)
+    return user_obj
+
+
+# get return zip info with charity obj or sponsor obj
+def get_zip(message_obj):
+    obj_list = []
+    for ele in message_obj:
+        obj_dic = {}
+        request_obj = get_obj(ele['request_user'])
+        reply_obj = get_obj(ele['reply_user'])
+        obj_dic['request_obj'] = request_obj
+        obj_dic['reply_obj'] = reply_obj
+        obj_list.append(obj_dic)
+    return zip(obj_list, message_obj)
+
+
 @login_required
 def message_box(request):
+    # set initiate message list
     message_unread_in = []
     message_read_in = []
     message_unread_out = []
     message_read_out = []
+
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # message box
     if request.method == 'GET':
+        # get return info with request user use custom function get_obj() and get_zip()
         request_user = request.user.username
-        message_receive_unread_in = list(Message.objects.filter(reply_user=request_user, message_type=1).values())
+
+        message_receive_unread_in = list(
+            Message.objects.filter(reply_user=request_user, message_type=1).values())
         message_unread_in = get_zip(message_receive_unread_in)
-        message_receive_read_in = list(Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
+
+        message_receive_read_in = list(
+            Message.objects.filter(Q(message_type__gt=1), reply_user=request_user).values())
         message_read_in = get_zip(message_receive_read_in)
-        message_receive_unread_out = list(Message.objects.filter(request_user=request_user, message_type=1).values())
+
+        message_receive_unread_out = list(
+            Message.objects.filter(request_user=request_user, message_type=1).values())
         message_unread_out = get_zip(message_receive_unread_out)
-        message_receive_read_out = list(Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
+
+        message_receive_read_out = list(
+            Message.objects.filter(Q(message_type__gt=1), request_user=request_user).values())
         message_read_out = get_zip(message_receive_read_out)
-        print(message_receive_unread_in)
-        print(message_receive_read_in)
-        test = list(User.objects.values())
-        print(test)
+
     return render(request=request,
                   template_name="cc/message_box.html",
                   context={'signin_status': signin_status,
@@ -608,18 +473,25 @@ def message_box(request):
 
 @login_required
 def reply_message(request, message_slug):
+    # default reply
     message_reply = ''
-    print(f'slug:{message_slug}')
+
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # get message with slug (id)
     message = Message.objects.get(id=message_slug)
+
+    # get long name for charity and sponsor use custom function get_obj()
     request_long = get_obj(message.request_user).long_name
     reply_long = get_obj(message.reply_user).long_name
-    print(request_long, reply_long)
+
+    # reply message
     request_user = message.request_user
     reply_user = message.reply_user
     if request.method == 'GET':
@@ -629,12 +501,10 @@ def reply_message(request, message_slug):
         message_reply = form.data.get('message_reply')
         reply_type = form.data.get('your_reply')
         reply_time = datetime.datetime.now(pytz.timezone('Australia/Sydney')).strftime("%Y-%m-%d %H:%M:%S")
-
-        # print(message_reply)
-        # print(reply_type)
         request_user_type = User.objects.get(username=request_user).user_type
-        print(request_user_type)
-        if int(reply_type) == 2:
+
+        # update connect table and message table by reply type
+        if int(reply_type) == 2:  # agree
             if request_user_type == 1:
                 Connect.objects.create(charity_user=request_user,
                                        sponsor_user=reply_user)
@@ -649,8 +519,8 @@ def reply_message(request, message_slug):
             update_sponsor.connection += 1
             update_charity.save()
             update_sponsor.save()
-        if int(reply_type) == 3:
-            print('failed')
+        if int(reply_type) == 3:  # disagree
+            pass
         message.message_reply = message_reply
         message.message_type = int(reply_type)
         message.reply_time = reply_time
@@ -673,20 +543,28 @@ def reply_message(request, message_slug):
 
 @login_required
 def show_message(request, message_slug):
-    print(f'slug:{message_slug}')
-
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # default return info
     message = {}
+    request_long = ''
+    reply_long = ''
+
+    # show message
     if request.method == 'GET':
+        # get message with slug (id)
         message = Message.objects.get(id=message_slug)
+
+        # get long name for charity and sponsor use custom function get_obj()
         request_long = get_obj(message.request_user).long_name
         reply_long = get_obj(message.reply_user).long_name
-        print(request_long, reply_long)
+
     return render(request=request,
                   template_name="cc/show_message.html",
                   context={'signin_status': signin_status,
@@ -700,65 +578,75 @@ def show_message(request, message_slug):
 
 
 @login_required
-# @csrf_exempt
 def recommendation(request):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # get request user's need
     request_user = request.user.username
     user_item = list(Need.objects.filter(username=request_user).values())
     need_list = []
     for ele in user_item:
         need_list.append(ele['need'])
+
+    # get recommend sponsor
     if need_list:
         sponsor_r = list(Provide.objects.values('username').filter(need__in=need_list).annotate(
             user_count=Count('username')).order_by('-user_count'))
+
+    # get recommend sponsor info
     sponsor_r_list = []
     sponsor_r_dict = {}
-
     for ele in sponsor_r:
         sponsor_r_list.append(ele['username'])
         sponsor_r_dict[ele['username']] = ele['user_count']
-    print(sponsor_r_list)
-    print(sponsor_r_dict)
+
+    # set default page number
     page = 0
+
+    # recommendation display
     if request.method == 'GET':
-        # recommendation_level = 0
         page_nums = 1
         recommendation_form = RecommendationForm
         page_form = PageForm
 
+        # get return recommend sponsor info
         if sponsor_r_list:
             sponsor_r_profile = list(
                 UserSponsor.objects.filter(Q(connection__gte=0), username__in=sponsor_r_list).values('username',
                                                                                                      'long_name'))
         else:
             sponsor_r_profile = []
+
+        # get all page number
         if len(sponsor_r_profile) / 9 > int(len(sponsor_r_profile) / 9):
             page = int(len(sponsor_r_profile) / 9) + 1
         else:
             page = int(len(sponsor_r_profile) / 9)
         sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))[:9]
-        print(sponsor_r_profile)
+
+        # get sponsor provide and number of match need
         user_item = list()
         for ele in sponsor_r_profile:
             user_item.append(
                 (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
 
+        # get return info
         return_profile = zip(sponsor_r_profile, user_item)
     else:
+        # receive page number and recommendation level
         recommendation_form = RecommendationForm(request.POST)
         page_form = PageForm(request.POST)
         recommendation_level = int(recommendation_form.data.get('recommendation_choice'))
         page_nums = int(page_form.data.get('page'))
-        print('POST')
-        print(sponsor_r_list)
-        print(sponsor_r_dict)
+
+        # get recommend sponsor by recommendation level
         sponsor_r_profile = list()
-        print(sponsor_r_profile)
         if sponsor_r_list:
             if recommendation_level == 0:
                 sponsor_r_profile = list(
@@ -774,18 +662,20 @@ def recommendation(request):
                                                                                                     'long_name'))
         else:
             sponsor_r_profile = []
-        print(sponsor_r_profile)
         sponsor_r_profile = sorted(sponsor_r_profile, key=lambda x: sponsor_r_list.index(x['username']))
+
+        # get all page number
         if len(sponsor_r_profile) / 9 > int(len(sponsor_r_profile) / 9):
             page = int(len(sponsor_r_profile) / 9) + 1
         else:
             page = int(len(sponsor_r_profile) / 9)
-        print(len(sponsor_r_profile))
+
+        # get sponsor provide and number of match need
         user_item = list()
         for ele in sponsor_r_profile:
             user_item.append(
                 (sponsor_r_dict[ele['username']], Provide.objects.filter(username_id__exact=ele['username']).values()))
-        print(len(user_item))
+
         # determine which pages should be displayed
         if (page_nums <= 0) or (page_nums > math.ceil(len(sponsor_r_profile) / 9)):
             page_nums = 1
@@ -793,7 +683,9 @@ def recommendation(request):
         else:
             sponsor_r_profile = sponsor_r_profile[(page_nums - 1) * 9:page_nums * 9]
 
+    # get return info
     return_profile = zip(sponsor_r_profile, user_item)
+
     return render(request=request,
                   template_name="cc/recommendation.html",
                   context={"return_profile": return_profile,
@@ -804,29 +696,34 @@ def recommendation(request):
                            'signin_status': signin_status,
                            'current_user': request.user,
                            'message_number': message_number,
-                           })
+                           }
+                  )
 
 
+# top 10 sponsor everyone can access
 def top(request):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # top 10 sponsor
     if request.method == 'GET':
         sponsor_t_profile = list(
-            UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[
-                            :10]
-        print(sponsor_t_profile)
+            UserSponsor.objects.order_by('-connection').values('username', 'long_name', 'connection'))[:10]
 
+        # get user sponsor provide
         user_item = list()
-        user_item_1 = list()
         for ele in sponsor_t_profile:
             user_item.append(
                 (ele['connection'], Provide.objects.filter(username_id__exact=ele['username']).values()))
-        print(user_item)
+
+        # set return info
         return_profile = zip(sponsor_t_profile, user_item)
+
     return render(request=request,
                   template_name="cc/top.html",
                   context={"lists": return_profile,
@@ -837,16 +734,22 @@ def top(request):
                   )
 
 
+@login_required
 def search(request):
+    # display current user and unread message number
     if request.user.is_anonymous:
         signin_status = False
     else:
         signin_status = True
     request_user = request.user.username
     message_number = len(list(Message.objects.filter(reply_user=request_user, message_type=1).values()))
+
+    # default return info
     charity_s_profile = []
     user_item = []
     page = 1
+
+    # search for charity
     if request.method == 'GET':
         search_form = SearchForm
         page_form = PageForm
@@ -859,36 +762,27 @@ def search(request):
         page_form = PageForm(request.POST)
         page_nums = int(page_form.data.get('page'))
 
-        print(search_name)
-        print(search_description)
-        print(search_need)
-        print(page_nums)
+        # get charity with search requirement (partial matching string for name description and need, case insensitive)
         charity_s_profile = UserCharity.objects.select_related().filter(long_name__icontains=search_name,
                                                                         description__icontains=search_description,
                                                                         need__need__icontains=search_need).distinct().values(
             'username',
             'long_name',
             'description')
-        # print(charity_s_profile)
-        # user_item = list()
-        # for ele in charity_s_profile:
-        #     user_item.append(
-        #         (ele['long_name'], ele['description'][:20] + '...',
-        #          Need.objects.filter(username_id__exact=ele['username']).values()))
-        # print('----')
-        # print(user_item)
 
+        # get all page number
         if len(charity_s_profile) / 9 > int(len(charity_s_profile) / 9):
             page = int(len(charity_s_profile) / 9) + 1
         else:
             page = int(len(charity_s_profile) / 9)
-        print(len(charity_s_profile))
+
+        # get charity need and first 20 characters of description
         user_item = list()
         for ele in charity_s_profile:
             user_item.append(
                 (ele['long_name'], ele['description'][:20] + '...',
                  Need.objects.filter(username_id__exact=ele['username']).values()))
-        print(len(user_item))
+
         # determine which pages should be displayed
         if (page_nums <= 0) or (page_nums > math.ceil(len(charity_s_profile) / 9)):
             page_nums = 1
@@ -896,6 +790,7 @@ def search(request):
         else:
             charity_s_profile = charity_s_profile[(page_nums - 1) * 9:page_nums * 9]
 
+    # get return info
     return_profile = zip(charity_s_profile, user_item)
     return render(request=request,
                   template_name="cc/search.html",
@@ -909,42 +804,3 @@ def search(request):
                            'message_number': message_number,
                            }
                   )
-
-
-def get_obj(username):
-    user = User.objects.get(username=username)
-    user_type = user.user_type
-    if user_type == 1:  # Charity
-        user_obj = UserCharity.objects.get(username=username)
-    else:  # Sponsor
-        user_obj = UserSponsor.objects.get(username=username)
-    return user_obj
-
-
-def get_zip(message_obj):
-    obj_list = []
-    for ele in message_obj:
-        obj_dic = {}
-        request_obj = get_obj(ele['request_user'])
-        reply_obj = get_obj(ele['reply_user'])
-        obj_dic['request_obj'] = request_obj
-        obj_dic['reply_obj'] = reply_obj
-        obj_list.append(obj_dic)
-    return zip(obj_list, message_obj)
-
-
-def test_u(request):
-    request_user = 'Wilder'
-    message_send = list(Message.objects.filter(request_user=request_user).values())
-    zip_send = get_zip(message_send)
-    for ele in zip_send:
-        request_long = ele[0]['request_obj'].long_name
-        reply_long = ele[0]['reply_obj'].long_name
-        print(request_long, reply_long, ele[1])
-
-    t_user = 'Frank'
-    long_n = get_obj(t_user).long_name
-    print(long_n)
-
-    return render(request=request,
-                  template_name="cc/sponsor_list.html")
