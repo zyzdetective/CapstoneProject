@@ -40,8 +40,15 @@ We've implemented a card list style to make the list details page look clear and
 
 Week 7
 
-Week7
 Continue to beautify the theme and style of the site. We adjusted the style of the theme of the site,
 as well as the font. Simple animations have been added to some cards and menu bars.
 And as other features continue to be developed, we've split the message box into an Outbox
 and an Inbox, and we allow each box to have two types of messages which are Solved and Unsolved.
+
+Week 8
+
+This week, we discussed the content and overall framework of the final report and analyzed the Criteria marking sheet. The demo2 has been completed. The first test of the website environment was completed in the CSE Vlab. Show and inform other Team members of any differences found in the CSE Vlab from other operating systems.
+
+Week 9
+
+Write user Document/Manual and Functionality in the final report. The user manual describes exactly how to download and set up a Django environment in CSE Vlab, as well as the versions available to users. And show users how to run the site. In The Functionality section, describe all features included in the platform and the composition and details of each feature page.
