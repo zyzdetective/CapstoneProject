@@ -45,7 +45,7 @@ class MessageForm(forms.Form):
 
 class RecommendationForm(forms.Form):
     recommendation_choice = forms.ChoiceField(
-        choices=((0, 'All Sponsors'), (1, 'A least One Connection Sponsors'), (2, 'Zero Connection Sponsors')),
+        choices=((0, 'All Sponsors'), (1, 'At least One Connection Sponsors'), (2, 'Zero Connection Sponsors')),
         widget=forms.Select())
 
 

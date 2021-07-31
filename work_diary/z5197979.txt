@@ -59,5 +59,5 @@ uniformity of needs/provides on profile editing page, added line break function 
 message and description section, solve the problem of inconsistent list display. Fix
 the problem of user name display in the message page with Weiran Li. Add the function
 of jumping to edit page automatically after registration and increase the url matching
-robustness. Write the final report, responsible for the system architecture part and
-back-end challenge part.
+robustness. Write the final report and prepare for final demo, responsible for the
+system architecture part and back-end challenge part.

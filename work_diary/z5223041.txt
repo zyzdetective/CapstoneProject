@@ -32,5 +32,13 @@ Week 7
  sponsors.
  The interface of pages have a significant improvement.
 
+Week 8
+ We finish all stories in sprint 3.
+ It includes top 10 sponsors and search functions.
+ We changed some font styles so that the words can display normally.
+ We finished retrospective B.
+ Up to this week we finished all word except final report and presentation.
 
-
+Week 9
+ We are working on final report, checking bugs on CSE and preparing oresentation.
+ I am working on functionality part.
