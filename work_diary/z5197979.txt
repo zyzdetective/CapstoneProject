@@ -11,3 +11,53 @@ story and sprint and architecture parts of the project proposal, discussed
 the basic framework of the database with the team members, and made 
 performance considerations for search and recommendation. Learned front-end 
 and back-end related technologies.
+
+Week 3
+Complete the sprint and architecture sections of the proposal document and 
+integrate the final proposal document. Learn front-end and back-end technologies 
+in Django, start coding the skeleton of the registration interface and related 
+back-end parts, and complete the basic design of the database. Discussed login 
+and session related technology options with Zhenyu Yang.
+
+Week 4
+I completed the basic skeleton pages for registration, login, edit profile,
+public access list and public access profile, as well as the backend and
+database related code for these pages. I enabled session recognition for
+registered users and public users and fixed the bug of keeping login.
+
+Week 5
+I worked with Zhenyu Yang to discuss and design the message and connection
+related data model and database. I migrated the new data tables to the existing
+database, wrote the message list, and the views for the message reply page, and
+discussed the data interface and web skeleton with the front-end lead, Weiran Li.
+Completed the first half of Backend Sprint 2.
+
+Week 6
+I worked with Zhenyu Yang to discuss and design the data model and database
+related to the recommendation function. I wrote the views for the recommendation
+page, fixed the database bugs, discussed the data interface and web skeleton with
+the front-end lead, Weiran Li, and merge the front and back-end pages for the first
+half of Sprint 2. Completed the back-end part of sprint 2.
+
+Week 7
+I updated the need and provide tables for speeding up the search function queries in
+sprint 3. I discussed with Zhenyu Yang and Weiran Li about the current bugs in the
+front and back-end views, and fixed the bug that the list page was out of index, and
+merged the updated database into the existing branch and fix the bugs caused by the
+database changes. I wrote the database related views for the top sponsor and search
+pages to complete the backend part of sprint 3.
+
+Week 8
+I fix the web page static resource references, rewrite the search and recommendation 
+page form submission method using JavaScript, and implement form aggregation passing.
+Discussed user psychology alerts and user-friendly notification display and parameter 
+passing interface with the front-end lead.
+
+Week 9
+I Fix the bug of password hiding on login page, fixed the problem of adding case
+uniformity of needs/provides on profile editing page, added line break function for
+message and description section, solve the problem of inconsistent list display. Fix
+the problem of user name display in the message page with Weiran Li. Add the function
+of jumping to edit page automatically after registration and increase the url matching
+robustness. Write the final report and prepare for final demo, responsible for the
+system architecture part and back-end challenge part.

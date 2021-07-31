@@ -1,0 +1,235 @@
+{% extends 'base/base.html' %}
+{% load static %}
+<title>{% block title %}Message{% endblock %}</title>
+<h1>{% block h1 %}Message Box{% endblock %}</h1>
+<h3>{% block h3 %}{% endblock %}</h3>
+{% block css %}
+    <link rel="stylesheet" href="{% static 'cc/Bootstrap5/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'cc/styles/inbox.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<body>
+<h3>Inbox</h3>
+<div class="container bootdey" style="margin-left: -70px">
+    <div class="email-app mb-4">
+        <nav>
+{#            <a href="page-inbox-compose.html" class="btn btn-danger btn-block">New Email</a>#}
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#unsolved_in" style="font-family: sans-serif"><i class="fa fa-envelope"></i> Unsolved</br> Message
+                        <span style="border-radius: 50%; height: 20px; width: 20px; display: inline-block; background: #f30303; vertical-align: top;">
+                        <span style="display: block; color: #FFFFFF; height: 20px; line-height: 20px; text-align: center"> {{ message_number }}</span>
+                        </span>
+                        <span class="badge badge-danger"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#solved_in" style="font-family: sans-serif"><i class="fa fa-envelope-open"></i> Solved </br> Message</a>
+                </li>
+            </ul>
+        </nav>
+        <main class="inbox">
+            <ul class="messages" id="unsolved_in">
+                {% for item in message_receive_unread_in %}
+                    <li class="message unread">
+
+                            <div class="header">
+                                <span class="from" style="text-decoration: #8a6d3b;  font-family: sans-serif">Message From: {{ item.0.request_obj.long_name }}</span>
+                                <span class="date"><span class="fa fa-paper-clip">
+                                </span>Request Time: {{ item.1.request_time }}<br/>
+                            {% if item.1.reply_time != '' %}
+                            Reply Time: {{ item.1.reply_time }}
+                            {% else %}
+                            Reply Time: Not yet replied.
+                            {% endif %}
+
+                                </span>
+
+                            </div>
+
+                        <div class="title" style="font-family: sans-serif">
+                            <a style="color: #8a6d3b" href="{% url 'reply_message' item.1.id %}">More Details</a>
+
+                        </div>
+
+
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <ul class="messages" id="solved_in">
+                {% for item in message_receive_read_in %}
+                    <li class="message unread">
+                                                    <div class="header">
+                                <span class="from" style="text-decoration: #8a6d3b;  font-family: sans-serif">Message From: {{ item.0.request_obj.long_name }}</span>
+                                <span class="date"><span class="fa fa-paper-clip">
+                                </span>Request Time: {{ item.1.request_time }}<br/>
+                            {% if item.1.reply_time != '' %}
+                            Reply Time: {{ item.1.reply_time }}
+                            {% else %}
+                            Reply Time: Not yet replied.
+                            {% endif %}
+
+                                </span>
+
+
+{#                                <span>{{ item.id }}</span>#}
+                            </div>
+
+                        <div class="title"; style="font-family: sans-serif">
+                        Status:
+                        </div>
+                        {% if item.1.message_type == 2 %}
+                            <div class="description" style="font-size: larger; font-family: fantasy">
+                            Accepted
+                            </div>
+                        {% elif item.1.message_type == 3 %}
+                            <div class="description" style="font-size: larger; font-family: fantasy">
+                            Rejected
+                            </div>
+                        {% endif %}
+                        <p></p>
+                        <div class="title" style="font-family: sans-serif">
+                            <a style="color: #8a6d3b" href="{% url 'show_message' item.1.id %}">More Details</a>
+
+                        </div>
+
+
+                    </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+</div>
+<h3>Outbox</h3>
+<div class="container bootdey" style="margin-left: -70px">
+    <div class="email-app mb-4">
+        <nav>
+{#            <a href="page-inbox-compose.html" class="btn btn-danger btn-block">New Email</a>#}
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#unsolved_out" style="font-family: sans-serif"><i class="fa fa-envelope"></i> Unsolved</br> Message <span
+                            class="badge badge-danger"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#solved_out" style="font-family: sans-serif"><i class="fa fa-envelope-open"></i> Solved </br> Message</a>
+                </li>
+            </ul>
+        </nav>
+        <main class="inbox">
+            <ul class="messages" id="unsolved_out">
+                {% for item in message_receive_unread_out %}
+                    <li class="message unread">
+                       <div class="header">
+                                <span class="from" style="text-decoration: #8a6d3b;  font-family: sans-serif">Message To: {{ item.0.reply_obj.long_name }}</span>
+                                <span class="date"><span class="fa fa-paper-clip">
+                                </span>Request Time: {{ item.1.request_time }}<br/>
+                            {% if item.1.reply_time != '' %}
+                            Reply Time: {{ item.1.reply_time }}
+                            {% else %}
+                            Reply Time: Not yet replied.
+                            {% endif %}
+
+                                </span>
+
+
+{#                                <span>{{ item.id }}</span>#}
+                            </div>
+
+                        <div class="title" style="font-family: sans-serif">
+                            <a style="color: #8a6d3b" href="{% url 'show_message' item.1.id %}">More Details</a>
+
+                        </div>
+
+
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <ul class="messages" id="solved_out">
+                {% for item in message_receive_read_out %}
+                    <li class="message unread">
+                        <div class="header">
+                                <span class="from" style="text-decoration: #8a6d3b;  font-family: sans-serif">Message To: {{ item.0.reply_obj.long_name }}</span>
+                                <span class="date"><span class="fa fa-paper-clip">
+                                </span>Request Time: {{ item.1.request_time }}<br/>
+                            {% if item.1.reply_time != '' %}
+                            Reply Time: {{ item.1.reply_time }}
+                            {% else %}
+                            Reply Time: Not yet replied.
+                            {% endif %}
+
+                                </span>
+
+
+{#                                <span>{{ item.id }}</span>#}
+                            </div>
+
+                                                <div class="title"; style="font-family: sans-serif">
+                        Status:
+                        </div>
+                        {% if item.1.message_type == 2 %}
+                            <div class="description" style="font-size: larger; font-family: fantasy">
+                            Accepted
+                            </div>
+                        {% elif item.1.message_type == 3 %}
+                            <div class="description" style="font-size: larger; font-family: fantasy">
+                            Rejected
+                            </div>
+                        {% endif %}
+                        <p></p>
+                        <div class="title" style="font-family: sans-serif">
+                            <a style="color: #8a6d3b" href="{% url 'show_message' item.1.id %}">More Details</a>
+
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+</div>
+{% comment %}
+<h2>Solved Request</h2>
+<div>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 g-3">
+            {% for item in message_receive_read %}
+                <div class="col">
+                <div class="card shadow-sm" style="background: burlywood">
+                <div>
+                <p class="card-text">
+                    <h5>
+                    Message id:
+                    {{ item.id }}<br/>
+                    Message to:
+                    {{ item.reply_user }}<br/>
+                    Connection Status:
+                    {% if item.message_type == 2 %}
+                    Successful
+                    {% elif item.message_type == 3 %}
+                    Failed
+                    {% endif %}
+                </h5>
+
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{% url 'show_message' item.id %}" class="btn" style="color: #3c763d">More Details</a>
+                    </div>
+                </div>
+            </p>
+            </div>
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endcomment %}
+
+
+</body>
+
+{% endblock %}

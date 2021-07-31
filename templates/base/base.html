@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Home{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'cc/styles/base.css' %}">
+    <link rel="stylesheet" href="{% static 'cc/Bootstrap5/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'cc/font-awesome-4.7.0/css/font-awesome.css' %}">
+    {% block css %}{% endblock %}
+</head>
+<center>
+    <p></p>
+    <h1>{% block h1 %}Welcome!!{% endblock %}</h1>
+    <h3>{% block h3 %}Home{% endblock %}</h3>
+
+</center>
+
+<body>
+
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h2><a href="{% url 'home' %}" style="color: black; text-decoration: black; font-family: sans-serif">Charity Connect</a></h2>
+        <ul>
+            <li style="font-size: medium"><user>Current User: </user><br/>
+                {% if signin_status %}
+                <a href="{% url 'details' current_user %}"><p>{{ current_user }}</p></a>
+                {% else %}
+                <a href="{% url 'signin' %}"><p>Public</p></a>
+                {% endif %}
+            </li>
+            <li><a href="{% url 'top_sponsors' %}">Top 10 Sponsors</a></li>
+            <li><a href="{% url 'sponsor_list' %}">Sponsor List</a></li>
+            <li><a href="{% url 'charity_list' %}">Charity List</a></li>
+            {% if signin_status %}
+                {% if current_user.user_type == 1 %}
+                    <li><a href="{% url 'recommendation' %}">Recommendation</a></li>
+                {% else %}
+                    <li><a href="{% url 'search' %}">Search</a></li>
+                {% endif %}
+            {% endif %}
+
+        </ul>
+    </div>
+
+    <div class="action">
+        <div class="menu">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if signin_status %}
+                    <li><a href="{% url 'edit' %}">Edit Profile</a></li>
+                    <li><a href="{% url 'message_box' %}">Message Box </a>&nbsp;
+                    <span style="border-radius: 50%; height: 20px; width: 20px; display: inline-block; background: #f30303; vertical-align: top;">
+                    <span style="display: block; color: #FFFFFF; height: 20px; line-height: 20px; text-align: center"> {{ message_number }}</span>
+                    </span>
+
+                    </li>
+{#                    <li><a href="{% url 'outbox' %}">Outbox</a></li>#}
+                    <li><a href="{% url 'signout' %}">Sign out</a></li>
+                {% else %}
+                    <li><a href="{% url 'signin' %}">Signin</a></li>
+                    <li><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="brain">
+        {% block body %}{% endblock %}
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

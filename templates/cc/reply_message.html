@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+
+{% block css %}<link rel="stylesheet" href="{% static 'cc/styles/signin.css' %}">{% endblock %}
+{% block title %}{{ message.id }}{% endblock %}
+{% block h1 %}Message From {{ request_long }} to {{ reply_long }}{% endblock %}
+{% block h3 %}{% endblock %}
+{% block body %}
+    <center>
+    <div class="p1">
+            <form method="post" class="container" style="max-width: 40rem">
+                {% csrf_token %}
+                <p style="font-family: sans-serif">Request Message:</p>
+                {{ message.message_request | linebreaksbr }}<br/>
+                <p style="font-family: sans-serif">Reply Message:</p>
+                {{ form.message_reply }}<br/>
+                <p style="font-family: sans-serif">Your reply:</p>
+                {{ form.your_reply }}<br/>
+                <p></p>
+                <a href="{% url 'message_box' %}">
+                    <button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button>
+                </a>
+            </form>
+    </div>
+    </center>
+{% endblock %}

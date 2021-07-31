@@ -1,0 +1,181 @@
+* {box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+.wrapper{
+    display: flex;
+    position: relative;
+}
+
+.wrapper .sidebar{
+    position: fixed;
+    width: 200px;
+    height: 80%;
+    background: whitesmoke;
+    padding: 30px 0;
+    border-radius: 15px;
+    margin-left: 10px;
+}
+
+.wrapper .sidebar h2{
+    color: black;
+    text-decoration: black;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+
+.wrapper .sidebar ul li{
+    padding: 15px;
+/*    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(225,225,225,0.05);*/
+}
+
+
+
+.wrapper .sidebar ul li a{
+    display: inline-block;
+    text-decoration: black;
+    color: black;
+    font-weight: 500;
+    transition: 0.5s;
+    margin-left: -10px;
+    font-family: sans-serif;
+}
+
+.wrapper .sidebar ul li user{
+    color: #8a6d3b;
+    display: block;
+    font-family: sans-serif;
+    margin-left: -10px;
+}
+
+
+/*.wrapper .sidebar ul li:hover{
+    background: #33416a;
+}*/
+
+.wrapper .sidebar ul li:hover a{
+    color: #8a6d3b;
+    background-color: lightgrey;
+}
+
+.wrapper .sidebar ul li p {
+    color: #993934;
+    font-family: cursive;
+}
+
+.wrapper .sidebar ul li a p {
+    color: #993934;
+    font-family: cursive;
+}
+
+.wrapper .action{
+    position: fixed;
+    top: 20px;
+    right: 30px;
+}
+
+.wrapper .action .profile{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.wrapper .action .profile img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wrapper .brain{
+    width: 100%;
+    margin-left: 300px;
+    margin-top: 100px;
+    margin-right: 300px;
+    margin-bottom: 200px;
+
+}
+
+.wrapper .action .menu{
+    position: absolute;
+    top: 40px;
+    right: -10px;
+    padding: 10px 20px;
+    background: whitesmoke;
+    width: 170px;
+    box-sizing: content-box;
+    border-radius: 15px;
+    margin-top: 30px;
+    margin-right: -10px;
+}
+
+.wrapper .action .menu ul li{
+    list-style: none;
+    padding: 10px 0;
+    /*border-top: 1px solid rgba(0,0,0,0.05);*/
+    direction: initial;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper .action .menu ul li a{
+    display: inline-block;
+    text-decoration: black;
+    color: black;
+    font-weight: 500;
+    transition: 0.5s;
+    font-family: sans-serif;
+}
+
+.wrapper .action .menu ul li a:hover{
+    color: #8a6d3b;
+}
+
+.wrapper .action .menu ul li:hover{
+    background-color: lightgrey;
+}
+
+/* Blue button as seen on translate.google.com*/
+button.blue {
+    color: white;
+    background: #4C8FFB;
+    border: 1px #3079ED solid;
+    box-shadow: inset 0 1px 0 #80B0FB;
+}
+
+
+button.blue:hover {
+    border: 1px #2F5BB7 solid;
+    box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #5A94F1;
+    background: #3F83F1;
+}
+
+button.blue:active {
+    box-shadow: inset 0 2px 5px #2370FE;
+}
+
+body {
+    background: url("../img/Light-Grey-Background-Wallpaper-63-images-.jpg");
+    background-size: 100%;
+}
+
+h1 {
+    font-family: fantasy;
+}
+
+h3 {
+    font-family: fantasy;
+}

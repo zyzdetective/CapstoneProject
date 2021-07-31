@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% load static %}
+<title>{% block title %}Connect{% endblock %}</title>
+<h1>{% block h1 %}Connect{% endblock %}</h1>
+<h3>{% block h3 %}{% endblock %}</h3>
+{% block css %}<link rel="stylesheet" href="{% static 'cc/styles/signin.css' %}">{% endblock %}
+
+{% block body %}
+    <center>
+
+    <div class="p1">
+
+    <form method="POST" class="container" style="max-width: 40rem">
+        <p></p><h3 style="font-family: sans-serif">Message To {{ reply_long }}:</h3><p></p>
+        {% csrf_token %}
+        {{ form.message }}<br/>
+        <p></p><button class="blue" type="submit" onclick="javascript:alert('Message sent successfully!')">Send</button><p></p>
+
+
+    </form>
+    </div>
+
+    </center>
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css %}
+{#    <link rel="stylesheet" href="{% static 'cc/styles/details.css' %}">#}
+    <link rel="stylesheet" href="{% static 'cc/styles/details.css' %}">
+
+{% endblock %}
+{% block title %}{{ details.long_name }}{% endblock %}
+{% block h1 %}{{ details.long_name }}{% endblock %}
+{% block h3 %}Details{% endblock %}
+{% block body %}
+    <center>
+{% if details_found %}
+    <body>
+    {% comment %}<p class="p1">
+        Name:
+        {{ details.long_name }}<br/>
+        Email:
+        {{ details.email }}<br/>
+        Description:
+        {{ details.description }}<br/>
+        Website:
+        {{ details.website }}<br/>
+        {% if details_user.user_type == 1 %}
+            What we need:
+        {% else %}
+            What we have:
+        {% endif %}
+        {% for ele in item %}
+            {{ ele.need }}
+        {% endfor %}
+        {% if signin_status %}
+        {% if current_user.user_type != details_user.user_type %}
+        <a href="{% url 'connect' details_user %}" class="blue" type="submit">Connect</a><br/>
+        {% endif %}
+        {% endif %}
+        </p>{% endcomment %}
+        <div>
+        <div class="row row-cols-1 row-cols-sm-1 g-1">
+            <div class="container">
+                <!--   <div class="card card-block mb-2">
+                    <h4 class="card-title">Card 1</h4>
+                    <p class="card-text">Welcom to bootstrap card styles</p>
+                    <a href="#" class="btn btn-primary">Submit</a>
+                  </div>   -->
+                <div class="row">
+                    {#                <div class="row row-cols-1 row-cols-sm-2 g-5">#}
+                    <div class="card item-card card-block">
+                        <h4 class="card-title text-right"><i class="material-icons">Name: {{ details.long_name }}</i>
+                        </h4>
+                        {% comment %}                            <img src="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
+                                 alt="Photo of sunset">{% endcomment %}
+                        <p style="size: A4; font-family: sans-serif">Email:</p>
+                        <p style="font-family: sans-serif">{{ details.email }}</p>
+                        <p style="size: A4; font-family: sans-serif">Description:</p>
+                        <p style="font-family: fantasy">{{ details.description | linebreaksbr }}</p>
+                        <p style="size: A4; font-family: sans-serif">Website:</p>
+                        <a href="{{ details.website }}">
+                        <p style="font-family: fantasy">{{ details.website }}</p>
+                        </a>
+                        {% if details_user.user_type == 1 %}
+                            <p style="size: A4; font-family: sans-serif">What we need:</p>
+                        {% else %}
+                            <p style="size: A4; font-family: sans-serif">What we have:</p>
+                        {% endif %}
+                        {% for ele in item %}
+                            <p style="font-family: fantasy">{{ ele.need }}</p>
+                        {% endfor %}
+                        {% if signin_status %}
+                            {% if current_user.user_type != details_user.user_type %}
+                                {#                                    <a href="{% url 'connect' details_user %}" class="button" type="submit">Connect</a>#}
+                                <center>
+                                <button class="blue" type="submit" style="width: 10%"><a href="{% url 'connect' details_user %}"
+                                                                      style="text-decoration: white; color: white">Connect</a>
+                                </button>
+                                </center>
+                                <br/>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    {% comment %} <p class="p1">
+        Connected Sponsors:<br/>
+        {% for ele in connection_user %}
+        Sponsor name: {{ ele.long_name }}<br/>
+        Website:{{ ele.website }}<br/>
+          <a href="{% url 'details' ele.long_name %}" class="blue" style="color: #d21254">More Details</a><br/>
+        {% endfor %}
+    </p>{% endcomment %}
+    <p></p>
+
+                            {% if signin_status %}
+                            {% if connection_user %}
+                            {% if details_user.user_type == 1 %}
+                                <h3 class="material-icons">Connected Sponsors:</h3>
+                            {% else %}
+                                <h3 class="material-icons">Connected Charities:</h3>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+            <!--   <div class="card card-block mb-2">
+                <h4 class="card-title">Card 1</h4>
+                <p class="card-text">Welcom to bootstrap card styles</p>
+                <a href="#" class="btn btn-primary">Submit</a>
+              </div>   -->
+            {% for ele in connection_user %}
+            <div class="row">
+                {#                <div class="row row-cols-1 row-cols-sm-2 g-5">#}
+
+                <div class="card item-card card-block">
+
+                    <h4 class="card-title text-right"><i class="material-icons">Name: {{ ele.long_name }}</i>
+                        </h4>
+                                    <p style="size: A4; font-family: sans-serif">Website:</p>
+                                    <a href="{{ ele.website }}" >
+                                    <p style="font-family: fantasy">{{ ele.website }}</p></a>
+                                    <a href="{% url 'details' ele.username %}" class="button">More
+                                        Details</a><br/>
+                </div>
+            </div>
+        {% endfor %}
+
+
+
+    <button class="blue" onclick="javascript:history.back(-1);" value="Back" style="margin-top: 100px">Back</button>
+        </div>
+    </body>
+{% else %}
+    <p>No details found for this user, sorry!</p>
+{% endif %}
+    </center>
+{% endblock %}
+

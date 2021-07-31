@@ -3,3 +3,24 @@ We have met the other team members for the first time and formed the group. We h
 
 Week2
 We have a group meeting after tutorial to discuss how to implement our project on which programming tools we are going to use to achieve that. And we discussed about website design, framework and database.
+
+Week3
+I have chose to work on the front-end prat of our project with WeiRan Li and YuHao Zhou. We have decided to use bootstrap and pycharm to complete the front-end design and combine the front-end with the back-end.
+
+Week4
+I have made the basic frame of our website such as the side bar and navigation bar with WeiRan Li and YuHao Zhou. We set up a base page which could be reused for many other pages. In the base page, it contains the basic framework of the entire website. We estabilished the views file in bootstrap to vendor the information like tables and forms. Also we set up urls for any click-on operation.
+
+Week5
+I have get prepared for the first demo at this week and based on the base page last week, we extends it to multiple pages like signin, signup, sponsor list and charity list pages. We also Start to discuss how to complete the tasks in Sprint2.
+
+Week6
+Start working on Sprint2, We have sub-divided the task to every member in the front-end group. So YuHao Zhou and I will take in charge of the styling of our website. We have also added other functionalities in the page like message boxs, connect function through sponsor/charity lists, recommendation page so on. I have implemented a card listing style to our sponsor/charity and recommendation pages which makes them looks cleaner and organized. 
+
+Week7
+Continuing working on the styling of our website. We have divided message box into outbox and inbox so I have work on the basic frame on both boxs which allows each box has two tabs: solved and unsolved. And users could choose on different tabs to switch to different box pages. I have impplemented an email-like structure to clearly show the tabs and the contents inside it. And I have work on some details styling on the previous pages.
+
+Week8
+Almost finish sprint3 of our project and further work on the styling on listing and work with YuHao Zhou on bugs fixing and work on font issue on different browser. We have a group meeting to share ideas between front-end and back-end to get prepare for the final report.
+
+Week9
+Working on the final report and ZouYi Zhang and I will work on the overview, implementation challenge and third-party functionality in the report and do code formatting/commenting and clean up our final documentation. Get prepared for the final demo.
